@@ -609,6 +609,17 @@
     alert("Searching NaijaMarkt for: " + search);
   }
 </script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+<script>
+const SUPABASE_URL = "https://qtolaqjjqoczcausyvbr.supabase.co/rest/v1/";
+const SUPABASE_KEY = "sb_publishable_VdTs0tXujyKVqU4h8wOriw_Xle29ijU";
+
+const supabaseClient = supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+</script>
+  
 </body>
 </html>
