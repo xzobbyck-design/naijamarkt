@@ -79,19 +79,23 @@
       font-weight: bold;
     }
 
-    button:hover {
-      background: #066b34;
+    .location-section,
+    .sell-form,
+    .categories,
+    .products {
+      margin: 20px 5%;
     }
 
-    .location-section {
+    .location-section,
+    .sell-form {
       background: white;
-      margin: 20px 5%;
       padding: 22px;
       border-radius: 10px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.06);
     }
 
-    .location-section h2 {
+    .location-section h2,
+    .sell-form h2 {
       margin-bottom: 8px;
     }
 
@@ -107,13 +111,19 @@
     }
 
     select,
-    .location-grid input {
+    input,
+    textarea {
       width: 100%;
       padding: 13px;
       border: 1px solid #ccc;
       border-radius: 7px;
       background: white;
       font-size: 15px;
+    }
+
+    textarea {
+      min-height: 110px;
+      resize: vertical;
     }
 
     .location-result {
@@ -147,11 +157,38 @@
       color: #087f3e;
     }
 
-    .categories {
-      padding: 20px 5%;
+    .sell-form {
+      display: none;
     }
 
-    .categories h2 {
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: bold;
+    }
+
+    .form-location {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .form-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .cancel-btn {
+      background: #777;
+    }
+
+    .categories h2,
+    .products h2 {
       margin-bottom: 15px;
     }
 
@@ -168,14 +205,6 @@
       text-align: center;
       cursor: pointer;
       box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-    }
-
-    .products {
-      padding: 20px 5%;
-    }
-
-    .products h2 {
-      margin-bottom: 15px;
     }
 
     .product-grid {
@@ -227,14 +256,12 @@
     }
 
     @media (max-width: 800px) {
-      .location-grid {
+      .location-grid,
+      .form-location {
         grid-template-columns: 1fr;
       }
 
-      .category-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
+      .category-grid,
       .product-grid {
         grid-template-columns: repeat(2, 1fr);
       }
@@ -345,7 +372,114 @@
 <section class="sell-box">
   <h2>Want to Sell Something?</h2>
   <p>Post your product and reach buyers anywhere in Nigeria.</p>
-  <button onclick="startSelling()">Sell an Item</button>
+  <button onclick="showSellForm()">Sell an Item</button>
+</section>
+
+<section class="sell-form" id="sellForm">
+
+  <h2>Post Your Item</h2>
+  <p style="color:#666; margin-bottom:20px;">
+    Enter the details of the item you want to sell.
+  </p>
+
+  <div class="form-group">
+    <label>Product Name</label>
+    <input type="text" id="productName" placeholder="Example: iPhone 13">
+  </div>
+
+  <div class="form-group">
+    <label>Price (₦)</label>
+    <input type="number" id="productPrice" placeholder="Example: 650000">
+  </div>
+
+  <div class="form-group">
+    <label>Category</label>
+    <select id="productCategory">
+      <option value="">Select Category</option>
+      <option>Phones & Tablets</option>
+      <option>Computers</option>
+      <option>Fashion</option>
+      <option>Shoes</option>
+      <option>Vehicles</option>
+      <option>Property</option>
+      <option>Furniture</option>
+      <option>Electronics</option>
+      <option>Gaming</option>
+      <option>Beauty</option>
+      <option>Sports</option>
+      <option>Services</option>
+      <option>Other</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label>Product Photos</label>
+    <input type="file" id="productPhoto" accept="image/*" multiple>
+  </div>
+
+  <div class="form-group">
+    <label>Description</label>
+    <textarea id="productDescription" placeholder="Describe your item..."></textarea>
+  </div>
+
+  <div class="form-group">
+    <label>Where is the item located?</label>
+
+    <div class="form-location">
+
+      <select id="sellerState">
+        <option value="">Select State</option>
+        <option>Abia</option>
+        <option>Adamawa</option>
+        <option>Akwa Ibom</option>
+        <option>Anambra</option>
+        <option>Bauchi</option>
+        <option>Bayelsa</option>
+        <option>Benue</option>
+        <option>Borno</option>
+        <option>Cross River</option>
+        <option>Delta</option>
+        <option>Ebonyi</option>
+        <option>Edo</option>
+        <option>Ekiti</option>
+        <option>Enugu</option>
+        <option>Gombe</option>
+        <option>Imo</option>
+        <option>Jigawa</option>
+        <option>Kaduna</option>
+        <option>Kano</option>
+        <option>Katsina</option>
+        <option>Kebbi</option>
+        <option>Kogi</option>
+        <option>Kwara</option>
+        <option>Lagos</option>
+        <option>Nasarawa</option>
+        <option>Niger</option>
+        <option>Ogun</option>
+        <option>Ondo</option>
+        <option>Osun</option>
+        <option>Oyo</option>
+        <option>Plateau</option>
+        <option>Rivers</option>
+        <option>Sokoto</option>
+        <option>Taraba</option>
+        <option>Yobe</option>
+        <option>Zamfara</option>
+        <option>Federal Capital Territory (FCT)</option>
+      </select>
+
+      <input type="text" id="sellerLga" placeholder="LGA">
+
+      <input type="text" id="sellerTown" placeholder="Town / Area">
+
+    </div>
+  </div>
+
+  <div class="form-buttons">
+    <button onclick="submitListing()">Continue</button>
+    <button class="cancel-btn" onclick="hideSellForm()">Cancel</button>
+  </div>
+
 </section>
 
 <section class="categories">
@@ -393,13 +527,6 @@
       <div class="location">Enugu, Nigeria</div>
     </div>
 
-        <div class="product">
-      <div class="product-image">Product Photo</div>
-      <h3>Nike Sneakers</h3>
-      <div class="price">₦25,000</div>
-      <div class="location">Enugu, Nigeria</div>
-    </div>
-
     <div class="product">
       <div class="product-image">Product Photo</div>
       <h3>Samsung Galaxy</h3>
@@ -438,6 +565,39 @@
     result.textContent = location;
   }
 
+  function showSellForm() {
+    document.getElementById("sellForm").style.display = "block";
+    document.getElementById("sellForm").scrollIntoView({
+      behavior: "smooth"
+    });
+  }
+
+  function hideSellForm() {
+    document.getElementById("sellForm").style.display = "none";
+  }
+
+  function submitListing() {
+    const name = document.getElementById("productName").value.trim();
+    const price = document.getElementById("productPrice").value.trim();
+    const category = document.getElementById("productCategory").value;
+    const state = document.getElementById("sellerState").value;
+    const lga = document.getElementById("sellerLga").value.trim();
+    const town = document.getElementById("sellerTown").value.trim();
+
+    if (!name || !price || !category || !state || !lga || !town) {
+      alert("Please fill in the product details and complete the location.");
+      return;
+    }
+
+    alert(
+      "Your listing is ready!\n\n" +
+      "Product: " + name + "\n" +
+      "Price: ₦" + price + "\n" +
+      "Category: " + category + "\n" +
+      "Location: " + state + " → " + lga + " LGA → " + town
+    );
+  }
+
   function searchProducts() {
     const search = document.getElementById("searchInput").value.trim();
 
@@ -447,10 +607,6 @@
     }
 
     alert("Searching NaijaMarkt for: " + search);
-  }
-
-  function startSelling() {
-    alert("Seller registration and product posting will be added next.");
   }
 </script>
 
