@@ -14,46 +14,38 @@
     }
 
     body {
-      background: #f5f6f8;
+      background: #f5f7f6;
       color: #222;
     }
 
     header {
-      background: #008751;
+      background: #087f3e;
       color: white;
-      padding: 16px;
-    }
-
-    .top {
+      padding: 18px 5%;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      max-width: 1100px;
-      margin: auto;
     }
 
     .logo {
-      font-size: 25px;
+      font-size: 26px;
       font-weight: bold;
     }
 
-    .login {
-      background: white;
-      color: #008751;
-      padding: 9px 15px;
-      border-radius: 6px;
+    header a {
+      color: white;
       text-decoration: none;
       font-weight: bold;
     }
 
     .hero {
       background: white;
-      padding: 35px 16px;
+      padding: 35px 5%;
       text-align: center;
     }
 
     .hero h1 {
-      font-size: 30px;
+      font-size: 32px;
       margin-bottom: 10px;
     }
 
@@ -62,50 +54,108 @@
       margin-bottom: 20px;
     }
 
-    .search {
+    .search-box {
       max-width: 700px;
       margin: auto;
       display: flex;
       gap: 8px;
     }
 
-    .search input {
+    .search-box input {
       flex: 1;
       padding: 14px;
-      border: 1px solid #ddd;
+      border: 1px solid #ccc;
       border-radius: 7px;
       font-size: 16px;
     }
 
-    .search button {
-      background: #008751;
+    button {
+      background: #087f3e;
       color: white;
       border: none;
-      padding: 0 20px;
+      padding: 14px 20px;
       border-radius: 7px;
-      font-size: 16px;
+      cursor: pointer;
+      font-weight: bold;
     }
 
-    .location {
-      max-width: 700px;
-      margin: 12px auto 0;
-      padding: 12px;
-      background: #f1f8f4;
-      border-radius: 7px;
-      color: #008751;
+    button:hover {
+      background: #066b34;
     }
 
-    .section {
-      max-width: 1100px;
-      margin: 25px auto;
-      padding: 0 16px;
+    .location-section {
+      background: white;
+      margin: 20px 5%;
+      padding: 22px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
     }
 
-    .section h2 {
+    .location-section h2 {
+      margin-bottom: 8px;
+    }
+
+    .location-section p {
+      color: #666;
       margin-bottom: 15px;
     }
 
+    .location-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    select,
+    .location-grid input {
+      width: 100%;
+      padding: 13px;
+      border: 1px solid #ccc;
+      border-radius: 7px;
+      background: white;
+      font-size: 15px;
+    }
+
+    .location-result {
+      margin-top: 15px;
+      padding: 12px;
+      background: #eef8f2;
+      border-radius: 7px;
+      color: #087f3e;
+      font-weight: bold;
+    }
+
+    .sell-box {
+      margin: 20px 5%;
+      background: #087f3e;
+      color: white;
+      padding: 25px;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .sell-box h2 {
+      margin-bottom: 8px;
+    }
+
+    .sell-box p {
+      margin-bottom: 15px;
+    }
+
+    .sell-box button {
+      background: white;
+      color: #087f3e;
+    }
+
     .categories {
+      padding: 20px 5%;
+    }
+
+    .categories h2 {
+      margin-bottom: 15px;
+    }
+
+    .category-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 12px;
@@ -113,13 +163,22 @@
 
     .category {
       background: white;
-      padding: 18px 10px;
-      text-align: center;
+      padding: 18px;
       border-radius: 8px;
-      border: 1px solid #eee;
+      text-align: center;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
     }
 
     .products {
+      padding: 20px 5%;
+    }
+
+    .products h2 {
+      margin-bottom: 15px;
+    }
+
+    .product-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 15px;
@@ -127,56 +186,72 @@
 
     .product {
       background: white;
-      border-radius: 8px;
-      overflow: hidden;
-      border: 1px solid #eee;
+      border-radius: 9px;
+      padding: 15px;
+      box-shadow: 0 2px 7px rgba(0,0,0,0.07);
     }
 
     .product-image {
       height: 150px;
-      background: #e9ecef;
+      background: #e8ece9;
+      border-radius: 7px;
       display: flex;
       align-items: center;
       justify-content: center;
       color: #777;
+      margin-bottom: 12px;
     }
 
-    .product-info {
-      padding: 12px;
+    .product h3 {
+      margin-bottom: 7px;
     }
 
     .price {
-      color: #008751;
+      color: #087f3e;
       font-weight: bold;
       font-size: 18px;
-      margin: 7px 0;
+      margin-bottom: 6px;
     }
 
-    .place {
+    .location {
       color: #777;
-      font-size: 13px;
+      font-size: 14px;
     }
 
-   footer {
-      margin-top: 40px;
+    footer {
       background: #222;
       color: white;
       text-align: center;
       padding: 25px;
+      margin-top: 30px;
     }
 
-    @media (max-width: 700px) {
-      .categories,
-      .products {
+    @media (max-width: 800px) {
+      .location-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .category-grid {
         grid-template-columns: repeat(2, 1fr);
       }
 
-      .search {
+      .product-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 500px) {
+      .search-box {
         flex-direction: column;
       }
 
-      .search button {
-        padding: 12px;
+      .category-grid,
+      .product-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero h1 {
+        font-size: 26px;
       }
     }
   </style>
@@ -184,89 +259,200 @@
 
 <body>
 
-  <header>
-    <div class="top">
-      <div class="logo">NaijaMarkt</div>
-      <a href="#" class="login">Login / Register</a>
+<header>
+  <div class="logo">NaijaMarkt</div>
+  <a href="#">Login / Register</a>
+</header>
+
+<section class="hero">
+  <h1>Buy & Sell Near You</h1>
+  <p>Find products and services from people across Nigeria.</p>
+
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="What are you looking for?">
+    <button onclick="searchProducts()">Search</button>
+  </div>
+</section>
+
+<section class="location-section">
+  <h2>Choose Your Location</h2>
+  <p>Search for items anywhere in Nigeria or narrow your search to your area.</p>
+
+  <div class="location-grid">
+
+    <select id="state" onchange="updateLocation()">
+      <option value="">Select State</option>
+      <option>Abia</option>
+      <option>Adamawa</option>
+      <option>Akwa Ibom</option>
+      <option>Anambra</option>
+      <option>Bauchi</option>
+      <option>Bayelsa</option>
+      <option>Benue</option>
+      <option>Borno</option>
+      <option>Cross River</option>
+      <option>Delta</option>
+      <option>Ebonyi</option>
+      <option>Edo</option>
+      <option>Ekiti</option>
+      <option>Enugu</option>
+      <option>Gombe</option>
+      <option>Imo</option>
+      <option>Jigawa</option>
+      <option>Kaduna</option>
+      <option>Kano</option>
+      <option>Katsina</option>
+      <option>Kebbi</option>
+      <option>Kogi</option>
+      <option>Kwara</option>
+      <option>Lagos</option>
+      <option>Nasarawa</option>
+      <option>Niger</option>
+      <option>Ogun</option>
+      <option>Ondo</option>
+      <option>Osun</option>
+      <option>Oyo</option>
+      <option>Plateau</option>
+      <option>Rivers</option>
+      <option>Sokoto</option>
+      <option>Taraba</option>
+      <option>Yobe</option>
+      <option>Zamfara</option>
+      <option>Federal Capital Territory (FCT)</option>
+    </select>
+
+    <input
+      type="text"
+      id="lga"
+      placeholder="Enter LGA e.g. Nsukka"
+      oninput="updateLocation()"
+    >
+
+    <input
+      type="text"
+      id="town"
+      placeholder="Enter Town / Area e.g. Nsukka"
+      oninput="updateLocation()"
+    >
+
+  </div>
+
+  <div class="location-result" id="locationResult">
+    Nigeria — All locations
+  </div>
+</section>
+
+<section class="sell-box">
+  <h2>Want to Sell Something?</h2>
+  <p>Post your product and reach buyers anywhere in Nigeria.</p>
+  <button onclick="startSelling()">Sell an Item</button>
+</section>
+
+<section class="categories">
+  <h2>Categories</h2>
+
+  <div class="category-grid">
+    <div class="category">Phones & Tablets</div>
+    <div class="category">Computers</div>
+    <div class="category">Fashion</div>
+    <div class="category">Shoes</div>
+    <div class="category">Vehicles</div>
+    <div class="category">Property</div>
+    <div class="category">Furniture</div>
+    <div class="category">Electronics</div>
+    <div class="category">Gaming</div>
+    <div class="category">Beauty</div>
+    <div class="category">Sports</div>
+    <div class="category">Services</div>
+  </div>
+</section>
+
+<section class="products">
+  <h2>Featured Listings</h2>
+
+  <div class="product-grid">
+
+    <div class="product">
+      <div class="product-image">Product Photo</div>
+      <h3>Men's Polo Shirt</h3>
+      <div class="price">₦15,000</div>
+      <div class="location">Warri, Delta</div>
     </div>
-  </header>
 
-  <section class="hero">
-    <h1>Buy & Sell Near You</h1>
-    <p>Find products from sellers across Nigeria.</p>
-
-    <div class="search">
-      <input type="text" placeholder="What are you looking for?">
-      <button>Search</button>
+    <div class="product">
+      <div class="product-image">Product Photo</div>
+      <h3>iPhone 13</h3>
+      <div class="price">₦650,000</div>
+      <div class="location">Lagos, Nigeria</div>
     </div>
 
-    <div class="location">
-      📍 Nigeria — Choose your location
+    <div class="product">
+      <div class="product-image">Product Photo</div>
+      <h3>Nike Sneakers</h3>
+      <div class="price">₦25,000</div>
+      <div class="location">Enugu, Nigeria</div>
     </div>
-  </section>
 
-  <section class="section">
-    <h2>Categories</h2>
-
-    <div class="categories">
-      <div class="category">📱 Phones</div>
-      <div class="category">💻 Computers</div>
-      <div class="category">👕 Fashion</div>
-      <div class="category">👟 Shoes</div>
-      <div class="category">🚗 Vehicles</div>
-      <div class="category">🏠 Property</div>
-      <div class="category">🪑 Furniture</div>
-      <div class="category">📺 Electronics</div>
+        <div class="product">
+      <div class="product-image">Product Photo</div>
+      <h3>Nike Sneakers</h3>
+      <div class="price">₦25,000</div>
+      <div class="location">Enugu, Nigeria</div>
     </div>
-  </section>
 
-  <section class="section">
-    <h2>Nearby Listings</h2>
-
-    <div class="products">
-
-      <div class="product">
-        <div class="product-image">Product Image</div>
-        <div class="product-info">
-          <h3>Men's Polo Shirt</h3>
-          <div class="price">₦15,000</div>
-          <div class="place">📍 Warri, Delta</div>
-        </div>
-      </div>
-
-      <div class="product">
-        <div class="product-image">Product Image</div>
-        <div class="product-info">
-          <h3>iPhone 13</h3>
-          <div class="price">₦650,000</div>
-          <div class="place">📍 Lagos, Nigeria</div>
-        </div>
-      </div>
-
-      <div class="product">
-        <div class="product-image">Product Image</div>
-        <div class="product-info">
-          <h3>Nike Sneakers</h3>
-          <div class="price">₦25,000</div>
-          <div class="place">📍 Enugu, Nigeria</div>
-        </div>
-      </div>
-
-      <div class="product">
-        <div class="product-image">Product Image</div>
-        <div class="product-info">
-          <h3>Samsung Galaxy</h3>
-          <div class="price">₦220,000</div>
-          <div class="place">📍 Abuja, Nigeria</div>
-        </div>
-      </div>
-
+    <div class="product">
+      <div class="product-image">Product Photo</div>
+      <h3>Samsung Galaxy</h3>
+      <div class="price">₦220,000</div>
+      <div class="location">Abuja, Nigeria</div>
     </div>
-  </section>
 
-  <footer>
-    <p>© 2026 NaijaMarkt — Buy. Sell. Connect.</p>
-  </footer>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 NaijaMarkt — Buy & Sell Across Nigeria</p>
+</footer>
+
+<script>
+  function updateLocation() {
+    const state = document.getElementById("state").value;
+    const lga = document.getElementById("lga").value.trim();
+    const town = document.getElementById("town").value.trim();
+    const result = document.getElementById("locationResult");
+
+    let location = "Nigeria";
+
+    if (state) {
+      location += " → " + state;
+    }
+
+    if (lga) {
+      location += " → " + lga + " LGA";
+    }
+
+    if (town) {
+      location += " → " + town;
+    }
+
+    result.textContent = location;
+  }
+
+  function searchProducts() {
+    const search = document.getElementById("searchInput").value.trim();
+
+    if (search === "") {
+      alert("Please enter what you want to search for.");
+      return;
+    }
+
+    alert("Searching NaijaMarkt for: " + search);
+  }
+
+  function startSelling() {
+    alert("Seller registration and product posting will be added next.");
+  }
+</script>
 
 </body>
 </html>
