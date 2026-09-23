@@ -620,6 +620,63 @@ const supabaseClient = supabase.createClient(
   SUPABASE_KEY
 );
 </script>
-  
+  <!-- NaijaMarkt Registration -->
+<section id="registrationSection" style="max-width:500px;margin:40px auto;padding:25px;background:#fff;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,0.1);">
+  <h2 style="margin-top:0;">Create Your NaijaMarkt Account</h2>
+  <p>Register with your email to buy and sell on NaijaMarkt.</p>
+
+  <input
+    type="email"
+    id="registerEmail"
+    placeholder="Email address"
+    style="width:100%;padding:12px;margin:8px 0;box-sizing:border-box;"
+  >
+
+  <input
+    type="password"
+    id="registerPassword"
+    placeholder="Password"
+    style="width:100%;padding:12px;margin:8px 0;box-sizing:border-box;"
+  >
+
+  <button
+    id="registerButton"
+    style="width:100%;padding:13px;background:#008000;color:white;border:0;border-radius:6px;font-size:16px;"
+  >
+    Create Account
+  </button>
+
+  <p id="registerMessage" style="margin-top:15px;"></p>
+</section>
+
+<script>
+document.getElementById("registerButton").addEventListener("click", async function () {
+  const email = document.getElementById("registerEmail").value.trim();
+  const password = document.getElementById("registerPassword").value;
+  const message = document.getElementById("registerMessage");
+
+  if (!email || !password) {
+    message.textContent = "Please enter your email and password.";
+    return;
+  }
+
+  if (password.length < 6) {
+    message.textContent = "Password must be at least 6 characters.";
+    return;
+  }
+
+  const { data, error } = await supabaseClient.auth.signUp({
+    email: email,
+    password: password
+  });
+
+  if (error) {
+    message.textContent = error.message;
+    return;
+  }
+
+  message.textContent = "Account created. Please check your email to confirm your account.";
+});
+</script>
 </body>
 </html>
