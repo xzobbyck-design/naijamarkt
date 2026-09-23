@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NaijaMarkt - Buy & Sell in Nigeria</title>
-  
+
   <style>
     * {
       box-sizing: border-box;
@@ -26,7 +26,6 @@
       justify-content: space-between;
       align-items: center;
     }
-    
 
     .logo {
       font-size: 26px;
@@ -256,6 +255,60 @@
       margin-top: 30px;
     }
 
+    /* Account popup */
+    #accountPopup {
+      display: none;
+      position: fixed;
+      top: 75px;
+      right: 15px;
+      width: 310px;
+      max-width: calc(100% - 30px);
+      background: white;
+      color: #222;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 5px 25px rgba(0,0,0,0.25);
+      z-index: 9999;
+    }
+
+    #accountPopup h2 {
+      margin-bottom: 15px;
+    }
+
+    #accountPopup input {
+      margin: 6px 0;
+    }
+
+    #accountPopup .account-button {
+      width: 100%;
+      margin-top: 8px;
+    }
+
+    #accountPopup p {
+      margin-top: 15px;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    #accountPopup a {
+      color: #087f3e;
+      font-weight: bold;
+    }
+
+    #closeAccount {
+      float: right;
+      border: none;
+      background: none;
+      color: #333;
+      font-size: 24px;
+      padding: 0;
+      cursor: pointer;
+    }
+
+    #accountMessage {
+      color: #087f3e;
+    }
+
     @media (max-width: 800px) {
       .location-grid,
       .form-location {
@@ -289,22 +342,105 @@
 
 <header>
   <div class="logo">NaijaMarkt</div>
-  <a href="#">Login / Register</a>
+
+  <a href="#" onclick="openAccountPopup(); return false;">
+    Login
+  </a>
 </header>
+
+<!-- ACCOUNT POPUP -->
+<div id="accountPopup">
+
+  <button id="closeAccount" onclick="closeAccountPopup()">×</button>
+
+  <!-- LOGIN -->
+  <div id="loginBox">
+
+    <h2>Login</h2>
+
+    <input
+      id="loginEmail"
+      type="email"
+      placeholder="Email address"
+    >
+
+    <input
+      id="loginPassword"
+      type="password"
+      placeholder="Password"
+    >
+
+    <button class="account-button" onclick="loginUser()">
+      Login
+    </button>
+
+    <p>
+      Don't have an account?
+      <a href="#" onclick="showSignup(); return false;">Sign Up</a>
+    </p>
+
+  </div>
+
+  <!-- SIGN UP -->
+  <div id="signupBox" style="display:none;">
+
+    <h2>Create Account</h2>
+
+    <input
+      id="signupEmail"
+      type="email"
+      placeholder="Email address"
+    >
+
+    <input
+      id="signupPassword"
+      type="password"
+      placeholder="Password"
+    >
+
+    <input
+      id="signupConfirm"
+      type="password"
+      placeholder="Confirm password"
+    >
+
+    <button class="account-button" onclick="signupUser()">
+      Create Account
+    </button>
+
+    <p>
+      Already have an account?
+      <a href="#" onclick="showLogin(); return false;">Login</a>
+    </p>
+
+  </div>
+
+  <p id="accountMessage"></p>
+
+</div>
 
 <section class="hero">
   <h1>Buy & Sell Near You</h1>
   <p>Find products and services from people across Nigeria.</p>
 
   <div class="search-box">
-    <input type="text" id="searchInput" placeholder="What are you looking for?">
+    <input
+      type="text"
+      id="searchInput"
+      placeholder="What are you looking for?"
+    >
+
     <button onclick="searchProducts()">Search</button>
   </div>
 </section>
 
 <section class="location-section">
+
   <h2>Choose Your Location</h2>
-  <p>Search for items anywhere in Nigeria or narrow your search to your area.</p>
+
+  <p>
+    Search for items anywhere in Nigeria or narrow your search to your area.
+  </p>
 
   <div class="location-grid">
 
@@ -368,34 +504,61 @@
   <div class="location-result" id="locationResult">
     Nigeria — All locations
   </div>
+
 </section>
 
 <section class="sell-box">
+
   <h2>Want to Sell Something?</h2>
-  <p>Post your product and reach buyers anywhere in Nigeria.</p>
-  <button onclick="showSellForm()">Sell an Item</button>
+
+  <p>
+    Post your product and reach buyers anywhere in Nigeria.
+  </p>
+
+  <button onclick="showSellForm()">
+    Sell an Item
+  </button>
+
 </section>
 
 <section class="sell-form" id="sellForm">
 
   <h2>Post Your Item</h2>
+
   <p style="color:#666; margin-bottom:20px;">
     Enter the details of the item you want to sell.
   </p>
 
   <div class="form-group">
+
     <label>Product Name</label>
-    <input type="text" id="productName" placeholder="Example: iPhone 13">
+
+    <input
+      type="text"
+      id="productName"
+      placeholder="Example: iPhone 13"
+    >
+
   </div>
 
   <div class="form-group">
+
     <label>Price (₦)</label>
-    <input type="number" id="productPrice" placeholder="Example: 650000">
+
+    <input
+      type="number"
+      id="productPrice"
+      placeholder="Example: 650000"
+    >
+
   </div>
 
   <div class="form-group">
+
     <label>Category</label>
+
     <select id="productCategory">
+
       <option value="">Select Category</option>
       <option>Phones & Tablets</option>
       <option>Computers</option>
@@ -410,25 +573,43 @@
       <option>Sports</option>
       <option>Services</option>
       <option>Other</option>
+
     </select>
+
   </div>
 
   <div class="form-group">
+
     <label>Product Photos</label>
-    <input type="file" id="productPhoto" accept="image/*" multiple>
+
+    <input
+      type="file"
+      id="productPhoto"
+      accept="image/*"
+      multiple
+    >
+
   </div>
 
   <div class="form-group">
+
     <label>Description</label>
-    <textarea id="productDescription" placeholder="Describe your item..."></textarea>
+
+    <textarea
+      id="productDescription"
+      placeholder="Describe your item..."
+    ></textarea>
+
   </div>
 
   <div class="form-group">
+
     <label>Where is the item located?</label>
 
     <div class="form-location">
 
       <select id="sellerState">
+
         <option value="">Select State</option>
         <option>Abia</option>
         <option>Adamawa</option>
@@ -467,26 +648,48 @@
         <option>Yobe</option>
         <option>Zamfara</option>
         <option>Federal Capital Territory (FCT)</option>
+
       </select>
 
-      <input type="text" id="sellerLga" placeholder="LGA">
+      <input
+        type="text"
+        id="sellerLga"
+        placeholder="LGA"
+      >
 
-      <input type="text" id="sellerTown" placeholder="Town / Area">
+      <input
+        type="text"
+        id="sellerTown"
+        placeholder="Town / Area"
+      >
 
     </div>
+
   </div>
 
   <div class="form-buttons">
-    <button onclick="submitListing()">Continue</button>
-    <button class="cancel-btn" onclick="hideSellForm()">Cancel</button>
+
+    <button onclick="submitListing()">
+      Continue
+    </button>
+
+    <button
+      class="cancel-btn"
+      onclick="hideSellForm()"
+    >
+      Cancel
+    </button>
+
   </div>
 
 </section>
 
 <section class="categories">
+
   <h2>Categories</h2>
 
   <div class="category-grid">
+
     <div class="category">Phones & Tablets</div>
     <div class="category">Computers</div>
     <div class="category">Fashion</div>
@@ -499,55 +702,130 @@
     <div class="category">Beauty</div>
     <div class="category">Sports</div>
     <div class="category">Services</div>
+
   </div>
+
 </section>
 
 <section class="products">
+
   <h2>Featured Listings</h2>
 
   <div class="product-grid">
 
     <div class="product">
-      <div class="product-image">Product Photo</div>
+
+      <div class="product-image">
+        Product Photo
+      </div>
+
       <h3>Men's Polo Shirt</h3>
-      <div class="price">₦15,000</div>
-      <div class="location">Warri, Delta</div>
+
+      <div class="price">
+        ₦15,000
+      </div>
+
+      <div class="location">
+        Warri, Delta
+      </div>
+
     </div>
 
     <div class="product">
-      <div class="product-image">Product Photo</div>
+
+      <div class="product-image">
+        Product Photo
+      </div>
+
       <h3>iPhone 13</h3>
-      <div class="price">₦650,000</div>
-      <div class="location">Lagos, Nigeria</div>
+
+      <div class="price">
+        ₦650,000
+      </div>
+
+      <div class="location">
+        Lagos, Nigeria
+      </div>
+
     </div>
 
     <div class="product">
-      <div class="product-image">Product Photo</div>
+
+      <div class="product-image">
+        Product Photo
+      </div>
+
       <h3>Nike Sneakers</h3>
-      <div class="price">₦25,000</div>
-      <div class="location">Enugu, Nigeria</div>
+
+      <div class="price">
+        ₦25,000
+      </div>
+
+      <div class="location">
+        Enugu, Nigeria
+      </div>
+
     </div>
 
     <div class="product">
-      <div class="product-image">Product Photo</div>
+
+      <div class="product-image">
+        Product Photo
+      </div>
+
       <h3>Samsung Galaxy</h3>
-      <div class="price">₦220,000</div>
-      <div class="location">Abuja, Nigeria</div>
+
+      <div class="price">
+        ₦220,000
+      </div>
+
+      <div class="location">
+        Abuja, Nigeria
+      </div>
+
     </div>
 
   </div>
+
 </section>
 
 <footer>
-  <p>© 2026 NaijaMarkt — Buy & Sell Across Nigeria</p>
+
+  <p>
+    © 2026 NaijaMarkt — Buy & Sell Across Nigeria
+  </p>
+
 </footer>
 
+<!-- SUPABASE -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>
+
+  const SUPABASE_URL =
+    "https://qtolaqjjqoczcausyvbr.supabase.co";
+
+  const SUPABASE_KEY =
+    "sb_publishable_VdTs0tXujyKVqU4h8wOriw_Xle29ijU";
+
+  const supabaseClient = supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
   function updateLocation() {
-    const state = document.getElementById("state").value;
-    const lga = document.getElementById("lga").value.trim();
-    const town = document.getElementById("town").value.trim();
-    const result = document.getElementById("locationResult");
+
+    const state =
+      document.getElementById("state").value;
+
+    const lga =
+      document.getElementById("lga").value.trim();
+
+    const town =
+      document.getElementById("town").value.trim();
+
+    const result =
+      document.getElementById("locationResult");
 
     let location = "Nigeria";
 
@@ -567,26 +845,47 @@
   }
 
   function showSellForm() {
+
     document.getElementById("sellForm").style.display = "block";
+
     document.getElementById("sellForm").scrollIntoView({
       behavior: "smooth"
     });
+
   }
 
   function hideSellForm() {
+
     document.getElementById("sellForm").style.display = "none";
+
   }
 
   function submitListing() {
-    const name = document.getElementById("productName").value.trim();
-    const price = document.getElementById("productPrice").value.trim();
-    const category = document.getElementById("productCategory").value;
-    const state = document.getElementById("sellerState").value;
-    const lga = document.getElementById("sellerLga").value.trim();
-    const town = document.getElementById("sellerTown").value.trim();
+
+    const name =
+      document.getElementById("productName").value.trim();
+
+    const price =
+      document.getElementById("productPrice").value.trim();
+
+    const category =
+      document.getElementById("productCategory").value;
+
+    const state =
+      document.getElementById("sellerState").value;
+
+    const lga =
+      document.getElementById("sellerLga").value.trim();
+
+    const town =
+      document.getElementById("sellerTown").value.trim();
 
     if (!name || !price || !category || !state || !lga || !town) {
-      alert("Please fill in the product details and complete the location.");
+
+      alert(
+        "Please fill in the product details and complete the location."
+      );
+
       return;
     }
 
@@ -595,109 +894,172 @@
       "Product: " + name + "\n" +
       "Price: ₦" + price + "\n" +
       "Category: " + category + "\n" +
-      "Location: " + state + " → " + lga + " LGA → " + town
+      "Location: " + state +
+      " → " + lga +
+      " LGA → " + town
     );
+
   }
 
   function searchProducts() {
-    const search = document.getElementById("searchInput").value.trim();
+
+    const search =
+      document.getElementById("searchInput").value.trim();
 
     if (search === "") {
-      alert("Please enter what you want to search for.");
+
+      alert(
+        "Please enter what you want to search for."
+      );
+
       return;
     }
 
-    alert("Searching NaijaMarkt for: " + search);
+    alert(
+      "Searching NaijaMarkt for: " + search
+    );
+
   }
+
+  /* ACCOUNT POPUP */
+
+  function openAccountPopup() {
+
+    document.getElementById("accountPopup").style.display =
+      "block";
+
+  }
+
+  function closeAccountPopup() {
+
+    document.getElementById("accountPopup").style.display =
+      "none";
+
+  }
+
+  function showSignup() {
+
+    document.getElementById("loginBox").style.display =
+      "none";
+
+    document.getElementById("signupBox").style.display =
+      "block";
+
+    document.getElementById("accountMessage").textContent =
+      "";
+
+  }
+
+  function showLogin() {
+
+    document.getElementById("signupBox").style.display =
+      "none";
+
+    document.getElementById("loginBox").style.display =
+      "block";
+
+    document.getElementById("accountMessage").textContent =
+      "";
+
+  }
+
+  async function loginUser() {
+
+    const email =
+      document.getElementById("loginEmail").value.trim();
+
+    const password =
+      document.getElementById("loginPassword").value;
+
+    const message =
+      document.getElementById("accountMessage");
+
+    if (!email || !password) {
+
+      message.textContent =
+        "Please enter your email and password.";
+
+      return;
+    }
+
+    const { error } =
+      await supabaseClient.auth.signInWithPassword({
+        email: email,
+        password: password
+      });
+
+    if (error) {
+
+      message.textContent =
+        error.message;
+
+      return;
+    }
+
+    message.textContent =
+      "You are now signed in.";
+
+  }
+
+  async function signupUser() {
+
+    const email =
+      document.getElementById("signupEmail").value.trim();
+
+    const password =
+      document.getElementById("signupPassword").value;
+
+    const confirm =
+      document.getElementById("signupConfirm").value;
+
+    const message =
+      document.getElementById("accountMessage");
+
+    if (!email || !password || !confirm) {
+
+      message.textContent =
+        "Please fill in all fields.";
+
+      return;
+    }
+
+    if (password.length < 6) {
+
+      message.textContent =
+        "Password must be at least 6 characters.";
+
+      return;
+    }
+
+    if (password !== confirm) {
+
+      message.textContent =
+        "Passwords do not match.";
+
+      return;
+    }
+
+    const { error } =
+      await supabaseClient.auth.signUp({
+        email: email,
+        password: password
+      });
+
+    if (error) {
+
+      message.textContent =
+        error.message;
+
+      return;
+    }
+
+    message.textContent =
+      "Account created. Please check your email.";
+
+  }
+
 </script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<script>
-const SUPABASE_URL = "https://qtolaqjjqoczcausyvbr.supabase.co/rest/v1/";
-const SUPABASE_KEY = "sb_publishable_VdTs0tXujyKVqU4h8wOriw_Xle29ijU";
-
-const supabaseClient = supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
-);
-</script>
-  <script>
-function openAccountPopup() {
-  document.getElementById("accountPopup").style.display = "block";
-}
-
-function closeAccountPopup() {
-  document.getElementById("accountPopup").style.display = "none";
-}
-
-function showSignup() {
-  document.getElementById("loginBox").style.display = "none";
-  document.getElementById("signupBox").style.display = "block";
-}
-
-function showLogin() {
-  document.getElementById("signupBox").style.display = "none";
-  document.getElementById("loginBox").style.display = "block";
-}
-
-async function loginUser() {
-  const email = document.getElementById("loginEmail").value.trim();
-  const password = document.getElementById("loginPassword").value;
-  const message = document.getElementById("accountMessage");
-
-  if (!email || !password) {
-    message.textContent = "Please enter your email and password.";
-    return;
-  }
-
-  const { error } = await supabaseClient.auth.signInWithPassword({
-    email: email,
-    password: password
-  });
-
-  if (error) {
-    message.textContent = error.message;
-    return;
-  }
-
-  message.textContent = "You are now signed in.";
-}
-
-async function signupUser() {
-  const email = document.getElementById("signupEmail").value.trim();
-  const password = document.getElementById("signupPassword").value;
-  const confirm = document.getElementById("signupConfirm").value;
-  const message = document.getElementById("accountMessage");
-
-  if (!email || !password || !confirm) {
-    message.textContent = "Please fill in all fields.";
-    return;
-  }
-
-  if (password.length < 6) {
-    message.textContent = "Password must be at least 6 characters.";
-    return;
-  }
-
-  if (password !== confirm) {
-    message.textContent = "Passwords do not match.";
-    return;
-  }
-
-  const { error } = await supabaseClient.auth.signUp({
-    email: email,
-    password: password
-  });
-
-  if (error) {
-    message.textContent = error.message;
-    return;
-  }
-
-  message.textContent = "Account created. Please check your email.";
-}
-  </script>
 </body>
 </html>
+
