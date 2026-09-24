@@ -4101,5 +4101,2007 @@
       }
     );
   </script>
+  <script>
+    /* ================================
+       SELL LOGIN CHECK
+    ================================= */
+
+    function openSellWithAuthCheck() {
+
+      if (!currentUser) {
+
+        openAccount();
+
+        const message =
+          $("loginMessage");
+
+        if (message) {
+
+          message.textContent =
+            "Please login before posting an item.";
+
+        }
+
+        return;
+      }
+
+      openSell();
+
+    }
+
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      function() {
+
+        const sellButton =
+          $("sellButton");
+
+
+        if (sellButton) {
+
+          sellButton.removeEventListener(
+            "click",
+            openSell
+          );
+
+
+          sellButton.addEventListener(
+            "click",
+            openSellWithAuthCheck
+          );
+
+        }
+
+      }
+    );
+  </script>
+  <script>
+    /* ================================
+       CREATE PRODUCT LISTING
+    ================================= */
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      function() {
+
+        const sellForm =
+          $("sellForm");
+
+        if (!sellForm) {
+          return;
+        }
+
+
+        sellForm.addEventListener(
+          "submit",
+          async function(event) {
+
+            event.preventDefault();
+
+
+            const message =
+              $("sellMessage");
+
+
+            if (!currentUser) {
+
+              if (message) {
+                message.textContent =
+                  "Please login before posting an item.";
+              }
+
+              openAccount();
+
+              return;
+            }
+
+
+            const productName =
+              $("productName").value.trim();
+
+            const productPrice =
+              Number(
+                $("productPrice").value
+              );
+
+            const category =
+              $("productCategory").value;
+
+            const description =
+              $("productDescription").value.trim();
+
+            const state =
+              $("productState").value;
+
+            const lga =
+              $("productLga").value.trim();
+
+            const town =
+              $("productTown").value.trim();
+
+
+            if (!productName) {
+
+              if (message) {
+                message.textContent =
+                  "Please enter a product name.";
+              }
+
+              return;
+            }
+
+
+            if (
+              !productPrice ||
+              productPrice <= 0
+            ) {
+
+              if (message) {
+                message.textContent =
+                  "Please enter a valid price.";
+              }
+
+              return;
+            }
+
+
+            if (!category) {
+
+              if (message) {
+                message.textContent =
+                  "Please select a category.";
+              }
+
+              return;
+            }
+
+
+            if (!state) {
+
+              if (message) {
+                message.textContent =
+                  "Please select a state.";
+              }
+
+              return;
+            }
+
+
+            if (!lga) {
+
+              if (message) {
+                message.textContent =
+                  "Please enter the LGA.";
+              }
+
+              return;
+            }
+
+
+            if (!town) {
+
+              if (message) {
+                message.textContent =
+                  "Please enter the town or area.";
+              }
+
+              return;
+            }
+
+
+            if (message) {
+              message.textContent =
+                "Posting your item...";
+            }
+
+
+            const { data, error } =
+              await supabaseClient
+                .from("products")
+                .insert({
+                  product:
+                    productName,
+
+                  price:
+                    productPrice,
+
+                  category:
+                    category,
+
+                  description:
+                    description || null,
+
+                  state:
+                    state,
+
+                  lga:
+                    lga,
+
+                  town_area:
+                    town,
+
+                  seller_id:
+                    currentUser.id,
+
+                  image_urls:
+                    [],
+
+                  video_url:
+                    null
+                })
+                .select()
+                .single();
+
+
+            if (error) {
+
+              console.error(
+                "Product creation error:",
+                error
+              );
+
+              if (message) {
+                message.textContent =
+                  "Unable to post your item right now.";
+              }
+
+              return;
+            }
+
+
+            if (message) {
+              message.textContent =
+                "Your item has been posted successfully.";
+            }
+
+
+            sellForm.reset();
+
+
+            const preview =
+              $("imagePreview");
+
+            if (preview) {
+              preview.innerHTML = "";
+            }
+
+
+            closeModal(
+              "sellModal"
+            );
+
+
+            await loadProducts();
+
+          }
+        );
+
+      }
+    );
+  </script>
+  <script>
+    /* ================================
+       PRODUCT MEDIA UPLOAD
+    ================================= */
+
+    async function uploadProductFile(
+      file,
+      userId
+    ) {
+
+      if (!file || !userId) {
+        return null;
+      }
+
+
+      const extension =
+        file.name.includes(".")
+          ? file.name
+              .split(".")
+              .pop()
+              .toLowerCase()
+          : "bin";
+
+
+      const fileName =
+        userId +
+        "/" +
+        Date.now() +
+        "_" +
+        Math.random()
+          .toString(36)
+          .substring(2, 10) +
+        "." +
+        extension;
+
+
+      const { error } =
+        await supabaseClient
+          .storage
+          .from("product-media")
+          .upload(
+            fileName,
+            file,
+            {
+              upsert:false
+            }
+          );
+
+
+      if (error) {
+
+        console.error(
+          "Media upload error:",
+          error
+        );
+
+        return null;
+      }
+
+
+      const { data } =
+        supabaseClient
+          .storage
+          .from("product-media")
+          .getPublicUrl(
+            fileName
+          );
+
+
+      return data &&
+        data.publicUrl
+          ? data.publicUrl
+          : null;
+    }
+
+
+    async function uploadSelectedProductMedia() {
+
+      if (!currentUser) {
+        return {
+          images:[],
+          video:null
+        };
+      }
+
+
+      const imageInput =
+        $("productImages");
+
+      const videoInput =
+        $("productVideo");
+
+
+      const imageFiles =
+        imageInput &&
+        imageInput.files
+          ? Array.from(
+              imageInput.files
+            )
+          : [];
+
+
+      const videoFile =
+        videoInput &&
+        videoInput.files &&
+        videoInput.files[0]
+          ? videoInput.files[0]
+          : null;
+
+
+      const imageUrls = [];
+
+
+      for (
+        const file
+        of imageFiles
+      ) {
+
+        const url =
+          await uploadProductFile(
+            file,
+            currentUser.id
+          );
+
+
+        if (url) {
+          imageUrls.push(url);
+        }
+
+      }
+
+
+      let videoUrl = null;
+
+
+      if (videoFile) {
+
+        videoUrl =
+          await uploadProductFile(
+            videoFile,
+            currentUser.id
+          );
+
+      }
+
+
+      return {
+        images:
+          imageUrls,
+
+        video:
+          videoUrl
+      };
+
+    }
+
+
+    /* ================================
+       REPLACE PRODUCT INSERT
+    ================================= */
+
+    const originalSellForm =
+      $("sellForm");
+
+
+    if (originalSellForm) {
+
+      originalSellForm.addEventListener(
+        "submit",
+        async function() {
+
+          /*
+            Media upload is handled
+            separately after the
+            product is created.
+          */
+
+        }
+      );
+
+    }
+  </script>
+  <script>
+    /* ================================
+       SAVE PRODUCT WITH MEDIA
+    ================================= */
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      function() {
+
+        const sellForm =
+          $("sellForm");
+
+        if (!sellForm) {
+          return;
+        }
+
+
+        sellForm.addEventListener(
+          "submit",
+          async function(event) {
+
+            event.preventDefault();
+            event.stopImmediatePropagation();
+
+
+            const message =
+              $("sellMessage");
+
+
+            if (!currentUser) {
+
+              if (message) {
+                message.textContent =
+                  "Please login before posting an item.";
+              }
+
+              openAccount();
+              return;
+            }
+
+
+            const productName =
+              $("productName").value.trim();
+
+            const productPrice =
+              Number(
+                $("productPrice").value
+              );
+
+            const category =
+              $("productCategory").value;
+
+            const description =
+              $("productDescription").value.trim();
+
+            const state =
+              $("productState").value;
+
+            const lga =
+              $("productLga").value.trim();
+
+            const town =
+              $("productTown").value.trim();
+
+
+            if (
+              !productName ||
+              !productPrice ||
+              !category ||
+              !state ||
+              !lga ||
+              !town
+            ) {
+
+              if (message) {
+                message.textContent =
+                  "Please complete all required fields.";
+              }
+
+              return;
+            }
+
+
+            if (message) {
+              message.textContent =
+                "Uploading product media...";
+            }
+
+
+            const media =
+              await uploadSelectedProductMedia();
+
+
+            if (message) {
+              message.textContent =
+                "Creating your listing...";
+            }
+
+
+            const { error } =
+              await supabaseClient
+                .from("products")
+                .insert({
+                  product:
+                    productName,
+
+                  price:
+                    productPrice,
+
+                  category:
+                    category,
+
+                  description:
+                    description || null,
+
+                  state:
+                    state,
+
+                  lga:
+                    lga,
+
+                  town_area:
+                    town,
+
+                  seller_id:
+                    currentUser.id,
+
+                  image_urls:
+                    media.images,
+
+                  video_url:
+                    media.video
+                });
+
+
+            if (error) {
+
+              console.error(
+                "Product creation error:",
+                error
+              );
+
+              if (message) {
+                message.textContent =
+                  "Unable to post your item right now.";
+              }
+
+              return;
+            }
+
+
+            if (message) {
+              message.textContent =
+                "Your item has been posted successfully.";
+            }
+
+
+            sellForm.reset();
+
+
+            const preview =
+              $("imagePreview");
+
+            if (preview) {
+              preview.innerHTML = "";
+            }
+
+
+            closeModal(
+              "sellModal"
+            );
+
+
+            await loadProducts();
+
+          },
+          true
+        );
+
+      }
+    );
+  </script>
+  <script>
+    /* ================================
+       PRODUCT IMAGE PREVIEW
+    ================================= */
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      function() {
+
+        const input =
+          $("productImages");
+
+        const preview =
+          $("imagePreview");
+
+        if (!input || !preview) {
+          return;
+        }
+
+
+        input.addEventListener(
+          "change",
+          function() {
+
+            preview.innerHTML = "";
+
+
+            const files =
+              Array.from(
+                input.files || []
+              );
+
+
+            files.forEach(
+              function(file) {
+
+                if (
+                  !file.type.startsWith(
+                    "image/"
+                  )
+                ) {
+                  return;
+                }
+
+
+                const reader =
+                  new FileReader();
+
+
+                reader.onload =
+                  function(event) {
+
+                    const image =
+                      document.createElement(
+                        "img"
+                      );
+
+
+                    image.src =
+                      event.target.result;
+
+                    image.alt =
+                      "Selected product image";
+
+                    image.style.width =
+                      "100px";
+
+                    image.style.height =
+                      "100px";
+
+                    image.style.objectFit =
+                      "cover";
+
+                    image.style.borderRadius =
+                      "8px";
+
+                    image.style.border =
+                      "1px solid #ddd";
+
+
+                    preview.appendChild(
+                      image
+                    );
+
+                  };
+
+
+                reader.readAsDataURL(
+                  file
+                );
+
+              }
+            );
+
+          }
+        );
+
+      }
+    );
+  </script>
+  <script>
+    /* ================================
+       SELLER ONLINE STATUS
+    ================================= */
+
+    async function updateOnlineStatus() {
+
+      if (!currentUser) {
+        return;
+      }
+
+      const { error } =
+        await supabaseClient
+          .from("profiles")
+          .upsert({
+            id:
+              currentUser.id,
+
+            display_name:
+              currentUser.user_metadata &&
+              currentUser.user_metadata.display_name
+                ? currentUser.user_metadata.display_name
+                : currentUser.email || "User",
+
+            is_online:
+              true,
+
+            last_seen:
+              new Date().toISOString()
+          });
+
+      if (error) {
+
+        console.error(
+          "Online status error:",
+          error
+        );
+
+      }
+
+    }
+
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      function() {
+
+        updateOnlineStatus();
+
+
+        setInterval(
+          function() {
+
+            updateOnlineStatus();
+
+          },
+          60000
+        );
+
+      }
+    );
+  </script>
+  <script>
+    /* ================================
+       LGA SELECTOR
+    ================================= */
+
+    const stateLgas = {
+
+      "Lagos": [
+        "Agege",
+        "Alimosho",
+        "Amuwo-Odofin",
+        "Apapa",
+        "Badagry",
+        "Epe",
+        "Eti-Osa",
+        "Ibeju-Lekki",
+        "Ikeja",
+        "Ikorodu",
+        "Kosofe",
+        "Lagos Island",
+        "Lagos Mainland",
+        "Mushin",
+        "Ojo",
+        "Oshodi-Isolo",
+        "Shomolu",
+        "Surulere"
+      ],
+
+      "Abuja": [
+        "Abuja Municipal",
+        "Bwari",
+        "Gwagwalada",
+        "Kuje",
+        "Kwali"
+      ],
+
+      "Rivers": [
+        "Port Harcourt",
+        "Obio-Akpor",
+        "Ikwerre",
+        "Okrika",
+        "Eleme",
+        "Oyigbo",
+        "Bonny",
+        "Emohua"
+      ],
+
+      "Oyo": [
+        "Ibadan North",
+        "Ibadan South-West",
+        "Ibadan North-East",
+        "Ibadan North-West",
+        "Ibadan South-East",
+        "Ibadan South",
+        "Oyo",
+        "Lagelu",
+        "Akinyele"
+      ],
+
+      "Kano": [
+        "Kano Municipal",
+        "Dala",
+        "Fagge",
+        "Gwale",
+        "Kumbotso",
+        "Nassarawa",
+        "Tarauni",
+        "Ungogo"
+      ]
+
+    };
+
+
+    function setupLgaSelector() {
+
+      const state =
+        $("productState");
+
+      const lga =
+        $("productLga");
+
+      if (!state || !lga) {
+        return;
+      }
+
+
+      state.addEventListener(
+        "change",
+        function() {
+
+          const selected =
+            state.value;
+
+          lga.innerHTML =
+            "";
+
+
+          const firstOption =
+            document.createElement(
+              "option"
+            );
+
+          firstOption.value =
+            "";
+
+          firstOption.textContent =
+            stateLgas[selected]
+              ? "Select LGA"
+              : "Enter LGA manually";
+
+
+          lga.appendChild(
+            firstOption
+          );
+
+
+          if (
+            stateLgas[selected]
+          ) {
+
+            stateLgas[selected].forEach(
+              function(name) {
+
+                const option =
+                  document.createElement(
+                    "option"
+                  );
+
+                option.value =
+                  name;
+
+                option.textContent =
+                  name;
+
+                lga.appendChild(
+                  option
+                );
+
+              }
+            );
+
+          }
+
+        }
+      );
+
+    }
+
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      function() {
+
+        setupLgaSelector();
+
+      }
+    );
+  </script>
+  <script>
+    /* ================================
+       PRODUCT VIDEO PREVIEW
+    ================================= */
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      function() {
+
+        const input =
+          $("productVideo");
+
+        if (!input) {
+          return;
+        }
+
+
+        input.addEventListener(
+          "change",
+          function() {
+
+            const file =
+              input.files &&
+              input.files[0];
+
+            if (!file) {
+              return;
+            }
+
+
+            if (
+              !file.type.startsWith(
+                "video/"
+              )
+            ) {
+
+              return;
+
+            }
+
+
+            const existing =
+              $("sellVideoPreview");
+
+            if (existing) {
+              existing.remove();
+            }
+
+
+            const video =
+              document.createElement(
+                "video"
+              );
+
+            video.id =
+              "sellVideoPreview";
+
+            video.controls =
+              true;
+
+            video.muted =
+              true;
+
+            video.style.width =
+              "100%";
+
+            video.style.maxHeight =
+              "300px";
+
+            video.style.marginTop =
+              "10px";
+
+            video.style.borderRadius =
+              "8px";
+
+
+            video.src =
+              URL.createObjectURL(
+                file
+              );
+
+
+            input.parentNode.appendChild(
+              video
+            );
+
+          }
+        );
+
+      }
+    );
+  </script>
+  <script>
+    /* ================================
+       PRODUCT MEDIA VALIDATION
+    ================================= */
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      function() {
+
+        const imageInput =
+          $("productImages");
+
+        const videoInput =
+          $("productVideo");
+
+        const message =
+          $("sellMessage");
+
+
+        if (imageInput) {
+
+          imageInput.addEventListener(
+            "change",
+            function() {
+
+              const files =
+                Array.from(
+                  imageInput.files || []
+                );
+
+
+              if (files.length > 8) {
+
+                imageInput.value = "";
+
+                if (message) {
+                  message.textContent =
+                    "You can select a maximum of 8 images.";
+                }
+
+                return;
+              }
+
+
+              for (
+                const file
+                of files
+              ) {
+
+                const sizeMB =
+                  file.size /
+                  (1024 * 1024);
+
+
+                if (sizeMB > 10) {
+
+                  imageInput.value = "";
+
+                  if (message) {
+                    message.textContent =
+                      "Each image must be 10 MB or smaller.";
+                  }
+
+                  return;
+                }
+
+              }
+
+            }
+          );
+
+        }
+
+
+        if (videoInput) {
+
+          videoInput.addEventListener(
+            "change",
+            function() {
+
+              const file =
+                videoInput.files &&
+                videoInput.files[0];
+
+
+              if (!file) {
+                return;
+              }
+
+
+              const sizeMB =
+                file.size /
+                (1024 * 1024);
+
+
+              if (sizeMB > 100) {
+
+                videoInput.value = "";
+
+                if (message) {
+                  message.textContent =
+                    "The product video must be 100 MB or smaller.";
+                }
+
+              }
+
+            }
+          );
+
+        }
+
+      }
+    );
+  </script>
+  <script>
+    /* ================================
+       SEARCH + STATE FILTER
+    ================================= */
+
+    async function searchProductsWithState() {
+
+      const input =
+        $("searchInput");
+
+      const container =
+        $("products");
+
+      const stateFilter =
+        $("productStateFilter");
+
+
+      if (!input || !container) {
+        return;
+      }
+
+
+      const searchTerm =
+        input.value.trim();
+
+      const selectedState =
+        stateFilter
+          ? stateFilter.value
+          : "";
+
+
+      if (
+        !searchTerm &&
+        !selectedState
+      ) {
+
+        loadProducts();
+
+        return;
+
+      }
+
+
+      container.innerHTML = `
+        <div style="
+          grid-column:1/-1;
+          padding:30px;
+          text-align:center;
+          color:#777;
+        ">
+          Searching products...
+        </div>
+      `;
+
+
+      let query =
+        supabaseClient
+          .from("products")
+          .select("*")
+          .order(
+            "created_at",
+            { ascending:false }
+          );
+
+
+      if (searchTerm) {
+
+        query =
+          query.ilike(
+            "product",
+            "%" +
+            searchTerm +
+            "%"
+          );
+
+      }
+
+
+      if (selectedState) {
+
+        query =
+          query.eq(
+            "state",
+            selectedState
+          );
+
+      }
+
+
+      const { data, error } =
+        await query;
+
+
+      if (error) {
+
+        console.error(
+          "Search/filter error:",
+          error
+        );
+
+        container.innerHTML = `
+          <div style="
+            grid-column:1/-1;
+            padding:30px;
+            text-align:center;
+            color:#b00020;
+          ">
+            Unable to load products right now.
+          </div>
+        `;
+
+        return;
+      }
+
+
+      if (!data || data.length === 0) {
+
+        container.innerHTML = `
+          <div style="
+            grid-column:1/-1;
+            padding:30px;
+            text-align:center;
+            color:#777;
+            border:1px dashed #ccc;
+            border-radius:10px;
+          ">
+            No matching products found.
+          </div>
+        `;
+
+        return;
+      }
+
+
+      container.innerHTML = "";
+
+
+      data.forEach(
+        function(product) {
+
+          const card =
+            document.createElement(
+              "div"
+            );
+
+
+          card.style.cssText = `
+            background:white;
+            border:1px solid #e5e5e5;
+            border-radius:10px;
+            overflow:hidden;
+            cursor:pointer;
+          `;
+
+
+          const imageUrl =
+            product.image_urls &&
+            product.image_urls.length
+              ? product.image_urls[0]
+              : "";
+
+
+          card.innerHTML = `
+            <div style="
+              width:100%;
+              height:190px;
+              background:#f3f3f3;
+              display:flex;
+              align-items:center;
+              justify-content:center;
+            ">
+
+              ${
+                imageUrl
+                  ? `
+                    <img
+                      src="${imageUrl}"
+                      alt="${escapeHtml(product.product)}"
+                      style="
+                        width:100%;
+                        height:100%;
+                        object-fit:cover;
+                      "
+                    >
+                  `
+                  : `
+                    <span style="color:#999;">
+                      No image
+                    </span>
+                  `
+              }
+
+            </div>
+
+            <div style="padding:14px;">
+
+              <h3 style="
+                margin:0 0 8px;
+                font-size:17px;
+              ">
+                ${escapeHtml(product.product)}
+              </h3>
+
+              <div style="
+                color:#0b8f3c;
+                font-size:18px;
+                font-weight:800;
+                margin-bottom:8px;
+              ">
+                ${money(product.price)}
+              </div>
+
+              <div style="
+                color:#777;
+                font-size:13px;
+              ">
+                ${escapeHtml(product.town_area || "")}
+                ${
+                  product.state
+                    ? ", " +
+                      escapeHtml(product.state)
+                    : ""
+                }
+              </div>
+
+            </div>
+          `;
+
+
+          card.addEventListener(
+            "click",
+            function() {
+
+              openProductDetails(
+                product
+              );
+
+            }
+          );
+
+
+          container.appendChild(
+            card
+          );
+
+        }
+      );
+
+    }
+
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      function() {
+
+        const searchButton =
+          $("searchButton");
+
+        const searchInput =
+          $("searchInput");
+
+        const stateFilter =
+          $("productStateFilter");
+
+
+        if (searchButton) {
+
+          searchButton.addEventListener(
+            "click",
+            searchProductsWithState
+          );
+
+        }
+
+
+        if (searchInput) {
+
+          searchInput.addEventListener(
+            "keydown",
+            function(event) {
+
+              if (
+                event.key === "Enter"
+              ) {
+
+                event.preventDefault();
+
+                searchProductsWithState();
+
+              }
+
+            }
+          );
+
+        }
+
+
+        if (stateFilter) {
+
+          stateFilter.addEventListener(
+            "change",
+            function() {
+
+              searchProductsWithState();
+
+            }
+          );
+
+        }
+
+      }
+    );
+  </script>
+  <script>
+    /* ================================
+       COMBINED PRODUCT FILTERS
+    ================================= */
+
+    async function filterProducts() {
+
+      const container =
+        $("products");
+
+      const searchInput =
+        $("searchInput");
+
+      const stateFilter =
+        $("productStateFilter");
+
+      if (!container) {
+        return;
+      }
+
+
+      const searchTerm =
+        searchInput
+          ? searchInput.value.trim()
+          : "";
+
+      const selectedState =
+        stateFilter
+          ? stateFilter.value
+          : "";
+
+
+      container.innerHTML = `
+        <div style="
+          grid-column:1/-1;
+          padding:30px;
+          text-align:center;
+          color:#777;
+        ">
+          Loading products...
+        </div>
+      `;
+
+
+      let query =
+        supabaseClient
+          .from("products")
+          .select("*")
+          .order(
+            "created_at",
+            { ascending:false }
+          );
+
+
+      if (searchTerm) {
+
+        query =
+          query.ilike(
+            "product",
+            "%" +
+            searchTerm +
+            "%"
+          );
+
+      }
+
+
+      if (selectedState) {
+
+        query =
+          query.eq(
+            "state",
+            selectedState
+          );
+
+      }
+
+
+      const { data, error } =
+        await query;
+
+
+      if (error) {
+
+        console.error(
+          "Filter error:",
+          error
+        );
+
+        container.innerHTML = `
+          <div style="
+            grid-column:1/-1;
+            padding:30px;
+            text-align:center;
+            color:#b00020;
+          ">
+            Unable to load products right now.
+          </div>
+        `;
+
+        return;
+      }
+
+
+      if (!data || data.length === 0) {
+
+        container.innerHTML = `
+          <div style="
+            grid-column:1/-1;
+            padding:30px;
+            text-align:center;
+            color:#777;
+            border:1px dashed #ccc;
+            border-radius:10px;
+          ">
+            No products found.
+          </div>
+        `;
+
+        return;
+      }
+
+
+      container.innerHTML = "";
+
+
+      data.forEach(
+        function(product) {
+
+          const card =
+            document.createElement("div");
+
+
+          card.style.cssText = `
+            background:white;
+            border:1px solid #e5e5e5;
+            border-radius:10px;
+            overflow:hidden;
+            cursor:pointer;
+          `;
+
+
+          const imageUrl =
+            product.image_urls &&
+            product.image_urls.length
+              ? product.image_urls[0]
+              : "";
+
+
+          card.innerHTML = `
+            <div style="
+              width:100%;
+              height:190px;
+              background:#f3f3f3;
+              display:flex;
+              align-items:center;
+              justify-content:center;
+            ">
+
+              ${
+                imageUrl
+                  ? `
+                    <img
+                      src="${imageUrl}"
+                      alt="${escapeHtml(product.product)}"
+                      style="
+                        width:100%;
+                        height:100%;
+                        object-fit:cover;
+                      "
+                    >
+                  `
+                  : `
+                    <span style="color:#999;">
+                      No image
+                    </span>
+                  `
+              }
+
+            </div>
+
+            <div style="padding:14px;">
+
+              <h3 style="
+                margin:0 0 8px;
+                font-size:17px;
+              ">
+                ${escapeHtml(product.product)}
+              </h3>
+
+              <div style="
+                color:#0b8f3c;
+                font-size:18px;
+                font-weight:800;
+                margin-bottom:8px;
+              ">
+                ${money(product.price)}
+              </div>
+
+              <div style="
+                color:#777;
+                font-size:13px;
+              ">
+                ${escapeHtml(product.town_area || "")}
+                ${
+                  product.state
+                    ? ", " +
+                      escapeHtml(product.state)
+                    : ""
+                }
+              </div>
+
+            </div>
+          `;
+
+
+          card.addEventListener(
+            "click",
+            function() {
+
+              openProductDetails(
+                product
+              );
+
+            }
+          );
+
+
+          container.appendChild(
+            card
+          );
+
+        }
+      );
+
+    }
+
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      function() {
+
+        const searchButton =
+          $("searchButton");
+
+        const searchInput =
+          $("searchInput");
+
+        const stateFilter =
+          $("productStateFilter");
+
+
+        if (searchButton) {
+
+          searchButton.addEventListener(
+            "click",
+            filterProducts
+          );
+
+        }
+
+
+        if (searchInput) {
+
+          searchInput.addEventListener(
+            "keydown",
+            function(event) {
+
+              if (
+                event.key === "Enter"
+              ) {
+
+                event.preventDefault();
+
+                filterProducts();
+
+              }
+
+            }
+          );
+
+        }
+
+
+        if (stateFilter) {
+
+          stateFilter.addEventListener(
+            "change",
+            filterProducts
+          );
+
+        }
+
+      }
+    );
+  </script>
+  <script>
+    /* ================================
+       PROFILE SYNC
+    ================================= */
+
+    async function syncUserProfile() {
+
+      if (!currentUser) {
+        return;
+      }
+
+
+      const displayName =
+        currentUser.user_metadata &&
+        currentUser.user_metadata.display_name
+          ? currentUser.user_metadata.display_name
+          : currentUser.email || "User";
+
+
+      const { error } =
+        await supabaseClient
+          .from("profiles")
+          .upsert(
+            {
+              id:
+                currentUser.id,
+
+              display_name:
+                displayName,
+
+              is_online:
+                true,
+
+              last_seen:
+                new Date().toISOString()
+            },
+            {
+              onConflict:
+                "id"
+            }
+          );
+
+
+      if (error) {
+
+        console.error(
+          "Profile sync error:",
+          error
+        );
+
+        return;
+      }
+
+
+      updateAccountHeader();
+
+      updateOnlineStatus();
+
+    }
+
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      function() {
+
+        if (currentUser) {
+          syncUserProfile();
+        }
+
+      }
+    );
+
+
+    supabaseClient.auth.onAuthStateChange(
+      function(event, session) {
+
+        if (session && session.user) {
+
+          currentUser =
+            session.user;
+
+          syncUserProfile();
+
+        }
+
+      }
+    );
+  </script>
+  <script>
+    /* ================================
+       LOGOUT FIX
+    ================================= */
+
+    supabaseClient.auth.onAuthStateChange(
+      function(event, session) {
+
+        if (event === "SIGNED_OUT") {
+
+          currentUser = null;
+
+          updateAccountHeader();
+
+        }
+
+      }
+    );
+
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      function() {
+
+        const signupButton =
+          $("signupButton");
+
+
+        if (!signupButton) {
+          return;
+        }
+
+
+        signupButton.addEventListener(
+          "click",
+          async function() {
+
+            if (!currentUser) {
+              return;
+            }
+
+            await logoutUser();
+
+          }
+        );
+
+      }
+    );
+  </script>
+  <script>
+  /* ================================
+     CHECKOUT LOGIN GUARD
+  ================================= */
+
+  document.addEventListener("DOMContentLoaded", function() {
+
+    const checkoutButton = $("checkoutButton");
+
+    if (!checkoutButton) {
+      return;
+    }
+
+    checkoutButton.addEventListener("click", function() {
+
+      if (!currentUser) {
+
+        alert("Please log in or create an account before checkout.");
+
+        openAccount("login");
+
+        return;
+      }
+
+      alert("Checkout is ready. Your order system will be connected next.");
+
+    });
+
+  });
+  </script>
+  <script>
+  /* ================================
+     CART BUTTON FIX
+  ================================= */
+
+  document.addEventListener("DOMContentLoaded", function() {
+
+    const cartButton = $("cartButton");
+
+    if (!cartButton) {
+      return;
+    }
+
+    cartButton.addEventListener("click", function() {
+      renderCart();
+      openModal("cartModal");
+    });
+
+  });
+  </script>
+  <script>
+  /* ================================
+     PRODUCT CARD CLICK FIX
+  ================================= */
+
+  document.addEventListener("click", function(event) {
+
+    const card = event.target.closest("[data-product-id]");
+
+    if (!card) {
+      return;
+    }
+
+    const productId = card.getAttribute("data-product-id");
+
+    if (!productId) {
+      return;
+    }
+
+    supabaseClient
+      .from("products")
+      .select("*")
+      .eq("id", productId)
+      .single()
+      .then(function(result) {
+
+        if (result.error || !result.data) {
+          console.error(result.error);
+          return;
+        }
+
+        openProductDetails(result.data);
+
+      });
+
+  });
+  </script>
 </body>
 </html>
