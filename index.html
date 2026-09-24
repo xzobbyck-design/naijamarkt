@@ -1342,15 +1342,11 @@ function closeSellForm() {
 
 function openSellBox() {
 
-  const box =
-    document.getElementById("sellBox");
+  const box = document.getElementById("sellBox");
 
   if (!box) {
-
     alert("Sell box not found.");
-
     return;
-
   }
 
   box.style.display = "block";
@@ -1364,17 +1360,22 @@ function openSellBox() {
 
 function closeSellBox() {
 
-  const box =
-    document.getElementById("sellBox");
+  const box = document.getElementById("sellBox");
 
-  if (box) {
-
-    box.style.display = "none";
-
+  if (!box) {
+    return;
   }
+
+  box.style.display = "none";
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
 
 }
 
+</script>
 </script>
 
 
