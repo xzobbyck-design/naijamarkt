@@ -725,6 +725,134 @@
       onclick="submitProduct()"
     >
       Post Item
+<!-- SELL BOX -->
+<section class="sell-box">
+
+  <h2>Want to Sell Something?</h2>
+
+  <p>
+    Post your product and reach buyers anywhere in Nigeria.
+  </p>
+
+  <button type="button" onclick="openSellForm()">
+    Sell an Item
+  </button>
+
+</section>
+
+
+<!-- SELL FORM -->
+<section
+  class="sell-form"
+  id="sellForm"
+  style="display:none;"
+>
+
+  <h2>Post Your Item</h2>
+
+  <p style="color:#666; margin-bottom:20px;">
+    Enter the details of the item you want to sell.
+  </p>
+
+  <div class="form-group">
+    <label>Product Name</label>
+    <input
+      type="text"
+      id="productName"
+      placeholder="Example: iPhone 13"
+    >
+  </div>
+
+  <div class="form-group">
+    <label>Price (₦)</label>
+    <input
+      type="number"
+      id="productPrice"
+      placeholder="Example: 650000"
+    >
+  </div>
+
+  <div class="form-group">
+    <label>Category</label>
+
+    <select id="productCategory">
+
+      <option value="">
+        Select category
+      </option>
+
+      <option>Phones & Tablets</option>
+      <option>Computers</option>
+      <option>Fashion</option>
+      <option>Shoes</option>
+      <option>Vehicles</option>
+      <option>Property</option>
+      <option>Furniture</option>
+      <option>Electronics</option>
+      <option>Gaming</option>
+      <option>Beauty</option>
+      <option>Sports</option>
+      <option>Services</option>
+      <option>Other</option>
+
+    </select>
+  </div>
+
+  <div class="form-group">
+
+    <label>Description</label>
+
+    <textarea
+      id="productDescription"
+      rows="5"
+      placeholder="Describe your item"
+    ></textarea>
+
+  </div>
+
+  <div class="form-group">
+
+    <label>State</label>
+
+    <input
+      type="text"
+      id="productState"
+      placeholder="Example: Enugu"
+    >
+
+  </div>
+
+  <div class="form-group">
+
+    <label>LGA</label>
+
+    <input
+      type="text"
+      id="productLga"
+      placeholder="Example: Nsukka"
+    >
+
+  </div>
+
+  <div class="form-group">
+
+    <label>Town / Area</label>
+
+    <input
+      type="text"
+      id="productTownArea"
+      placeholder="Example: Nsukka"
+    >
+
+  </div>
+
+  <div style="margin-top:20px;">
+
+    <button
+      type="button"
+      onclick="submitProduct()"
+    >
+      Post Item
     </button>
 
     <button
@@ -772,6 +900,10 @@ function closeSellForm() {
   if (form) {
     form.style.display = "none";
   }
+
+}
+
+</script>
 
 }
 
