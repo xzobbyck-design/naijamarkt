@@ -6103,5 +6103,1141 @@
 
   });
   </script>
+  <script>
+  /* ================================
+     SELLER NAME DISPLAY
+  ================================= */
+
+  async function showSellerName(product) {
+
+    const sellerStatus = $("sellerStatus");
+
+    if (!sellerStatus || !product || !product.seller_id) {
+      return;
+    }
+
+    sellerStatus.textContent = "Loading seller...";
+
+    const result = await supabaseClient
+      .from("profiles")
+      .select("display_name, is_online, last_seen")
+      .eq("id", product.seller_id)
+      .single();
+
+    if (result.error || !result.data) {
+      sellerStatus.textContent = "Seller";
+      return;
+    }
+
+    const profile = result.data;
+
+    const sellerName =
+      profile.display_name || "Seller";
+
+    if (profile.is_online) {
+      sellerStatus.textContent =
+        sellerName + " • Online";
+    } else {
+      sellerStatus.textContent =
+        sellerName + " • Offline";
+    }
+  }
+
+
+  document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+      const originalOpenProductDetails =
+        openProductDetails;
+
+      openProductDetails = function(product) {
+
+        originalOpenProductDetails(product);
+
+        showSellerName(product);
+
+      };
+
+    }
+  );
+  </script>
+  <script>
+  /* ================================
+     PRODUCT DETAILS CART BUTTON
+  ================================= */
+
+  document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+      const cartButton =
+        $("detailCartButton");
+
+      if (!cartButton) {
+        return;
+      }
+
+      cartButton.addEventListener(
+        "click",
+        function() {
+
+          if (!currentProduct) {
+            return;
+          }
+
+          addToCart(currentProduct);
+
+          showProductActionMessage(
+            "Product added to your cart."
+          );
+
+        }
+      );
+
+    }
+  );
+  </script>
+  <script>
+  /* ================================
+     BUY NOW BUTTON
+  ================================= */
+
+  document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+      const buyButton =
+        $("detailBuyButton");
+
+      if (!buyButton) {
+        return;
+      }
+
+      buyButton.addEventListener(
+        "click",
+        function() {
+
+          if (!currentProduct) {
+            return;
+          }
+
+          if (!currentUser) {
+            openAccount("login");
+
+            const loginMessage =
+              $("loginMessage");
+
+            if (loginMessage) {
+              loginMessage.textContent =
+                "Please log in to continue with your purchase.";
+            }
+
+            return;
+          }
+
+          addToCart(currentProduct);
+
+          renderCart();
+
+          openModal("cartModal");
+
+        }
+      );
+
+    }
+  );
+  </script>
+  <script>
+  /* ================================
+     MESSAGE SELLER BUTTON
+  ================================= */
+
+  document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+      const messageButton =
+        $("detailMessageButton");
+
+      if (!messageButton) {
+        return;
+      }
+
+      messageButton.addEventListener(
+        "click",
+        function() {
+
+          if (!currentProduct) {
+            return;
+          }
+
+          if (!currentUser) {
+
+            openAccount("login");
+
+            const loginMessage =
+              $("loginMessage");
+
+            if (loginMessage) {
+              loginMessage.textContent =
+                "Please log in to message this seller.";
+            }
+
+            return;
+          }
+
+          openMessageSeller(currentProduct);
+
+        }
+      );
+
+    }
+  );
+  </script>
+  <script>
+  /* ================================
+     PRODUCT LOCATION DISPLAY
+  ================================= */
+
+  document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+      const originalOpenProductDetails =
+        openProductDetails;
+
+      openProductDetails = function(product) {
+
+        originalOpenProductDetails(product);
+
+        const locationElement =
+          $("detailProductLocation");
+
+        if (!locationElement || !product) {
+          return;
+        }
+
+        const parts = [];
+
+        if (product.town_area) {
+          parts.push(product.town_area);
+        }
+
+        if (product.lga) {
+          parts.push(product.lga);
+        }
+
+        if (product.state) {
+          parts.push(product.state);
+        }
+
+        locationElement.textContent =
+          parts.length
+            ? parts.join(", ")
+            : "Location not provided";
+
+      };
+
+    }
+  );
+  </script>
+  <script>
+  /* ================================
+     SEARCH BUTTON FIX
+  ================================= */
+
+  document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+      const searchInput =
+        $("searchInput");
+
+      const searchButton =
+        $("searchButton");
+
+      if (!searchInput || !searchButton) {
+        return;
+      }
+
+      searchButton.addEventListener(
+        "click",
+        function() {
+          filterProducts();
+        }
+      );
+
+      searchInput.addEventListener(
+        "keydown",
+        function(event) {
+
+          if (event.key === "Enter") {
+            event.preventDefault();
+            filterProducts();
+          }
+
+        }
+      );
+
+    }
+  );
+  </script>
+  <script>
+  /* ================================
+     CATEGORY FILTER
+  ================================= */
+
+  document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+      const categoryContainer =
+        $("categories");
+
+      if (!categoryContainer) {
+        return;
+      }
+
+      const buttons =
+        categoryContainer.querySelectorAll("button");
+
+      buttons.forEach(function(button) {
+
+        button.addEventListener(
+          "click",
+          function() {
+
+            const category =
+              button.textContent.trim();
+
+            const searchInput =
+              $("searchInput");
+
+            const stateFilter =
+              $("productStateFilter");
+
+            if (searchInput) {
+              searchInput.value = "";
+            }
+
+            if (stateFilter) {
+              stateFilter.value = "";
+            }
+
+            loadProducts(category);
+
+            const productsSection =
+              $("products");
+
+            if (productsSection) {
+              productsSection.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+              });
+            }
+
+          }
+        );
+
+      });
+
+    }
+  );
+  </script>
+  <script>
+  /* ================================
+     STATE FILTER
+  ================================= */
+
+  document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+      const stateFilter =
+        $("productStateFilter");
+
+      if (!stateFilter) {
+        return;
+      }
+
+      stateFilter.addEventListener(
+        "change",
+        function() {
+
+          const selectedState =
+            stateFilter.value;
+
+          const searchInput =
+            $("searchInput");
+
+          if (searchInput) {
+            searchInput.value = "";
+          }
+
+          loadProducts("");
+
+          setTimeout(function() {
+
+            const cards =
+              $("products").children;
+
+            Array.from(cards).forEach(
+              function(card) {
+
+                if (!selectedState) {
+                  card.style.display = "";
+                  return;
+                }
+
+                const text =
+                  card.textContent.toLowerCase();
+
+                card.style.display =
+                  text.includes(
+                    selectedState.toLowerCase()
+                  )
+                    ? ""
+                    : "none";
+
+              }
+            );
+
+          }, 100);
+
+        }
+      );
+
+    }
+  );
+  </script>
+  <script>
+  /* ================================
+     LIVE BUTTON
+  ================================= */
+
+  document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+      const liveButton =
+        $("liveButton");
+
+      if (!liveButton) {
+        return;
+      }
+
+      liveButton.addEventListener(
+        "click",
+        function() {
+
+          const liveSection =
+            $("liveSection");
+
+          if (liveSection) {
+            liveSection.scrollIntoView({
+              behavior: "smooth",
+              block: "start"
+            });
+          } else {
+            openLive();
+          }
+
+        }
+      );
+
+    }
+  );
+  </script>
+  <script>
+  /* ================================
+     SELL BUTTON LOGIN CHECK
+  ================================= */
+
+  document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+      const sellButton =
+        $("sellButton");
+
+      if (!sellButton) {
+        return;
+      }
+
+      sellButton.addEventListener(
+        "click",
+        function() {
+
+          if (!currentUser) {
+
+            openAccount("login");
+
+            const loginMessage =
+              $("loginMessage");
+
+            if (loginMessage) {
+              loginMessage.textContent =
+                "Please log in before posting an item.";
+            }
+
+            return;
+          }
+
+          openSell();
+
+        }
+      );
+
+    }
+  );
+  </script>
+  <script>
+  /* ================================
+     ACCOUNT BUTTON FIX
+  ================================= */
+
+  document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+      const loginButton =
+        $("loginButton");
+
+      const signupButton =
+        $("signupButton");
+
+      if (loginButton) {
+
+        loginButton.addEventListener(
+          "click",
+          function() {
+
+            if (currentUser) {
+              return;
+            }
+
+            openAccount("login");
+
+          }
+        );
+
+      }
+
+      if (signupButton) {
+
+        signupButton.addEventListener(
+          "click",
+          function() {
+
+            if (currentUser) {
+              return;
+            }
+
+            openAccount("signup");
+
+          }
+        );
+
+      }
+
+    }
+  );
+  </script>
+  <script>
+  /* ================================
+     PRODUCT IMAGE THUMBNAILS
+  ================================= */
+
+  document.addEventListener(
+    "click",
+    function(event) {
+
+      const thumbnail =
+        event.target.closest(
+          "#detailThumbnails img"
+        );
+
+      if (!thumbnail) {
+        return;
+      }
+
+      const mainImage =
+        $("detailMainImage");
+
+      if (!mainImage) {
+        return;
+      }
+
+      mainImage.src =
+        thumbnail.src;
+
+    }
+  );
+  </script>
+  <script>
+  /* ================================
+     PRODUCT VIDEO DISPLAY
+  ================================= */
+
+  document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+      const originalOpenProductDetails =
+        openProductDetails;
+
+      openProductDetails = function(product) {
+
+        originalOpenProductDetails(product);
+
+        const video =
+          $("detailVideo");
+
+        if (!video) {
+          return;
+        }
+
+        if (product && product.video_url) {
+
+          video.src =
+            product.video_url;
+
+          video.style.display =
+            "block";
+
+          video.controls = true;
+
+        } else {
+
+          video.removeAttribute("src");
+
+          video.style.display =
+            "none";
+
+        }
+
+      };
+
+    }
+  );
+  </script>
+  <script>
+  /* ================================
+     PRODUCT MODAL CLOSE
+  ================================= */
+
+  document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+      const closeButton =
+        $("closeProductModal");
+
+      if (!closeButton) {
+        return;
+      }
+
+      closeButton.addEventListener(
+        "click",
+        function() {
+
+          closeModal(
+            "productModal"
+          );
+
+        }
+      );
+
+    }
+  );
+  </script>
+  <script>
+  /* ================================
+     CART MODAL CLOSE
+  ================================= */
+
+  document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+      const closeButton =
+        $("closeCart");
+
+      if (!closeButton) {
+        return;
+      }
+
+      closeButton.addEventListener(
+        "click",
+        function() {
+
+          closeModal(
+            "cartModal"
+          );
+
+        }
+      );
+
+    }
+  );
+  </script>
+  <script>
+  /* ================================
+     MESSAGE MODAL CLOSE
+  ================================= */
+
+  document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+      const closeButton =
+        $("closeMessage");
+
+      if (!closeButton) {
+        return;
+      }
+
+      closeButton.addEventListener(
+        "click",
+        function() {
+
+          closeModal(
+            "messageModal"
+          );
+
+        }
+      );
+
+    }
+  );
+  </script>
+  <script>
+  /* ================================
+     SELL MODAL CLOSE
+  ================================= */
+
+  document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+      const closeButton =
+        $("closeSellModal");
+
+      if (!closeButton) {
+        return;
+      }
+
+      closeButton.addEventListener(
+        "click",
+        function() {
+
+          closeModal(
+            "sellModal"
+          );
+
+        }
+      );
+
+    }
+  );
+  </script>
+  <script>
+  /* ================================
+     ACCOUNT MODAL CLOSE
+  ================================= */
+
+  document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+      const closeButton =
+        $("closeAccountModal");
+
+      if (!closeButton) {
+        return;
+      }
+
+      closeButton.addEventListener(
+        "click",
+        function() {
+
+          closeModal(
+            "accountModal"
+          );
+
+        }
+      );
+
+    }
+  );
+  </script>
+  <script>
+  /* ================================
+     LIVE MODAL CLOSE
+  ================================= */
+
+  document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+      const closeButton =
+        $("closeLive");
+
+      if (!closeButton) {
+        return;
+      }
+
+      closeButton.addEventListener(
+        "click",
+        function() {
+
+          closeModal(
+            "liveModal"
+          );
+
+        }
+      );
+
+    }
+  );
+  </script>
+  <script>
+  /* ================================
+     ACCOUNT TABS
+  ================================= */
+
+  document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+      const loginTab =
+        $("loginTab");
+
+      const signupTab =
+        $("signupTab");
+
+      const forgotTab =
+        $("forgotTab");
+
+      if (loginTab) {
+        loginTab.addEventListener(
+          "click",
+          function() {
+            switchAccountTab("login");
+          }
+        );
+      }
+
+      if (signupTab) {
+        signupTab.addEventListener(
+          "click",
+          function() {
+            switchAccountTab("signup");
+          }
+        );
+      }
+
+      if (forgotTab) {
+        forgotTab.addEventListener(
+          "click",
+          function() {
+            switchAccountTab("forgot");
+          }
+        );
+      }
+
+    }
+  );
+  </script>
+  <script>
+  /* ================================
+     FORGOT PASSWORD
+  ================================= */
+
+  document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+      const forgotForm =
+        $("forgotForm");
+
+      if (!forgotForm) {
+        return;
+      }
+
+      forgotForm.addEventListener(
+        "submit",
+        async function(event) {
+
+          event.preventDefault();
+
+          const emailInput =
+            $("forgotEmail");
+
+          const message =
+            $("forgotMessage");
+
+          const email =
+            emailInput
+              ? emailInput.value.trim()
+              : "";
+
+          if (!email) {
+
+            if (message) {
+              message.textContent =
+                "Please enter your email address.";
+            }
+
+            return;
+          }
+
+          if (message) {
+            message.textContent =
+              "Sending reset email...";
+          }
+
+          const result =
+            await forgotPassword(email);
+
+          if (result && result.error) {
+
+            if (message) {
+              message.textContent =
+                result.error.message;
+            }
+
+            return;
+          }
+
+          if (message) {
+            message.textContent =
+              "Password reset email sent. Check your inbox.";
+          }
+
+        }
+      );
+
+    }
+  );
+  </script>
+  <script>
+  /* ================================
+     LOGIN FORM
+  ================================= */
+
+  document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+      const loginForm =
+        $("loginForm");
+
+      if (!loginForm) {
+        return;
+      }
+
+      loginForm.addEventListener(
+        "submit",
+        async function(event) {
+
+          event.preventDefault();
+
+          const emailInput =
+            $("loginEmail");
+
+          const passwordInput =
+            $("loginPassword");
+
+          const message =
+            $("loginMessage");
+
+          const email =
+            emailInput
+              ? emailInput.value.trim()
+              : "";
+
+          const password =
+            passwordInput
+              ? passwordInput.value
+              : "";
+
+          if (!email || !password) {
+
+            if (message) {
+              message.textContent =
+                "Please enter your email and password.";
+            }
+
+            return;
+          }
+
+          if (message) {
+            message.textContent =
+              "Logging in...";
+          }
+
+          const result =
+            await login(
+              email,
+              password
+            );
+
+          if (result && result.error) {
+
+            if (message) {
+              message.textContent =
+                result.error.message;
+            }
+
+            return;
+          }
+
+          if (message) {
+            message.textContent =
+              "Login successful.";
+          }
+
+          loginForm.reset();
+
+          setTimeout(function() {
+            closeModal("accountModal");
+          }, 700);
+
+        }
+      );
+
+    }
+  );
+  </script>
+  <script>
+  /* ================================
+     SIGN UP FORM
+  ================================= */
+
+  document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+      const signupForm =
+        $("signupForm");
+
+      if (!signupForm) {
+        return;
+      }
+
+      signupForm.addEventListener(
+        "submit",
+        async function(event) {
+
+          event.preventDefault();
+
+          const nameInput =
+            $("signupName");
+
+          const emailInput =
+            $("signupEmail");
+
+          const passwordInput =
+            $("signupPassword");
+
+          const message =
+            $("signupMessage");
+
+          const name =
+            nameInput
+              ? nameInput.value.trim()
+              : "";
+
+          const email =
+            emailInput
+              ? emailInput.value.trim()
+              : "";
+
+          const password =
+            passwordInput
+              ? passwordInput.value
+              : "";
+
+          if (!name || !email || !password) {
+
+            if (message) {
+              message.textContent =
+                "Please complete all fields.";
+            }
+
+            return;
+          }
+
+          if (password.length < 6) {
+
+            if (message) {
+              message.textContent =
+                "Password must be at least 6 characters.";
+            }
+
+            return;
+          }
+
+          if (message) {
+            message.textContent =
+              "Creating your account...";
+          }
+
+          const result =
+            await signup(
+              name,
+              email,
+              password
+            );
+
+          if (result && result.error) {
+
+            if (message) {
+              message.textContent =
+                result.error.message;
+            }
+
+            return;
+          }
+
+          if (message) {
+            message.textContent =
+              "Account created. Check your email to confirm your account.";
+          }
+
+          signupForm.reset();
+
+        }
+      );
+
+    }
+  );
+              </script>
+  <script>
+  /* ================================
+     PRODUCT CARD INFORMATION
+  ================================= */
+
+  document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+      const productsContainer =
+        $("products");
+
+      if (!productsContainer) {
+        return;
+      }
+
+      productsContainer.setAttribute(
+        "aria-label",
+        "Products for sale"
+      );
+
+    }
+  );
+  </script>
 </body>
 </html>
