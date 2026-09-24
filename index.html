@@ -2198,6 +2198,101 @@ function openProductDetails(product) {
 
   if (product.video_url) {
 
+/* =========================
+   OPEN PRODUCT DETAILS
+========================= */
+
+function openProductDetails(product) {
+
+  currentProduct = product;
+
+  const modal =
+    document.getElementById("productModal");
+
+  const mainImage =
+    document.getElementById("detailMainImage");
+
+  const thumbnails =
+    document.getElementById("detailThumbnails");
+
+  const video =
+    document.getElementById("detailVideo");
+
+  const name =
+    document.getElementById("detailProductName");
+
+  const price =
+    document.getElementById("detailProductPrice");
+
+  const location =
+    document.getElementById("detailProductLocation");
+
+  const category =
+    document.getElementById("detailProductCategory");
+
+  const description =
+    document.getElementById("detailProductDescription");
+
+  const actionMessage =
+    document.getElementById("productActionMessage");
+
+
+  /* PRODUCT IMAGES */
+
+  const images =
+    Array.isArray(product.image_urls)
+      ? product.image_urls
+      : [];
+
+
+  if (images.length > 0) {
+
+    mainImage.src = images[0];
+
+    mainImage.style.display = "block";
+
+  } else {
+
+    mainImage.src = "";
+
+    mainImage.style.display = "none";
+
+  }
+
+
+  /* PRODUCT THUMBNAILS */
+
+  thumbnails.innerHTML = "";
+
+  images.forEach(function(image) {
+
+    const thumbnail =
+      document.createElement("img");
+
+    thumbnail.src = image;
+
+    thumbnail.alt =
+      product.product || "Product";
+
+    thumbnail.className =
+      "detail-thumb";
+
+    thumbnail.onclick =
+      function() {
+
+        mainImage.src = image;
+
+      };
+
+    thumbnails.appendChild(thumbnail);
+
+  });
+
+
+  /* PRODUCT VIDEO */
+
+  if (product.video_url) {
+
     video.src =
       product.video_url;
 
@@ -2220,12 +2315,10 @@ function openProductDetails(product) {
   name.textContent =
     product.product || "";
 
-
   price.textContent =
     "₦" +
     Number(product.price || 0)
       .toLocaleString();
-
 
   location.textContent =
     [
@@ -2236,14 +2329,21 @@ function openProductDetails(product) {
     .filter(Boolean)
     .join(", ");
 
-
   category.textContent =
     "Category: " +
     (product.category || "");
 
-
   description.textContent =
     product.description || "";
+
+
+  /* CLEAR ACTION MESSAGE */
+
+  if (actionMessage) {
+
+    actionMessage.textContent = "";
+
+  }
 
 
   /* SHOW MODAL */
@@ -2251,13 +2351,10 @@ function openProductDetails(product) {
   modal.style.display =
     "block";
 
-
   document.body.style.overflow =
     "hidden";
 
 }
-
-
 /* =========================
    CLOSE PRODUCT MODAL
 ========================= */
