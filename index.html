@@ -1228,7 +1228,42 @@ async function loginUser() {
     "You are now signed in.";
 }
 
+async function forgotPassword() {
 
+  const email =
+    document.getElementById("loginEmail").value.trim();
+
+  const message =
+    document.getElementById("accountMessage");
+
+  if (!email) {
+    message.textContent =
+      "Please enter your email address first.";
+    return;
+  }
+
+  if (!supabaseClient) {
+    message.textContent =
+      "Connection error. Please refresh the page.";
+    return;
+  }
+
+  const { error } =
+    await supabaseClient.auth.resetPasswordForEmail(
+      email,
+      {
+        redirectTo: window.location.origin
+      }
+    );
+
+  if (error) {
+    message.textContent = error.message;
+    return;
+  }
+
+  message.textContent =
+    "Password reset email sent. Please check your email.";
+}
 /* SIGN UP */
 
 async function signupUser() {
