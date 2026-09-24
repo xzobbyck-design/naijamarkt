@@ -159,6 +159,13 @@
           class="secondary"
           id="liveButton"
         >
+          <button
+          type="button"
+          id="ordersButton"
+          class="secondary"
+        >
+          My Orders
+          </button>
           Live
         </button>
 
@@ -7536,6 +7543,139 @@ document.addEventListener("DOMContentLoaded", function() {
       closeModal("ordersModal");
     });
   }
+
+});
+  </script>
+  <script>
+document.addEventListener("DOMContentLoaded", function() {
+
+  const ordersButton = $("ordersButton");
+
+  if (!ordersButton) return;
+
+  ordersButton.addEventListener("click", function() {
+
+    if (!currentUser) {
+      openAccount("login");
+      return;
+    }
+
+    const ordersModal = $("ordersModal");
+
+    if (ordersModal) {
+      ordersModal.classList.remove("hidden");
+    }
+
+  });
+
+});
+  </script>
+  <script>
+document.addEventListener("DOMContentLoaded", function() {
+
+  const ordersButton = $("ordersButton");
+
+  if (!ordersButton) return;
+
+  ordersButton.addEventListener("click", async function() {
+
+    if (!currentUser) return;
+
+    const container = $("ordersContainer");
+
+    if (!container) return;
+
+    const result = await supabaseClient
+      .from("orders")
+      .select("*")
+      .or(
+        "buyer_id.eq." + currentUser.id +
+        ",seller_id.eq." + currentUser.id
+      )
+      .order("created_at", { ascending: false });
+
+    if (result.error) {
+      console.error(result.error);
+      return;
+    }
+
+    if (!result.data || result.data.length === 0) return;
+
+    const productIds = result.data.map(function(order) {
+      return order.product_id;
+    });
+
+    const productsResult = await supabaseClient
+      .from("products")
+      .select("id,product,image_urls")
+      .in("id", productIds);
+
+    const products = productsResult.data || [];
+
+    container.innerHTML = result.data.map(function(order) {
+
+      const product = products.find(function(item) {
+        return String(item.id) === String(order.product_id);
+      });
+
+      const productName = product
+        ? product.product
+        : "Product";
+
+      const date = order.created_at
+        ? new Date(order.created_at).toLocaleDateString()
+        : "";
+
+      return `
+        <div
+          style="
+            border:1px solid #eee;
+            border-radius:12px;
+            padding:15px;
+            margin-bottom:12px;
+            background:#fff;
+          "
+        >
+
+          <strong>
+            ${productName}
+          </strong>
+
+          <p style="margin:8px 0;">
+            Amount: ₦${Number(order.amount || 0).toLocaleString()}
+          </p>
+
+          <p style="margin:5px 0;">
+            Quantity: ${order.quantity}
+          </p>
+
+          <p style="margin:5px 0;">
+            Status: ${order.status}
+          </p>
+
+          <p style="margin:5px 0;color:#777;font-size:13px;">
+            Order #${order.id} · ${date}
+          </p>
+
+        </div>
+      `;
+
+    }).join("");
+
+  });
+
+});
+  </script>
+  <script>
+document.addEventListener("DOMContentLoaded", function() {
+
+  const closeOrders = $("closeOrders");
+
+  if (!closeOrders) return;
+
+  closeOrders.addEventListener("click", function() {
+    closeModal("ordersModal");
+  });
 
 });
   </script>
