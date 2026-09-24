@@ -1350,6 +1350,63 @@
     </div>
 
   </div>
+  <!-- MY ORDERS MODAL -->
+<div
+  id="ordersModal"
+  class="hidden"
+  style="
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.55);
+    z-index:2100;
+    padding:20px;
+    overflow-y:auto;
+  "
+>
+  <div
+    style="
+      max-width:700px;
+      margin:40px auto;
+      background:white;
+      border-radius:12px;
+      padding:20px;
+    "
+  >
+
+    <div
+      style="
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        gap:15px;
+        margin-bottom:20px;
+      "
+    >
+
+      <h2 style="margin:0;">
+        My Orders
+      </h2>
+
+      <button
+        type="button"
+        id="closeOrders"
+        class="secondary"
+      >
+        Close
+      </button>
+
+    </div>
+
+    <div id="ordersContainer">
+
+      <p style="color:#777;">
+        Your orders will appear here.
+      </p>
+
+    </div>
+
+  </div>
+</div>
   <!-- CART MODAL -->
   <div
     id="cartModal"
@@ -7238,6 +7295,249 @@
 
     }
   );
+  </script>
+  <script>
+  /* ================================
+     CREATE ORDER
+  ================================= */
+
+  async function createOrder(product) {
+
+    if (!currentUser) {
+      openAccount("login");
+      return;
+    }
+
+    if (!product || !product.id) {
+      return;
+    }
+
+    if (!product.seller_id) {
+
+      alert(
+        "This product is not available for purchase yet."
+      );
+
+      return;
+    }
+
+    const amount =
+      Number(product.price || 0);
+
+    if (amount <= 0) {
+
+      alert(
+        "This product has an invalid price."
+      );
+
+      return;
+    }
+
+    const result =
+      await supabaseClient
+        .from("orders")
+        .insert({
+          buyer_id: currentUser.id,
+          product_id: product.id,
+          seller_id: product.seller_id,
+          quantity: 1,
+          amount: amount,
+          status: "pending"
+        })
+        .select()
+        .single();
+
+    if (result.error) {
+
+      console.error(result.error);
+
+      alert(
+        "We could not create your order. Please try again."
+      );
+
+      return;
+    }
+
+    alert(
+      "Order created successfully. Payment will be connected next."
+    );
+
+    return result.data;
+  }
+  </script>
+  <script>
+  /* ================================
+     CONNECT BUY NOW TO ORDERS
+  ================================= */
+
+  document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+      const buyButton =
+        $("detailBuyButton");
+
+      if (!buyButton) {
+        return;
+      }
+
+      buyButton.addEventListener(
+        "click",
+        async function(event) {
+
+          event.preventDefault();
+          event.stopImmediatePropagation();
+
+          if (!currentProduct) {
+            return;
+          }
+
+          if (!currentUser) {
+
+            openAccount("login");
+
+            const message =
+              $("loginMessage");
+
+            if (message) {
+              message.textContent =
+                "Please log in before buying.";
+            }
+
+            return;
+          }
+
+          await createOrder(
+            currentProduct
+          );
+
+        },
+        true
+      );
+
+    }
+  );
+  </script>
+  <script>
+document.addEventListener("DOMContentLoaded", function() {
+
+  const ordersButton = $("ordersButton");
+  const closeOrders = $("closeOrders");
+
+  if (ordersButton) {
+    ordersButton.addEventListener("click", async function() {
+
+      if (!currentUser) {
+        openAccount("login");
+        return;
+      }
+
+      const modal = $("ordersModal");
+      const container = $("ordersContainer");
+
+      if (!modal || !container) return;
+
+      modal.classList.remove("hidden");
+
+      container.innerHTML = `
+        <p style="color:#777;">
+          Loading your orders...
+        </p>
+      `;
+
+      const result = await supabaseClient
+        .from("orders")
+        .select("*")
+        .or(
+          "buyer_id.eq." + currentUser.id +
+          ",seller_id.eq." + currentUser.id
+        )
+        .order("created_at", { ascending: false });
+
+      if (result.error) {
+        console.error(result.error);
+
+        container.innerHTML = `
+          <p style="color:#c00;">
+            Could not load your orders.
+          </p>
+        `;
+
+        return;
+      }
+
+      if (!result.data || result.data.length === 0) {
+
+        container.innerHTML = `
+          <div style="text-align:center;padding:30px 10px;">
+            <h3 style="margin-bottom:8px;">
+              No orders yet
+            </h3>
+
+            <p style="color:#777;margin:0;">
+              Your orders will appear here after you make a purchase.
+            </p>
+          </div>
+        `;
+
+        return;
+      }
+
+      container.innerHTML = result.data.map(function(order) {
+
+        return `
+          <div
+            style="
+              border:1px solid #eee;
+              border-radius:10px;
+              padding:15px;
+              margin-bottom:12px;
+              background:#fafafa;
+            "
+          >
+
+            <div
+              style="
+                display:flex;
+                justify-content:space-between;
+                gap:10px;
+                flex-wrap:wrap;
+              "
+            >
+
+              <strong>
+                Order #${order.id}
+              </strong>
+
+              <span>
+                ${order.status}
+              </span>
+
+            </div>
+
+            <p style="margin:10px 0 5px;">
+              Amount: ₦${Number(order.amount || 0).toLocaleString()}
+            </p>
+
+            <p style="margin:0;color:#777;font-size:13px;">
+              Quantity: ${order.quantity}
+            </p>
+
+          </div>
+        `;
+
+      }).join("");
+
+    });
+  }
+
+  if (closeOrders) {
+    closeOrders.addEventListener("click", function() {
+      closeModal("ordersModal");
+    });
+  }
+
+});
   </script>
 </body>
 </html>
