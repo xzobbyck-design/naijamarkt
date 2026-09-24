@@ -123,69 +123,94 @@
       </div>
 
       <!-- HEADER ACTIONS -->
-      <div style="
-        display:flex;
-        align-items:center;
-        gap:8px;
-        flex-wrap:wrap;
-      ">
+<div style="
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+">
 
-        <button
-          type="button"
-          class="secondary"
-          id="loginButton"
-        >
-          Login
-        </button>
+  <button
+    type="button"
+    class="secondary"
+    id="loginButton"
+  >
+    Login
+  </button>
 
-        <button
-          type="button"
-          class="secondary"
-          id="signupButton"
-        >
-          Sign Up
-        </button>
+  <button
+    type="button"
+    class="secondary"
+    id="signupButton"
+  >
+    Sign Up
+  </button>
 
-        <button
-          type="button"
-          class="secondary"
-          id="cartButton"
-        >
-          Cart
-        </button>
+  <button
+    type="button"
+    class="secondary"
+    id="cartButton"
+  >
+    Cart
+  </button>
 
-        <button
-          type="button"
-          class="secondary"
-          id="liveButton"
-        >
-          <button
-          type="button"
-          id="ordersButton"
-          class="secondary"
-        >
-          My Orders
-          </button>
-          <button
-          type="button"
-          id="sellerOrdersButton"
-          class="secondary"
-        >
-          Seller Orders
-          </button>
-          Live
-        </button>
+  <button
+    type="button"
+    class="secondary"
+    id="ordersButton"
+  >
+    My Orders
+  </button>
 
-        <button
-          type="button"
-          class="primary"
-          id="sellButton"
-        >
-          Sell an Item
-        </button>
+  <button
+    type="button"
+    class="secondary"
+    id="sellerOrdersButton"
+    style="position:relative;"
+  >
+    Seller Orders
 
-      </div>
-    </div>
+    <span
+      id="sellerOrderBadge"
+      style="
+        display:none;
+        position:absolute;
+        top:-8px;
+        right:-8px;
+        min-width:22px;
+        height:22px;
+        padding:2px 6px;
+        background:#e00000;
+        color:white;
+        border-radius:50%;
+        font-size:12px;
+        font-weight:bold;
+        line-height:18px;
+        text-align:center;
+        box-sizing:border-box;
+      "
+    >
+      0
+    </span>
+  </button>
+
+  <button
+    type="button"
+    class="secondary"
+    id="liveButton"
+  >
+    Live
+  </button>
+
+  <button
+    type="button"
+    class="primary"
+    id="sellButton"
+  >
+    Sell an Item
+  </button>
+
+</div>
   </header>
 <!-- MAIN SEARCH AREA -->
   <main>
