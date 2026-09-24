@@ -769,18 +769,37 @@
       type="number"
       id="productPrice"
       placeholder="Example: 650000"
+<!-- SELL BOX -->
+<section class="sell-box" id="sellBox">
+
+  <h2>Sell an Item</h2>
+
+  <p>
+    Post your product and reach buyers anywhere in Nigeria.
+  </p>
+
+  <div class="form-group">
+    <label>Product Name</label>
+    <input
+      type="text"
+      id="productName"
+      placeholder="Example: iPhone 13"
+    >
+  </div>
+
+  <div class="form-group">
+    <label>Price (₦)</label>
+    <input
+      type="number"
+      id="productPrice"
+      placeholder="Example: 650000"
     >
   </div>
 
   <div class="form-group">
     <label>Category</label>
-
     <select id="productCategory">
-
-      <option value="">
-        Select category
-      </option>
-
+      <option value="">Select category</option>
       <option>Phones & Tablets</option>
       <option>Computers</option>
       <option>Fashion</option>
@@ -794,12 +813,26 @@
       <option>Sports</option>
       <option>Services</option>
       <option>Other</option>
-
     </select>
   </div>
 
+  <!-- PRODUCT PHOTOS -->
   <div class="form-group">
+    <label>Add Photos</label>
 
+    <input
+      type="file"
+      id="productImages"
+      accept="image/*"
+      multiple
+    >
+
+    <small>
+      Add up to 5 photos of your item.
+    </small>
+  </div>
+
+  <div class="form-group">
     <label>Description</label>
 
     <textarea
@@ -807,23 +840,57 @@
       rows="5"
       placeholder="Describe your item"
     ></textarea>
-
   </div>
 
-  <div class="form-group">
+  <!-- ITEM LOCATION -->
+  <h3>Item Location</h3>
 
+  <div class="form-group">
     <label>State</label>
 
-    <input
-      type="text"
-      id="productState"
-      placeholder="Example: Enugu"
-    >
-
+    <select id="productState">
+      <option value="">Select State</option>
+      <option>Abia</option>
+      <option>Adamawa</option>
+      <option>Akwa Ibom</option>
+      <option>Anambra</option>
+      <option>Bauchi</option>
+      <option>Bayelsa</option>
+      <option>Benue</option>
+      <option>Borno</option>
+      <option>Cross River</option>
+      <option>Delta</option>
+      <option>Ebonyi</option>
+      <option>Edo</option>
+      <option>Ekiti</option>
+      <option>Enugu</option>
+      <option>Gombe</option>
+      <option>Imo</option>
+      <option>Jigawa</option>
+      <option>Kaduna</option>
+      <option>Kano</option>
+      <option>Katsina</option>
+      <option>Kebbi</option>
+      <option>Kogi</option>
+      <option>Kwara</option>
+      <option>Lagos</option>
+      <option>Nasarawa</option>
+      <option>Niger</option>
+      <option>Ogun</option>
+      <option>Ondo</option>
+      <option>Osun</option>
+      <option>Oyo</option>
+      <option>Plateau</option>
+      <option>Rivers</option>
+      <option>Sokoto</option>
+      <option>Taraba</option>
+      <option>Yobe</option>
+      <option>Zamfara</option>
+      <option>FCT</option>
+    </select>
   </div>
 
   <div class="form-group">
-
     <label>LGA</label>
 
     <input
@@ -831,11 +898,9 @@
       id="productLga"
       placeholder="Example: Nsukka"
     >
-
   </div>
 
   <div class="form-group">
-
     <label>Town / Area</label>
 
     <input
@@ -843,7 +908,6 @@
       id="productTownArea"
       placeholder="Example: Nsukka"
     >
-
   </div>
 
   <div style="margin-top:20px;">
@@ -857,7 +921,7 @@
 
     <button
       type="button"
-      onclick="closeSellForm()"
+      onclick="closeSellBox()"
       style="margin-left:10px;"
     >
       Cancel
@@ -865,33 +929,9 @@
 
   </div>
 
-  <p
-    id="sellMessage"
-    style="margin-top:15px;"
-  ></p>
+  <p id="sellMessage"></p>
 
 </section>
-
-
-<script>
-
-function openSellForm() {
-
-  const form = document.getElementById("sellForm");
-
-  if (!form) {
-    alert("Sell form not found.");
-    return;
-  }
-
-  form.style.display = "block";
-
-  form.scrollIntoView({
-    behavior: "smooth"
-  });
-
-}
-
 
 function closeSellForm() {
 
