@@ -741,98 +741,209 @@
   </div>
 </div>
 
-
 <!-- SELL MODAL -->
 
 <div id="sellModal" class="modal">
+
   <div class="modal-box">
 
-    <button class="close" id="closeSell" type="button">×</button>
+    <button
+      class="close"
+      id="closeSell"
+      type="button"
+      onclick="closeModal('sellModal')"
+    >
+      ×
+    </button>
 
     <h2>Sell an Item</h2>
 
     <form id="sellForm">
 
       <div class="form-group">
-        <label>Product Name</label>
-        <input id="productName" type="text" required>
+        <label for="productName">Product Name</label>
+
+        <input
+          id="productName"
+          type="text"
+          required
+        >
       </div>
 
-      <div class="form-group">
-        <label>Price (₦)</label>
-        <input id="productPrice" type="number" min="0" required>
-      </div>
 
       <div class="form-group">
-        <label>Category</label>
-        <select id="productCategory" required></select>
+        <label for="productPrice">Price (₦)</label>
+
+        <input
+          id="productPrice"
+          type="number"
+          min="0"
+          required
+        >
       </div>
 
+
       <div class="form-group">
-        <label>Photos</label>
+        <label for="productCategory">Category</label>
+
+        <select
+          id="productCategory"
+          required
+        >
+          <option value="">
+            Select Category
+          </option>
+        </select>
+      </div>
+
+
+      <div class="form-group">
+
+        <label for="productImages">
+          Photos
+        </label>
+
         <input
           id="productImages"
           type="file"
           accept="image/*"
           multiple
         >
+
+        <div
+          id="imagePreview"
+          style="
+            display:flex;
+            flex-wrap:wrap;
+            gap:8px;
+            margin-top:10px;
+          "
+        ></div>
+
       </div>
 
+
       <div class="form-group">
-        <label>Product Video</label>
+
+        <label for="productVideo">
+          Product Video
+        </label>
+
         <input
           id="productVideo"
           type="file"
           accept="video/*"
         >
+
       </div>
+
 
       <div class="form-group">
-        <label>Description</label>
-        <textarea id="productDescription"></textarea>
+
+        <label for="productDescription">
+          Description
+        </label>
+
+        <textarea
+          id="productDescription"
+          rows="5"
+          placeholder="Describe your product"
+        ></textarea>
+
       </div>
+
 
       <div class="form-group">
-        <label>State</label>
-        <select id="productState" required></select>
+
+        <label for="productState">
+          State
+        </label>
+
+        <select
+          id="productState"
+          required
+        >
+          <option value="">
+            Select State
+          </option>
+        </select>
+
       </div>
+
 
       <div class="form-group">
-        <label>LGA</label>
-        <input id="productLga" type="text" required>
+
+        <label for="productLga">
+          LGA
+        </label>
+
+        <input
+          id="productLga"
+          type="text"
+          required
+        >
+
       </div>
+
 
       <div class="form-group">
-        <label>Town / Area</label>
-        <input id="productTown" type="text" required>
+
+        <label for="productTown">
+          Town / Area
+        </label>
+
+        <input
+          id="productTown"
+          type="text"
+          required
+        >
+
       </div>
 
-      <button class="primary" type="submit">
+
+      <button
+        class="primary"
+        type="submit"
+      >
         Post Item
       </button>
+
 
       <button
         id="cancelSell"
         class="secondary"
         type="button"
+        onclick="closeModal('sellModal')"
       >
         Cancel
       </button>
 
-      <div id="sellMessage" class="form-message"></div>
+
+      <div
+        id="sellMessage"
+        class="form-message"
+      ></div>
 
     </form>
 
   </div>
+
 </div>
-
-
 <!-- PRODUCT DETAILS -->
 
 <div id="productModal" class="modal">
+
   <div class="modal-box large">
 
-    <button class="close" id="closeProduct" type="button">×</button>
+    <button
+      class="close"
+      id="closeProduct"
+      type="button"
+      onclick="closeModal('productModal')"
+    >
+      ×
+    </button>
+
 
     <img
       id="detailMainImage"
@@ -840,7 +951,12 @@
       alt="Product"
     >
 
-    <div id="detailThumbnails" class="thumbnails"></div>
+
+    <div
+      id="detailThumbnails"
+      class="thumbnails"
+    ></div>
+
 
     <video
       id="detailVideo"
@@ -849,17 +965,39 @@
       style="margin-top:15px;"
     ></video>
 
+
     <h2 id="detailProductName"></h2>
 
-    <div id="detailProductPrice" class="detail-price"></div>
 
-    <div id="detailProductLocation" class="detail-location"></div>
+    <div
+      id="detailProductPrice"
+      class="detail-price"
+    ></div>
 
-    <div id="detailProductCategory" class="detail-category"></div>
 
-    <div id="detailProductDescription" class="detail-description"></div>
+    <div
+      id="detailProductLocation"
+      class="detail-location"
+    ></div>
 
-    <div id="sellerStatus" class="seller-status"></div>
+
+    <div
+      id="detailProductCategory"
+      class="detail-category"
+    ></div>
+
+
+    <div
+      id="detailProductDescription"
+      class="detail-description"
+    ></div>
+
+
+    <div
+      id="sellerStatus"
+      class="seller-status"
+    ></div>
+
 
     <div class="detail-actions">
 
@@ -871,6 +1009,7 @@
         Add to Cart
       </button>
 
+
       <button
         id="detailBuyButton"
         class="btn-buy"
@@ -878,6 +1017,7 @@
       >
         Buy Now
       </button>
+
 
       <button
         id="detailMessageButton"
@@ -889,18 +1029,29 @@
 
     </div>
 
-    <div id="productActionMessage" class="form-message"></div>
+
+    <div
+      id="productActionMessage"
+      class="form-message"
+    ></div>
 
   </div>
+
 </div>
-
-
 <!-- CART -->
 
 <div id="cartModal" class="modal">
+
   <div class="modal-box">
 
-    <button class="close" id="closeCart" type="button">×</button>
+    <button
+      class="close"
+      id="closeCart"
+      type="button"
+      onclick="closeModal('cartModal')"
+    >
+      ×
+    </button>
 
     <h2>Your Cart</h2>
 
@@ -915,15 +1066,24 @@
     </button>
 
   </div>
+
 </div>
 
 
 <!-- MESSAGE SELLER -->
 
 <div id="messageModal" class="modal">
+
   <div class="modal-box">
 
-    <button class="close" id="closeMessage" type="button">×</button>
+    <button
+      class="close"
+      id="closeMessage"
+      type="button"
+      onclick="closeModal('messageModal')"
+    >
+      ×
+    </button>
 
     <h2>Message Seller</h2>
 
@@ -932,32 +1092,51 @@
     <form id="messageForm">
 
       <div class="form-group">
-        <label>Your Message</label>
+
+        <label for="sellerMessage">
+          Your Message
+        </label>
+
         <textarea
           id="sellerMessage"
           required
           placeholder="Write your message..."
         ></textarea>
+
       </div>
 
-      <button class="primary" type="submit">
+      <button
+        class="primary"
+        type="submit"
+      >
         Send Message
       </button>
 
-      <div id="messageStatus" class="form-message"></div>
+      <div
+        id="messageStatus"
+        class="form-message"
+      ></div>
 
     </form>
 
   </div>
-</div>
 
+</div>
 
 <!-- LIVE -->
 
 <div id="liveModal" class="modal">
+
   <div class="modal-box">
 
-    <button class="close" id="closeLive" type="button">×</button>
+    <button
+      class="close"
+      id="closeLive"
+      type="button"
+      onclick="closeModal('liveModal')"
+    >
+      ×
+    </button>
 
     <h2>NaijaMarkt Live</h2>
 
@@ -971,445 +1150,829 @@
     </p>
 
   </div>
+
 </div>
 
 
 <script>
-  /* ================================
-     SUPABASE
-  ================================= */
+/* ================================
+   SUPABASE
+================================= */
 
-  const SUPABASE_URL =
-    "https://qtolaqjjqoczcausyvbr.supabase.co";
+const SUPABASE_URL =
+  "https://qtolaqjjqoczcausyvbr.supabase.co";
 
-  const SUPABASE_KEY =
-    "sb_publishable_VdTs0tXujyKVqU4h8wOriw_Xle29ijU";
+const SUPABASE_KEY =
+  "sb_publishable_VdTs0tXujyKVqU4h8wOriw_Xle29ijU";
 
-  const SITE_URL =
-    "https://xzobbyck-design.github.io/naijamarkt/";
+const SITE_URL =
+  "https://xzobbyck-design.github.io/naijamarkt/";
 
-  const supabaseClient =
-    window.supabase.createClient(
-      SUPABASE_URL,
-      SUPABASE_KEY
-    );
-
-
-  /* ================================
-     DATA
-  ================================= */
-
-  const categories = [
-    "Phones & Tablets",
-    "Computers",
-    "Fashion",
-    "Shoes",
-    "Vehicles",
-    "Property",
-    "Furniture",
-    "Electronics",
-    "Gaming",
-    "Beauty",
-    "Sports",
-    "Services",
-    "Other"
-  ];
-
-  const states = [
-    "Abia",
-    "Adamawa",
-    "Akwa Ibom",
-    "Anambra",
-    "Bauchi",
-    "Bayelsa",
-    "Benue",
-    "Borno",
-    "Cross River",
-    "Delta",
-    "Ebonyi",
-    "Edo",
-    "Ekiti",
-    "Enugu",
-    "Gombe",
-    "Imo",
-    "Jigawa",
-    "Kaduna",
-    "Kano",
-    "Katsina",
-    "Kebbi",
-    "Kogi",
-    "Kwara",
-    "Lagos",
-    "Nasarawa",
-    "Niger",
-    "Ogun",
-    "Ondo",
-    "Osun",
-    "Oyo",
-    "Plateau",
-    "Rivers",
-    "Sokoto",
-    "Taraba",
-    "Yobe",
-    "Zamfara",
-    "Federal Capital Territory"
-  ];
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
 
 
-  let currentUser = null;
-  let currentProduct = null;
+/* ================================
+   DATA
+================================= */
+
+const categories = [
+  "Phones & Tablets",
+  "Computers",
+  "Fashion",
+  "Shoes",
+  "Vehicles",
+  "Property",
+  "Furniture",
+  "Electronics",
+  "Gaming",
+  "Beauty",
+  "Sports",
+  "Services",
+  "Other"
+];
 
 
-  /* ================================
-     HELPERS
-  ================================= */
+const states = [
+  "Abia",
+  "Adamawa",
+  "Akwa Ibom",
+  "Anambra",
+  "Bauchi",
+  "Bayelsa",
+  "Benue",
+  "Borno",
+  "Cross River",
+  "Delta",
+  "Ebonyi",
+  "Edo",
+  "Ekiti",
+  "Enugu",
+  "Gombe",
+  "Imo",
+  "Jigawa",
+  "Kaduna",
+  "Kano",
+  "Katsina",
+  "Kebbi",
+  "Kogi",
+  "Kwara",
+  "Lagos",
+  "Nasarawa",
+  "Niger",
+  "Ogun",
+  "Ondo",
+  "Osun",
+  "Oyo",
+  "Plateau",
+  "Rivers",
+  "Sokoto",
+  "Taraba",
+  "Yobe",
+  "Zamfara",
+  "Federal Capital Territory"
+];
 
-  function $(id) {
-    return document.getElementById(id);
+
+let currentUser = null;
+
+let currentProduct = null;
+
+/* ================================
+   HELPERS
+================================= */
+
+function $(id) {
+  return document.getElementById(id);
+}
+
+
+/* ================================
+   OPEN MODAL
+================================= */
+
+function showModal(id) {
+
+  const modal = $(id);
+
+  if (!modal) {
+    console.error("Modal not found:", id);
+    return;
   }
 
-  function showModal(id) {
-    $(id).style.display = "block";
-    document.body.style.overflow = "hidden";
-  }
+  modal.style.display = "block";
+  modal.classList.remove("hidden");
+
+  document.body.style.overflow = "hidden";
+}
+
+
 function openModal(id) {
   showModal(id);
 }
-  function closeModal(id) {
-    $(id).style.display = "none";
-    document.body.style.overflow = "";
+
+
+/* ================================
+   CLOSE MODAL
+================================= */
+
+function closeModal(id) {
+
+  const modal = $(id);
+
+  if (!modal) {
+    console.error("Modal not found:", id);
+    return;
   }
 
-  function money(value) {
-    return "₦" + Number(value || 0).toLocaleString();
+  modal.style.display = "none";
+  modal.classList.add("hidden");
+
+  document.body.style.overflow = "";
+}
+
+
+/* ================================
+   MONEY
+================================= */
+
+function money(value) {
+
+  const number =
+    Number(value || 0);
+
+  return "₦" +
+    number.toLocaleString("en-NG");
+}
+
+
+/* ================================
+   ESCAPE HTML
+================================= */
+
+function escapeHtml(value) {
+
+  const div =
+    document.createElement("div");
+
+  div.textContent =
+    value == null
+      ? ""
+      : String(value);
+
+  return div.innerHTML;
+}
+/* ================================
+   INITIAL UI
+================================= */
+
+function setupCategories() {
+
+  const container =
+    $("categories");
+
+  if (!container) {
+    console.error(
+      "Categories container not found."
+    );
+    return;
   }
 
-  function escapeHtml(value) {
-    const div = document.createElement("div");
-    div.textContent = value == null ? "" : String(value);
-    return div.innerHTML;
-  }
+  container.innerHTML = "";
 
+  categories.forEach(
+    function(category) {
 
-  /* ================================
-     INITIAL UI
-  ================================= */
+      const item =
+        document.createElement("div");
 
-  function setupCategories() {
+      item.className =
+        "category";
 
-    $("categories").innerHTML = "";
+      item.textContent =
+        category;
 
-    categories.forEach(function(category) {
+      item.setAttribute(
+        "role",
+        "button"
+      );
 
-      const item = document.createElement("div");
+      item.setAttribute(
+        "tabindex",
+        "0"
+      );
 
-      item.className = "category";
-
-      item.textContent = category;
-
-      item.addEventListener("click", function() {
-        loadProducts(category);
-      });
-
-      $("categories").appendChild(item);
-
-    });
-
-  }
-
-
-  function setupStates() {
-
-    const stateSelect = $("state");
-
-    if (!stateSelect) {
-      return;
-    }
-
-    stateSelect.innerHTML =
-      '<option value="">Select State</option>';
-
-    states.forEach(function(state) {
-
-      const option =
-        document.createElement("option");
-
-      option.value = state;
-
-      option.textContent = state;
-
-      stateSelect.appendChild(option);
-
-    });
-
-  }
-
-
-  function setupCategorySelect() {
-
-    const select = $("category");
-
-    if (!select) {
-      return;
-    }
-
-    select.innerHTML =
-      '<option value="">Select Category</option>';
-
-    categories.forEach(function(category) {
-
-      const option =
-        document.createElement("option");
-
-      option.value = category;
-
-      option.textContent = category;
-
-      select.appendChild(option);
-
-    });
-
-  }
-
-
-  function setupProductImagesPreview() {
-
-    const input = $("productImages");
-
-    const preview = $("imagePreview");
-
-    if (!input || !preview) {
-      return;
-    }
-
-    input.addEventListener("change", function() {
-
-      preview.innerHTML = "";
-
-      const files =
-        Array.from(input.files || []);
-
-      files.slice(0, 10).forEach(function(file) {
-
-        if (!file.type.startsWith("image/")) {
-          return;
-        }
-
-        const reader =
-          new FileReader();
-
-        reader.onload = function(event) {
-
-          const image =
-            document.createElement("img");
-
-          image.src =
-            event.target.result;
-
-          image.alt =
-            "Product image preview";
-
-          preview.appendChild(image);
-
-        };
-
-        reader.readAsDataURL(file);
-
-      });
-
-    });
-
-  }
-
-
-  function setupSearch() {
-
-    const searchInput =
-      $("searchInput");
-
-    const searchButton =
-      $("searchButton");
-
-    if (searchButton) {
-
-      searchButton.addEventListener(
+      item.addEventListener(
         "click",
         function() {
 
-          const value =
-            searchInput
-              ? searchInput.value.trim()
-              : "";
-
-          loadProducts(value);
+          loadProducts(category);
 
         }
       );
 
-    }
-
-    if (searchInput) {
-
-      searchInput.addEventListener(
+      item.addEventListener(
         "keydown",
         function(event) {
 
-          if (event.key === "Enter") {
+          if (
+            event.key === "Enter" ||
+            event.key === " "
+          ) {
 
             event.preventDefault();
 
-            const value =
-              searchInput.value.trim();
-
-            loadProducts(value);
+            loadProducts(category);
 
           }
 
         }
       );
 
+      container.appendChild(item);
+
     }
+  );
+
+}
+
+
+  function setupStates() {
+
+  const stateSelect =
+    $("productState");
+
+  if (!stateSelect) {
+    console.error(
+      "Product state selector not found."
+    );
+    return;
+  }
+
+  stateSelect.innerHTML =
+    '<option value="">Select State</option>';
+
+  states.forEach(
+    function(state) {
+
+      const option =
+        document.createElement("option");
+
+      option.value =
+        state;
+
+      option.textContent =
+        state;
+
+      stateSelect.appendChild(
+        option
+      );
+
+    }
+  );
+
+  }
+function setupCategorySelect() {
+
+  const select =
+    $("productCategory");
+
+  if (!select) {
+    console.error(
+      "Product category selector not found."
+    );
+    return;
+  }
+
+  select.innerHTML =
+    '<option value="">Select Category</option>';
+
+  categories.forEach(
+    function(category) {
+
+      const option =
+        document.createElement("option");
+
+      option.value =
+        category;
+
+      option.textContent =
+        category;
+
+      select.appendChild(
+        option
+      );
+
+    }
+  );
+
+}
+
+
+  function setupProductImagesPreview() {
+
+  const input =
+    $("productImages");
+
+  const preview =
+    $("imagePreview");
+
+  if (!input || !preview) {
+
+    console.error(
+      "Product image input or preview area not found."
+    );
+
+    return;
+  }
+
+
+  input.addEventListener(
+    "change",
+    function() {
+
+      preview.innerHTML = "";
+
+      const files =
+        Array.from(
+          input.files || []
+        );
+
+
+      files
+        .filter(
+          function(file) {
+            return file.type.startsWith(
+              "image/"
+            );
+          }
+        )
+        .slice(0, 10)
+        .forEach(
+          function(file) {
+
+            const reader =
+              new FileReader();
+
+
+            reader.onload =
+              function(event) {
+
+                const image =
+                  document.createElement(
+                    "img"
+                  );
+
+                image.src =
+                  event.target.result;
+
+                image.alt =
+                  "Product image preview";
+
+                image.style.width =
+                  "90px";
+
+                image.style.height =
+                  "90px";
+
+                image.style.objectFit =
+                  "cover";
+
+                image.style.borderRadius =
+                  "6px";
+
+                preview.appendChild(
+                  image
+                );
+
+              };
+
+
+            reader.readAsDataURL(
+              file
+            );
+
+          }
+        );
+
+    }
+  );
+
+  }
+
+
+  function setupSearch() {
+
+  const searchInput =
+    $("searchInput");
+
+  const searchButton =
+    $("searchButton");
+
+
+  if (
+    !searchInput &&
+    !searchButton
+  ) {
+
+    console.error(
+      "Search elements not found."
+    );
+
+    return;
+  }
+
+
+  if (searchButton) {
+
+    searchButton.addEventListener(
+      "click",
+      function() {
+
+        const value =
+          searchInput
+            ? searchInput.value.trim()
+            : "";
+
+        loadProducts(value);
+
+      }
+    );
+
+  }
+
+
+  if (searchInput) {
+
+    searchInput.addEventListener(
+      "keydown",
+      function(event) {
+
+        if (
+          event.key === "Enter"
+        ) {
+
+          event.preventDefault();
+
+          const value =
+            searchInput.value.trim();
+
+          loadProducts(value);
+
+        }
+
+      }
+    );
+
+  }
 
   }
 
 
   function setupAuthForms() {
 
-    const loginForm =
-      $("loginForm");
-
-    if (loginForm) {
-
-      loginForm.addEventListener(
-        "submit",
-        async function(event) {
-
-          event.preventDefault();
-
-          const email =
-            $("loginEmail")
-              ? $("loginEmail").value.trim()
-              : "";
-
-          const password =
-            $("loginPassword")
-              ? $("loginPassword").value
-              : "";
-
-          await login(
-            email,
-            password
-          );
-
-        }
-      );
-
-    }
+  const loginForm =
+    $("loginForm");
 
 
-    const signupForm =
-      $("signupForm");
+  if (!loginForm) {
 
-    if (signupForm) {
+    console.error(
+      "Login form not found."
+    );
 
-      signupForm.addEventListener(
-        "submit",
-        async function(event) {
-
-          event.preventDefault();
-
-          const name =
-            $("signupName")
-              ? $("signupName").value.trim()
-              : "";
-
-          const email =
-            $("signupEmail")
-              ? $("signupEmail").value.trim()
-              : "";
-
-          const password =
-            $("signupPassword")
-              ? $("signupPassword").value
-              : "";
-
-          await signup(
-            name,
-            email,
-            password
-          );
-
-        }
-      );
-
-    }
-
-
-    const forgotForm =
-      $("forgotForm");
-
-    if (forgotForm) {
-
-      forgotForm.addEventListener(
-        "submit",
-        async function(event) {
-
-          event.preventDefault();
-
-          const email =
-            $("forgotEmail")
-              ? $("forgotEmail").value.trim()
-              : "";
-
-          await forgotPassword(email);
-
-        }
-      );
-
-    }
+    return;
 
   }
 
 
-  function setupSellForm() {
+  loginForm.addEventListener(
+    "submit",
+    async function(event) {
 
-    const form =
-      $("sellForm");
+      event.preventDefault();
 
-    if (!form) {
-      return;
-    }
 
-    form.addEventListener(
-      "submit",
-      function(event) {
+      const emailInput =
+        $("loginEmail");
 
-        event.preventDefault();
+      const passwordInput =
+        $("loginPassword");
 
-        postProduct();
+
+      const email =
+        emailInput
+          ? emailInput.value.trim()
+          : "";
+
+
+      const password =
+        passwordInput
+          ? passwordInput.value
+          : "";
+
+
+      if (!email || !password) {
+
+        const message =
+          $("loginMessage");
+
+        if (message) {
+
+          message.textContent =
+            "Please enter your email and password.";
+
+        }
+
+        return;
 
       }
+
+
+      await login(
+        email,
+        password
+      );
+
+    }
+  );
+
+  }
+
+
+    const signupForm =
+  $("signupForm");
+
+
+if (!signupForm) {
+
+  console.error(
+    "Signup form not found."
+  );
+
+} else {
+
+  signupForm.addEventListener(
+    "submit",
+    async function(event) {
+
+      event.preventDefault();
+
+
+      const nameInput =
+        $("signupName");
+
+      const emailInput =
+        $("signupEmail");
+
+      const passwordInput =
+        $("signupPassword");
+
+
+      const name =
+        nameInput
+          ? nameInput.value.trim()
+          : "";
+
+
+      const email =
+        emailInput
+          ? emailInput.value.trim()
+          : "";
+
+
+      const password =
+        passwordInput
+          ? passwordInput.value
+          : "";
+
+
+      if (!name || !email || !password) {
+
+        const message =
+          $("signupMessage");
+
+        if (message) {
+
+          message.textContent =
+            "Please fill in all fields.";
+
+        }
+
+        return;
+
+      }
+
+
+      await signup(
+        name,
+        email,
+        password
+      );
+
+    }
+  );
+
+}
+
+
+    const forgotForm =
+  $("forgotForm");
+
+
+if (!forgotForm) {
+
+  console.error(
+    "Forgot password form not found."
+  );
+
+} else {
+
+  forgotForm.addEventListener(
+    "submit",
+    async function(event) {
+
+      event.preventDefault();
+
+
+      const emailInput =
+        $("forgotEmail");
+
+
+      const email =
+        emailInput
+          ? emailInput.value.trim()
+          : "";
+
+
+      if (!email) {
+
+        const message =
+          $("forgotMessage");
+
+        if (message) {
+
+          message.textContent =
+            "Please enter your email address.";
+
+        }
+
+        return;
+
+      }
+
+
+      await forgotPassword(
+        email
+      );
+
+    }
+  );
+
+}
+
+
+  function setupSellForm() {
+
+  const form =
+    $("sellForm");
+
+
+  if (!form) {
+
+    console.error(
+      "Sell form not found."
     );
+
+    return;
+
+  }
+
+
+  form.addEventListener(
+    "submit",
+    async function(event) {
+
+      event.preventDefault();
+
+
+      const user =
+        currentUser;
+
+
+      if (!user) {
+
+        const message =
+          $("sellMessage");
+
+        if (message) {
+
+          message.textContent =
+            "Please log in or sign up before posting an item.";
+
+        }
+
+
+        openModal(
+          "accountModal"
+        );
+
+        return;
+
+      }
+
+
+      await postProduct();
+
+    }
+  );
 
   }
 
 
   function setupMessageForm() {
 
-    const form =
-      $("messageForm");
+  const form =
+    $("messageForm");
 
-    if (!form) {
-      return;
+
+  if (!form) {
+
+    console.error(
+      "Message form not found."
+    );
+
+    return;
+
+  }
+
+
+  form.addEventListener(
+    "submit",
+    async function(event) {
+
+      event.preventDefault();
+
+
+      if (!currentUser) {
+
+        const message =
+          $("messageStatus");
+
+        if (message) {
+
+          message.textContent =
+            "Please log in or sign up to message a seller.";
+
+        }
+
+
+        closeModal(
+          "messageModal"
+        );
+
+        openModal(
+          "accountModal"
+        );
+
+        return;
+
+      }
+
+
+      await sendMessage();
+
     }
+  );
 
-    form.addEventListener(
-      "submit",
+  }
+
+  function setupAccountTabs() {
+
+  const loginTab =
+    $("loginTab");
+
+  const signupTab =
+    $("signupTab");
+
+  const forgotTab =
+    $("forgotTab");
+
+
+  if (loginTab) {
+
+    loginTab.addEventListener(
+      "click",
       function(event) {
 
         event.preventDefault();
 
-        sendMessage();
+        switchAccountTab(
+          "login"
+        );
 
       }
     );
@@ -1417,30 +1980,42 @@ function openModal(id) {
   }
 
 
-  function setupAccountTabs() {
+  if (signupTab) {
 
-    const loginTab =
-      $("loginTab");
+    signupTab.addEventListener(
+      "click",
+      function(event) {
 
-    const signupTab =
-      $("signupTab");
+        event.preventDefault();
 
-    const forgotTab =
-      $("forgotTab");
+        switchAccountTab(
+          "signup"
+        );
+
+      }
+    );
+
+  }
 
 
-    if (loginTab) {
+  if (forgotTab) {
 
-      loginTab.addEventListener(
-        "click",
-        function() {
+    forgotTab.addEventListener(
+      "click",
+      function(event) {
 
-          switchAccountTab("login");
+        event.preventDefault();
 
-        }
-      );
+        switchAccountTab(
+          "forgot"
+        );
 
-    }
+      }
+    );
+
+  }
+
+  }
 
 
     if (signupTab) {
