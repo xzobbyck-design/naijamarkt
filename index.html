@@ -2475,7 +2475,36 @@ function addToCart() {
   }
 
   }
+/* =========================
+   MESSAGE SELLER
+========================= */
 
+function messageSeller() {
+
+  if (!currentProduct) {
+    return;
+  }
+
+  if (!currentUser) {
+
+    closeProductModal();
+
+    openAccountPopup();
+
+    return;
+  }
+
+  const message =
+    document.getElementById("productActionMessage");
+
+  if (message) {
+
+    message.textContent =
+      "Seller messaging will be connected next.";
+
+  }
+
+}
 /* =========================
    ESCAPE HTML
 ========================= */
