@@ -166,6 +166,13 @@
         >
           My Orders
           </button>
+          <button
+          type="button"
+          id="sellerOrdersButton"
+          class="secondary"
+        >
+          Seller Orders
+          </button>
           Live
         </button>
 
@@ -7675,6 +7682,151 @@ document.addEventListener("DOMContentLoaded", function() {
 
   closeOrders.addEventListener("click", function() {
     closeModal("ordersModal");
+  });
+
+});
+  </script>
+  <script>
+document.addEventListener("DOMContentLoaded", function() {
+
+  const sellerOrdersButton = $("sellerOrdersButton");
+
+  if (!sellerOrdersButton) return;
+
+  sellerOrdersButton.addEventListener("click", function() {
+
+    if (!currentUser) {
+      openAccount("login");
+      return;
+    }
+
+    const ordersModal = $("ordersModal");
+
+    if (ordersModal) {
+      ordersModal.classList.remove("hidden");
+    }
+
+  });
+
+});
+  </script>
+  <script>
+document.addEventListener("DOMContentLoaded", function() {
+
+  const sellerOrdersButton = $("sellerOrdersButton");
+
+  if (!sellerOrdersButton) return;
+
+  sellerOrdersButton.addEventListener("click", async function() {
+
+    if (!currentUser) return;
+
+    const container = $("ordersContainer");
+
+    if (!container) return;
+
+    container.innerHTML = `
+      <p style="color:#777;">
+        Loading seller orders...
+      </p>
+    `;
+
+    const result = await supabaseClient
+      .from("orders")
+      .select("*")
+      .eq("seller_id", currentUser.id)
+      .order("created_at", { ascending: false });
+
+    if (result.error) {
+      console.error(result.error);
+
+      container.innerHTML = `
+        <p style="color:#c00;">
+          Could not load seller orders.
+        </p>
+      `;
+
+      return;
+    }
+
+    if (!result.data || result.data.length === 0) {
+
+      container.innerHTML = `
+        <div style="text-align:center;padding:30px 10px;">
+          <h3 style="margin-bottom:8px;">
+            No orders received
+          </h3>
+
+          <p style="color:#777;margin:0;">
+            Orders from buyers will appear here.
+          </p>
+        </div>
+      `;
+
+      return;
+    }
+
+    const productIds = result.data.map(function(order) {
+      return order.product_id;
+    });
+
+    const productsResult = await supabaseClient
+      .from("products")
+      .select("id,product")
+      .in("id", productIds);
+
+    const products = productsResult.data || [];
+
+    container.innerHTML = result.data.map(function(order) {
+
+      const product = products.find(function(item) {
+        return String(item.id) === String(order.product_id);
+      });
+
+      const productName = product
+        ? product.product
+        : "Product";
+
+      const date = order.created_at
+        ? new Date(order.created_at).toLocaleDateString()
+        : "";
+
+      return `
+        <div
+          style="
+            border:1px solid #eee;
+            border-radius:12px;
+            padding:15px;
+            margin-bottom:12px;
+            background:#fff;
+          "
+        >
+
+          <strong>
+            ${productName}
+          </strong>
+
+          <p style="margin:8px 0;">
+            Amount: ₦${Number(order.amount || 0).toLocaleString()}
+          </p>
+
+          <p style="margin:5px 0;">
+            Quantity: ${order.quantity}
+          </p>
+
+          <p style="margin:5px 0;">
+            Status: ${order.status}
+          </p>
+
+          <p style="margin:5px 0;color:#777;font-size:13px;">
+            Order #${order.id} · ${date}
+          </p>
+
+        </div>
+      `;
+
+    }).join("");
+
   });
 
 });
