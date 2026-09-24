@@ -2417,7 +2417,64 @@ function buyNow() {
   );
 
 }
+/* =========================
+   ADD TO CART
+========================= */
 
+function addToCart() {
+
+  if (!currentProduct) {
+    return;
+  }
+
+  if (!currentUser) {
+
+    closeProductModal();
+
+    openAccountPopup();
+
+    return;
+  }
+
+  let cart =
+    JSON.parse(
+      localStorage.getItem("naijamarkt_cart") || "[]"
+    );
+
+  const alreadyInCart =
+    cart.some(function(item) {
+      return String(item.id) === String(currentProduct.id);
+    });
+
+  if (alreadyInCart) {
+
+    const message =
+      document.getElementById("productActionMessage");
+
+    if (message) {
+      message.textContent =
+        "This product is already in your cart.";
+    }
+
+    return;
+  }
+
+  cart.push(currentProduct);
+
+  localStorage.setItem(
+    "naijamarkt_cart",
+    JSON.stringify(cart)
+  );
+
+  const message =
+    document.getElementById("productActionMessage");
+
+  if (message) {
+    message.textContent =
+      "Product added to cart.";
+  }
+
+  }
 
 /* =========================
    ESCAPE HTML
