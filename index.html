@@ -1,13 +1,14 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NaijaMarkt - Buy & Sell in Nigeria</title>
 
-  <title>NaijaMarkt - Buy & Sell Across Nigeria</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
-
     * {
       box-sizing: border-box;
     }
@@ -23,2569 +24,1672 @@
     input,
     select,
     textarea {
-      font-family: inherit;
+      font: inherit;
     }
 
-    /* HEADER */
+    button {
+      cursor: pointer;
+    }
 
-    header {
-      background: #0a8f3d;
+    .header {
+      background: #087f3d;
       color: white;
-      padding: 15px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      padding: 14px 5%;
       position: sticky;
       top: 0;
-      z-index: 1000;
+      z-index: 100;
+    }
+
+    .header-row {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      max-width: 1200px;
+      margin: auto;
+      flex-wrap: wrap;
     }
 
     .logo {
-      font-size: 24px;
+      font-size: 25px;
       font-weight: bold;
-    }
-
-    .account-button {
-      background: white;
-      color: #0a8f3d;
-      border: none;
-      padding: 10px 14px;
-      border-radius: 6px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .logout-button {
-      background: #fff;
-      color: #0a8f3d;
-      border: none;
-      padding: 10px 14px;
-      border-radius: 6px;
-      font-weight: bold;
-      cursor: pointer;
-      display: none;
-    }
-
-    /* WELCOME */
-
-    .welcome {
-      text-align: center;
-      padding: 45px 20px 25px;
-    }
-
-    .welcome h1 {
-      margin-bottom: 10px;
-      color: #0a8f3d;
-    }
-
-    .welcome p {
-      color: #555;
-    }
-
-    /* SEARCH */
-
-    .search-section {
-      max-width: 900px;
-      margin: 20px auto;
-      padding: 0 20px;
+      white-space: nowrap;
     }
 
     .search-box {
+      flex: 1;
+      min-width: 220px;
       display: flex;
-      gap: 8px;
     }
 
     .search-box input {
-      flex: 1;
-      padding: 13px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 15px;
+      width: 100%;
+      padding: 11px;
+      border: 0;
+      outline: none;
+      border-radius: 6px 0 0 6px;
     }
 
     .search-box button {
-      background: #0a8f3d;
+      border: 0;
+      background: #f2a900;
       color: white;
-      border: none;
-      padding: 13px 18px;
-      border-radius: 6px;
-      cursor: pointer;
+      padding: 0 18px;
+      border-radius: 0 6px 6px 0;
     }
 
-    /* SELL BUTTON */
+    .nav-buttons {
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
+    }
 
-    .sell-area {
+    .nav-buttons button {
+      border: 0;
+      padding: 9px 12px;
+      border-radius: 5px;
+      background: white;
+      color: #087f3d;
+      font-weight: bold;
+    }
+
+    .nav-buttons .sell-btn {
+      background: #f2a900;
+      color: white;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .hero {
+      background: white;
+      padding: 35px 20px;
       text-align: center;
-      margin: 25px 20px;
-    }
-
-    .sell-main-button {
-      background: #0a8f3d;
-      color: white;
-      border: none;
-      padding: 13px 25px;
-      border-radius: 7px;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    /* SELL BOX */
-
-    #sellBox {
-      display: none;
-      max-width: 700px;
-      margin: 25px auto;
-      padding: 25px;
-      background: white;
+      margin-top: 20px;
       border-radius: 10px;
-      box-shadow: 0 3px 15px rgba(0,0,0,0.12);
     }
 
-    #sellBox h2 {
-      margin-top: 0;
-      color: #0a8f3d;
+    .hero h1 {
+      color: #087f3d;
+      margin-bottom: 10px;
     }
 
-    .form-group {
-      margin-top: 18px;
+    .hero p {
+      color: #666;
     }
 
-    .form-group label {
-      display: block;
-      font-weight: bold;
-      margin-bottom: 7px;
+    .section {
+      margin-top: 25px;
     }
 
-    .form-group input,
-    .form-group select,
-    .form-group textarea {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 15px;
-      background: white;
+    .section-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 15px;
     }
 
-    .form-group textarea {
-      min-height: 120px;
-      resize: vertical;
+    .section-title h2 {
+      margin: 0;
     }
-
-    .form-group input[type="file"] {
-      padding: 10px;
-    }
-
-    .sell-box small {
-      display: block;
-      margin-top: 6px;
-      color: #777;
-    }
-
-    .post-button {
-      background: #0a8f3d;
-      color: white;
-      border: none;
-      padding: 12px 20px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-    .cancel-button {
-      background: #777;
-      color: white;
-      border: none;
-      padding: 12px 20px;
-      border-radius: 6px;
-      cursor: pointer;
-      margin-left: 8px;
-    }
-
-    #sellMessage {
-      font-size: 14px;
-    }
-
-    /* CATEGORIES */
 
     .categories {
-      max-width: 1100px;
-      margin: 30px auto;
-      padding: 0 20px;
-    }
-
-    .categories h2,
-    .products h2 {
-      text-align: center;
-    }
-
-    .category-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      gap: 12px;
-      margin-top: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 10px;
     }
 
     .category {
       background: white;
-      padding: 18px 10px;
-      text-align: center;
+      border: 1px solid #ddd;
       border-radius: 8px;
+      padding: 15px 8px;
+      text-align: center;
       cursor: pointer;
-      border: 1px solid #eee;
+      transition: .2s;
     }
 
     .category:hover {
-      border-color: #0a8f3d;
+      border-color: #087f3d;
+      transform: translateY(-2px);
     }
-
-    /* PRODUCTS */
 
     .products {
-      max-width: 1100px;
-      margin: 30px auto;
-      padding: 0 20px;
-    }
-
-    .product-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
       gap: 15px;
-      margin-top: 20px;
     }
 
     .product-card {
       background: white;
-      border-radius: 8px;
-      padding: 18px;
-      border: 1px solid #eee;
+      border-radius: 9px;
+      overflow: hidden;
+      border: 1px solid #e1e1e1;
     }
 
     .product-image {
       width: 100%;
       height: 190px;
       object-fit: cover;
-      border-radius: 7px;
       background: #eee;
-      display: block;
-      margin-bottom: 12px;
     }
 
-    .product-card h3 {
-      margin-top: 0;
+    .product-info {
+      padding: 13px;
+    }
+
+    .product-info h3 {
+      margin: 0 0 8px;
+      font-size: 17px;
     }
 
     .price {
-      color: #0a8f3d;
+      color: #087f3d;
       font-size: 18px;
       font-weight: bold;
     }
 
     .location {
       color: #777;
-      font-size: 14px;
-    }
-
-    .category-label {
-      color: #555;
       font-size: 13px;
+      margin-top: 7px;
     }
 
-    .buy-button {
-      width: 100%;
+    .card-buttons {
+      display: flex;
+      gap: 7px;
       margin-top: 12px;
-      padding: 10px;
-      background: #0a8f3d;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
     }
 
-    /* PRODUCT DETAILS */
+    .card-buttons button {
+      flex: 1;
+      padding: 9px 5px;
+      border: 0;
+      border-radius: 5px;
+      color: white;
+      font-weight: bold;
+    }
 
-    #productModal {
+    .view-btn {
+      background: #087f3d;
+    }
+
+    .cart-small {
+      background: #f2a900;
+    }
+
+    .empty {
+      background: white;
+      padding: 30px;
+      text-align: center;
+      border-radius: 8px;
+      color: #777;
+    }
+
+    .live-section {
+      background: #111;
+      color: white;
+      padding: 25px;
+      border-radius: 10px;
+    }
+
+    .live-section button {
+      background: #e53935;
+      color: white;
+      border: 0;
+      padding: 10px 18px;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+
+    footer {
+      background: #123;
+      color: white;
+      padding: 30px;
+      margin-top: 50px;
+      text-align: center;
+    }
+
+    /* MODALS */
+
+    .modal {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.65);
-      z-index: 3000;
+      background: rgba(0,0,0,.65);
+      z-index: 1000;
       overflow-y: auto;
-      padding: 30px 15px;
+      padding: 25px 10px;
     }
 
-    .product-modal-box {
-      max-width: 700px;
-/* =========================
-   PRODUCT DETAILS
-========================= */
-
-#productModal {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.65);
-  z-index: 3000;
-  overflow-y: auto;
-  padding: 30px 15px;
-}
-
-.product-modal-box {
-  max-width: 700px;
-  margin: auto;
-  background: white;
-  border-radius: 12px;
-  padding: 25px;
-  position: relative;
-}
-
-#closeProductModal {
-  position: absolute;
-  right: 12px;
-  top: 8px;
-  border: none;
-  background: transparent;
-  font-size: 28px;
-  cursor: pointer;
-  color: #333;
-}
-
-#detailMainImage {
-  width: 100%;
-  max-height: 450px;
-  object-fit: contain;
-  border-radius: 8px;
-  background: #eee;
-  display: block;
-}
-
-#detailThumbnails {
-  display: flex;
-  gap: 8px;
-  overflow-x: auto;
-  margin-top: 10px;
-}
-
-.detail-thumb {
-  width: 70px;
-  height: 70px;
-  object-fit: cover;
-  border-radius: 5px;
-  cursor: pointer;
-  border: 1px solid #ccc;
-  flex-shrink: 0;
-}
-
-#detailVideo {
-  width: 100%;
-  margin-top: 15px;
-  border-radius: 8px;
-  display: none;
-}
-
-.detail-product-name {
-  margin-top: 20px;
-  font-size: 24px;
-}
-
-.detail-product-price {
-  font-size: 22px;
-  font-weight: bold;
-  color: #0a8f3d;
-  margin-top: 10px;
-}
-
-.detail-product-location {
-  color: #666;
-  margin-top: 8px;
-}
-
-.detail-product-category {
-  color: #555;
-  margin-top: 8px;
-}
-
-.detail-product-description {
-  margin-top: 15px;
-  line-height: 1.6;
-}
-
-.detail-actions {
-  display: flex;
-  gap: 10px;
-  margin-top: 20px;
-  flex-wrap: wrap;
-}
-
-.detail-cart,
-.detail-buy,
-.detail-message {
-  flex: 1;
-  min-width: 150px;
-  padding: 13px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: bold;
-  color: white;
-}
-
-.detail-cart {
-  background: #f39c12;
-}
-
-.detail-buy {
-  background: #0a8f3d;
-}
-
-.detail-message {
-  background: #1683d8;
-}
-
-.detail-cart:hover,
-.detail-buy:hover,
-.detail-message:hover {
-  opacity: 0.9;
-}
-
-#productActionMessage {
-  margin-top: 15px;
-  text-align: center;
-  font-size: 14px;
-}
-
-@media (max-width: 600px) {
-
-  #productModal {
-    padding: 15px 10px;
-  }
-
-  .product-modal-box {
-    padding: 18px;
-  }
-
-  .detail-product-name {
-    font-size: 20px;
-  }
-
-  .detail-actions {
-    flex-direction: column;
-  }
-
-  .detail-cart,
-  .detail-buy,
-  .detail-message {
-    width: 100%;
-  }
-
-}
-
-    /* ACCOUNT POPUP */
-
-    #accountPopup {
-      display: none;
-      position: fixed;
-      top: 75px;
-      right: 20px;
-      width: 320px;
-      max-width: calc(100% - 40px);
+    .modal-box {
       background: white;
-      padding: 25px;
+      max-width: 600px;
+      margin: 20px auto;
       border-radius: 10px;
-      box-shadow: 0 5px 25px rgba(0,0,0,0.25);
-      z-index: 4000;
+      padding: 22px;
+      position: relative;
     }
 
-    #accountPopup h2 {
-      margin-top: 0;
+    .modal-box.large {
+      max-width: 850px;
     }
 
-    #accountPopup input {
-      width: 100%;
-      padding: 12px;
-      margin-top: 10px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-    }
-
-    .submit-account {
-      width: 100%;
-      margin-top: 15px;
-      padding: 12px;
-      background: #0a8f3d;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-
-    #accountPopup a {
-      color: #0a8f3d;
-      font-weight: bold;
-      text-decoration: none;
-    }
-
-    #closeAccount {
+    .close {
       position: absolute;
-      right: 10px;
-      top: 8px;
-      border: none;
+      right: 15px;
+      top: 10px;
+      border: 0;
       background: transparent;
-      font-size: 25px;
-      cursor: pointer;
+      font-size: 30px;
+      color: #555;
     }
 
-    #accountMessage {
+    .modal-box h2 {
+      margin-top: 5px;
+      color: #087f3d;
+    }
+
+    .form-group {
+      margin-bottom: 13px;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 11px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      outline: none;
+    }
+
+    .form-group textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .primary {
+      width: 100%;
+      padding: 12px;
+      background: #087f3d;
+      color: white;
+      border: 0;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+
+    .secondary {
+      width: 100%;
+      padding: 12px;
+      background: #eee;
       color: #333;
+      border: 0;
+      border-radius: 5px;
+      margin-top: 8px;
+    }
+
+    .form-message {
+      margin-top: 12px;
+      text-align: center;
       font-size: 14px;
     }
 
-    /* FOOTER */
-
-    footer {
-      margin-top: 50px;
-      background: #123;
-      color: white;
-      text-align: center;
-      padding: 25px 20px;
+    .product-main-image {
+      width: 100%;
+      max-height: 430px;
+      object-fit: contain;
+      background: #f1f1f1;
+      border-radius: 8px;
     }
 
-    /* MOBILE */
+    .thumbnails {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      margin-top: 10px;
+    }
+
+    .thumbnail {
+      width: 70px;
+      height: 70px;
+      object-fit: cover;
+      border-radius: 5px;
+      cursor: pointer;
+      border: 2px solid transparent;
+    }
+
+    .thumbnail:hover {
+      border-color: #087f3d;
+    }
+
+    .detail-price {
+      color: #087f3d;
+      font-size: 25px;
+      font-weight: bold;
+      margin-top: 15px;
+    }
+
+    .detail-location,
+    .detail-category {
+      color: #666;
+      margin-top: 8px;
+    }
+
+    .detail-description {
+      line-height: 1.6;
+      margin-top: 15px;
+      white-space: pre-wrap;
+    }
+
+    .detail-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    .detail-actions button {
+      flex: 1;
+      min-width: 140px;
+      padding: 12px;
+      border: 0;
+      border-radius: 5px;
+      color: white;
+      font-weight: bold;
+    }
+
+    .btn-cart {
+      background: #f2a900;
+    }
+
+    .btn-buy {
+      background: #087f3d;
+    }
+
+    .btn-message {
+      background: #1683d8;
+    }
+
+    .seller-status {
+      margin-top: 15px;
+      padding: 12px;
+      background: #f3f7f4;
+      border-radius: 6px;
+    }
+
+    .online {
+      color: #087f3d;
+      font-weight: bold;
+    }
+
+    .offline {
+      color: #777;
+    }
+
+    .cart-item {
+      display: flex;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid #ddd;
+      align-items: center;
+    }
+
+    .cart-item img {
+      width: 70px;
+      height: 70px;
+      object-fit: cover;
+      border-radius: 5px;
+    }
+
+    .cart-item-info {
+      flex: 1;
+    }
+
+    .remove-cart {
+      background: #e53935;
+      color: white;
+      border: 0;
+      padding: 7px;
+      border-radius: 4px;
+    }
+
+    .account-tabs {
+      display: flex;
+      gap: 5px;
+      margin-bottom: 18px;
+    }
+
+    .account-tabs button {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ddd;
+      background: #eee;
+      border-radius: 5px;
+    }
+
+    .account-tabs button.active {
+      background: #087f3d;
+      color: white;
+    }
+
+    .user-info {
+      background: #f4f7f5;
+      padding: 12px;
+      border-radius: 7px;
+      margin-bottom: 15px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
 
     @media (max-width: 600px) {
-
-      header {
-        padding: 12px;
-      }
-
-      .logo {
-        font-size: 20px;
-      }
-
-      .account-button,
-      .logout-button {
-        padding: 8px 10px;
-        font-size: 12px;
+      .header-row {
+        flex-direction: column;
+        align-items: stretch;
       }
 
       .search-box {
-        flex-direction: column;
-      }
-
-      .search-box button {
         width: 100%;
       }
 
-      #accountPopup {
-        right: 10px;
-        width: calc(100% - 20px);
+      .nav-buttons {
+        justify-content: center;
       }
 
-    }
+      .nav-buttons button {
+        flex: 1;
+      }
 
+      .products {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 9px;
+      }
+
+      .product-image {
+        height: 150px;
+      }
+
+      .product-info {
+        padding: 9px;
+      }
+
+      .product-info h3 {
+        font-size: 14px;
+      }
+
+      .price {
+        font-size: 16px;
+      }
+
+      .card-buttons {
+        flex-direction: column;
+      }
+
+      .detail-actions {
+        flex-direction: column;
+      }
+
+      .detail-actions button {
+        width: 100%;
+      }
+    }
   </style>
 </head>
 
 <body>
 
+<header class="header">
+  <div class="header-row">
 
-  <!-- HEADER -->
-
-  <header>
-
-    <div class="logo">
-      NaijaMarkt
-    </div>
-
-    <div>
-
-      <button
-        id="accountButton"
-        class="account-button"
-        type="button"
-        onclick="openAccountPopup()"
-      >
-        LOGIN / SIGN UP
-      </button>
-
-      <button
-        id="logoutButton"
-        class="logout-button"
-        type="button"
-        onclick="logoutUser()"
-      >
-        LOGOUT
-      </button>
-
-    </div>
-
-  </header>
-
-
-  <!-- WELCOME -->
-
-  <section class="welcome">
-
-    <h1>
-      Buy and Sell Across Nigeria
-    </h1>
-
-    <p>
-      Find products from sellers across Nigeria.
-    </p>
-
-  </section>
-
-
-  <!-- SEARCH -->
-
-  <section class="search-section">
+    <div class="logo">NaijaMarkt</div>
 
     <div class="search-box">
-
       <input
-        type="text"
         id="searchInput"
-        placeholder="Search for products..."
-        onkeydown="if(event.key === 'Enter') searchProducts();"
+        type="search"
+        placeholder="Search products..."
       >
-
-      <button
-        type="button"
-        onclick="searchProducts()"
-      >
-        Search
-      </button>
-
+      <button id="searchButton" type="button">Search</button>
     </div>
 
+    <div class="nav-buttons">
+      <button id="latestButton" type="button">Latest</button>
+      <button id="accountButton" type="button">Login / Sign Up</button>
+      <button id="cartButton" type="button">Cart</button>
+      <button id="sellButton" class="sell-btn" type="button">Sell</button>
+      <button id="logoutButton" class="hidden" type="button">Logout</button>
+    </div>
+
+  </div>
+</header>
+
+
+<main class="container">
+
+  <section class="hero">
+    <h1>Buy and Sell Across Nigeria</h1>
+    <p>Find products, connect with sellers and sell your items on NaijaMarkt.</p>
   </section>
 
 
-  <!-- SELL -->
-
-  <div class="sell-area">
-
-    <button
-      class="sell-main-button"
-      type="button"
-      onclick="openSellBox()"
-    >
-      Sell an Item
-    </button>
-
-  </div>
-
-
-
-      <!-- SELL BOX -->
-
-<section id="sellBox" class="sell-box" style="display:none;">
-
-  <h2>Sell an Item</h2>
-
-  <div class="form-group">
-    <label for="productName">Product Name</label>
-    <input
-      type="text"
-      id="productName"
-      placeholder="Enter product name"
-    >
-  </div>
-
-  <div class="form-group">
-    <label for="productPrice">Price (₦)</label>
-    <input
-      type="number"
-      id="productPrice"
-      placeholder="Enter price"
-      min="0"
-    >
-  </div>
-
-  <div class="form-group">
-    <label for="productCategory">Category</label>
-    <select id="productCategory">
-      <option value="">Select category</option>
-      <option value="Phones & Tablets">Phones & Tablets</option>
-      <option value="Computers">Computers</option>
-      <option value="Fashion">Fashion</option>
-      <option value="Shoes">Shoes</option>
-      <option value="Vehicles">Vehicles</option>
-      <option value="Property">Property</option>
-      <option value="Furniture">Furniture</option>
-      <option value="Electronics">Electronics</option>
-      <option value="Gaming">Gaming</option>
-      <option value="Beauty">Beauty</option>
-      <option value="Sports">Sports</option>
-      <option value="Services">Services</option>
-      <option value="Other">Other</option>
-    </select>
-  </div>
-
-  <div class="form-group">
-    <label for="productPhotos">Product Photos</label>
-    <input
-      type="file"
-      id="productPhotos"
-      accept="image/*"
-      multiple
-    >
-    <small>You can select multiple photos.</small>
-  </div>
-
-  <div class="form-group">
-    <label for="productVideo">Product Video</label>
-    <input
-      type="file"
-      id="productVideo"
-      accept="video/*"
-    >
-    <small>Optional product video.</small>
-  </div>
-
-  <div class="form-group">
-    <label for="productDescription">Description</label>
-    <textarea
-      id="productDescription"
-      rows="5"
-      placeholder="Describe your product"
-    ></textarea>
-  </div>
-
-  <div class="form-group">
-    <label for="productState">State</label>
-    <input
-      type="text"
-      id="productState"
-      placeholder="Example: Lagos"
-    >
-  </div>
-
-  <div class="form-group">
-    <label for="productLga">LGA</label>
-    <input
-      type="text"
-      id="productLga"
-      placeholder="Example: Ikeja"
-    >
-  </div>
-
-  <div class="form-group">
-    <label for="productTown">Town / Area</label>
-    <input
-      type="text"
-      id="productTown"
-      placeholder="Example: Allen Avenue"
-    >
-  </div>
-
-  <div style="margin-top:20px;">
-
-    <button
-      type="button"
-      onclick="submitProduct()"
-    >
-      Post Item
-    </button>
-
-    <button
-      type="button"
-      onclick="closeSellBox()"
-      style="margin-left:10px; background:#777;"
-    >
-      Cancel
-    </button>
-
-  </div>
-
-  <p id="sellMessage" style="margin-top:15px;"></p>
-
-</section>
-
-
-<!-- CATEGORIES -->
-
-<section class="categories">
-
-  <h2>Categories</h2>
-
-  <div class="category-grid">
-
-    <div
-      class="category"
-      onclick="filterCategory('Phones & Tablets')"
-    >
-      Phones & Tablets
+  <section class="section">
+    <div class="section-title">
+      <h2>Categories</h2>
     </div>
 
-    <div
-      class="category"
-      onclick="filterCategory('Computers')"
-    >
-      Computers
+    <div id="categories" class="categories"></div>
+  </section>
+
+
+  <section class="section">
+    <div class="section-title">
+      <h2 id="productsTitle">Latest Products</h2>
     </div>
 
-    <div
-      class="category"
-      onclick="filterCategory('Fashion')"
-    >
-      Fashion
+    <div id="productsContainer" class="products">
+      <div class="empty">Loading products...</div>
     </div>
-
-    <div
-      class="category"
-      onclick="filterCategory('Shoes')"
-    >
-      Shoes
-    </div>
-
-    <div
-      class="category"
-      onclick="filterCategory('Vehicles')"
-    >
-      Vehicles
-    </div>
-
-    <div
-      class="category"
-      onclick="filterCategory('Property')"
-    >
-      Property
-    </div>
-
-    <div
-      class="category"
-      onclick="filterCategory('Furniture')"
-    >
-      Furniture
-    </div>
-
-    <div
-      class="category"
-      onclick="filterCategory('Electronics')"
-    >
-      Electronics
-    </div>
-
-    <div
-      class="category"
-      onclick="filterCategory('Gaming')"
-    >
-      Gaming
-    </div>
-
-    <div
-      class="category"
-      onclick="filterCategory('Beauty')"
-    >
-      Beauty
-    </div>
-
-    <div
-      class="category"
-      onclick="filterCategory('Sports')"
-    >
-      Sports
-    </div>
-
-    <div
-      class="category"
-      onclick="filterCategory('Services')"
-    >
-      Services
-    </div>
-
-    <div
-      class="category"
-      onclick="filterCategory('Other')"
-    >
-      Other
-    </div>
-
-  </div>
-
-</section>
+  </section>
 
 
-<!-- PRODUCTS -->
-
-<section class="products">
-
-  <h2>Latest Products</h2>
-
-  <div
-    id="productGrid"
-    class="product-grid"
-  ></div>
-
-  <p
-    id="productMessage"
-    style="text-align:center;"
-  ></p>
-
-</section>
-
-
-<!-- PRODUCT DETAILS MODAL -->
-<!-- PRODUCT DETAILS MODAL -->
-
-<div id="productModal">
-
-  <div class="product-modal-box">
-
-    <button
-      type="button"
-      id="closeProductModal"
-      onclick="closeProductModal()"
-    >
-      ×
-    </button>
-
-    <div id="productModalContent">
-
-      <!-- Main Product Image -->
-      <img
-        id="detailMainImage"
-        src=""
-        alt="Product"
-      >
-
-      <!-- Product Thumbnails -->
-      <div id="detailThumbnails"></div>
-
-      <!-- Product Video -->
-      <video
-        id="detailVideo"
-        controls
-      ></video>
-
-      <!-- Product Information -->
-      <h2
-        id="detailProductName"
-        class="detail-product-name"
-      ></h2>
-
-      <p
-        id="detailProductPrice"
-        class="detail-product-price"
-      ></p>
-
-      <p
-        id="detailProductLocation"
-        class="detail-product-location"
-      ></p>
-
-      <p
-        id="detailProductCategory"
-        class="detail-product-category"
-      ></p>
-
-      <p
-        id="detailProductDescription"
-        class="detail-product-description"
-      ></p>
-
-      <!-- Product Actions -->
-      <div class="detail-actions">
-
-        <button
-          type="button"
-          class="detail-cart"
-          onclick="addToCart()"
-        >
-          Add to Cart
-        </button>
-
-        <button
-          type="button"
-          class="detail-buy"
-          onclick="buyNow()"
-        >
-          Buy Now
-        </button>
-
-        <button
-          type="button"
-          class="detail-message"
-          onclick="messageSeller()"
-        >
-          Message Seller
-        </button>
-
-      </div>
-
-      <p id="productActionMessage"></p>
-
-    </div>
-
-  </div>
-
-</div>
-
-
-<!-- ACCOUNT POPUP -->
-
-<div id="accountPopup">
-
-  <button
-    id="closeAccount"
-    type="button"
-    onclick="closeAccountPopup()"
-  >
-    ×
-  </button>
-
-  <!-- LOGIN -->
-
-  <div id="loginBox">
-
-    <h2>Login</h2>
-
-    <input
-      type="email"
-      id="loginEmail"
-      placeholder="Email address"
-    >
-
-    <input
-      type="password"
-      id="loginPassword"
-      placeholder="Password"
-    >
-
-    <button
-      class="submit-account"
-      type="button"
-      onclick="loginUser()"
-    >
-      Login
-    </button>
-
-    <a
-      href="#"
-      onclick="forgotPassword(); return false;"
-      style="display:block; margin-top:10px;"
-    >
-      Forgot Password?
-    </a>
-
+  <section class="section live-section">
+    <h2>NaijaMarkt Live</h2>
     <p>
-
-      Don't have an account?
-
-      <a
-        href="#"
-        onclick="showSignup(); return false;"
-      >
-        Sign Up
-      </a>
-
+      Sellers will be able to showcase products through live video.
     </p>
+    <button id="liveButton" type="button">Open Live</button>
+  </section>
 
-  </div>
+</main>
 
-
-  <!-- SIGN UP -->
-
-  <div
-    id="signupBox"
-    style="display:none;"
-  >
-
-    <h2>Create Account</h2>
-
-    <input
-      type="email"
-      id="signupEmail"
-      placeholder="Email address"
-    >
-
-    <input
-      type="password"
-      id="signupPassword"
-      placeholder="Password"
-    >
-
-    <input
-      type="password"
-      id="signupConfirm"
-      placeholder="Confirm password"
-    >
-
-    <button
-      class="submit-account"
-      type="button"
-      onclick="signupUser()"
-    >
-      Create Account
-    </button>
-
-    <p>
-
-      Already have an account?
-
-      <a
-        href="#"
-        onclick="showLogin(); return false;"
-      >
-        Login
-      </a>
-
-    </p>
-
-  </div>
-
-  <p id="accountMessage"></p>
-
-</div>
-
-
-<!-- FOOTER -->
 
 <footer>
-
-  <p>
-    © 2026 NaijaMarkt. All rights reserved.
-  </p>
-
-  <p>
-    Buy and sell products across Nigeria.
-  </p>
-
+  <strong>NaijaMarkt</strong>
+  <p>Buy and sell products across Nigeria.</p>
+  <p>© 2026 NaijaMarkt</p>
 </footer>
 
 
-<!-- SUPABASE -->
+<!-- ACCOUNT MODAL -->
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<div id="accountModal" class="modal">
+  <div class="modal-box">
+
+    <button class="close" id="closeAccount" type="button">×</button>
+
+    <h2>NaijaMarkt Account</h2>
+
+    <div id="loggedInArea" class="hidden">
+
+      <div class="user-info">
+        <strong>Account</strong>
+        <p id="loggedInEmail"></p>
+      </div>
+
+      <button
+        id="accountLogoutButton"
+        class="primary"
+        type="button"
+      >
+        Logout
+      </button>
+
+    </div>
+
+
+    <div id="authArea">
+
+      <div class="account-tabs">
+        <button id="loginTab" class="active" type="button">
+          Login
+        </button>
+
+        <button id="signupTab" type="button">
+          Sign Up
+        </button>
+      </div>
+
+
+      <form id="loginForm">
+
+        <div class="form-group">
+          <label>Email</label>
+          <input
+            id="loginEmail"
+            type="email"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label>Password</label>
+          <input
+            id="loginPassword"
+            type="password"
+            required
+          >
+        </div>
+
+        <button class="primary" type="submit">
+          Login
+        </button>
+
+        <button
+          id="forgotPasswordButton"
+          class="secondary"
+          type="button"
+        >
+          Forgot Password
+        </button>
+
+        <div id="loginMessage" class="form-message"></div>
+
+      </form>
+
+
+      <form id="signupForm" class="hidden">
+
+        <div class="form-group">
+          <label>Display Name</label>
+          <input
+            id="signupName"
+            type="text"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label>Email</label>
+          <input
+            id="signupEmail"
+            type="email"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label>Password</label>
+          <input
+            id="signupPassword"
+            type="password"
+            minlength="6"
+            required
+          >
+        </div>
+
+        <button class="primary" type="submit">
+          Create Account
+        </button>
+
+        <div id="signupMessage" class="form-message"></div>
+
+      </form>
+
+    </div>
+
+  </div>
+</div>
+
+
+<!-- SELL MODAL -->
+
+<div id="sellModal" class="modal">
+  <div class="modal-box">
+
+    <button class="close" id="closeSell" type="button">×</button>
+
+    <h2>Sell an Item</h2>
+
+    <form id="sellForm">
+
+      <div class="form-group">
+        <label>Product Name</label>
+        <input id="productName" type="text" required>
+      </div>
+
+      <div class="form-group">
+        <label>Price (₦)</label>
+        <input id="productPrice" type="number" min="0" required>
+      </div>
+
+      <div class="form-group">
+        <label>Category</label>
+        <select id="productCategory" required></select>
+      </div>
+
+      <div class="form-group">
+        <label>Photos</label>
+        <input
+          id="productImages"
+          type="file"
+          accept="image/*"
+          multiple
+        >
+      </div>
+
+      <div class="form-group">
+        <label>Product Video</label>
+        <input
+          id="productVideo"
+          type="file"
+          accept="video/*"
+        >
+      </div>
+
+      <div class="form-group">
+        <label>Description</label>
+        <textarea id="productDescription"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>State</label>
+        <select id="productState" required></select>
+      </div>
+
+      <div class="form-group">
+        <label>LGA</label>
+        <input id="productLga" type="text" required>
+      </div>
+
+      <div class="form-group">
+        <label>Town / Area</label>
+        <input id="productTown" type="text" required>
+      </div>
+
+      <button class="primary" type="submit">
+        Post Item
+      </button>
+
+      <button
+        id="cancelSell"
+        class="secondary"
+        type="button"
+      >
+        Cancel
+      </button>
+
+      <div id="sellMessage" class="form-message"></div>
+
+    </form>
+
+  </div>
+</div>
+
+
+<!-- PRODUCT DETAILS -->
+
+<div id="productModal" class="modal">
+  <div class="modal-box large">
+
+    <button class="close" id="closeProduct" type="button">×</button>
+
+    <img
+      id="detailMainImage"
+      class="product-main-image"
+      alt="Product"
+    >
+
+    <div id="detailThumbnails" class="thumbnails"></div>
+
+    <video
+      id="detailVideo"
+      controls
+      class="product-main-image hidden"
+      style="margin-top:15px;"
+    ></video>
+
+    <h2 id="detailProductName"></h2>
+
+    <div id="detailProductPrice" class="detail-price"></div>
+
+    <div id="detailProductLocation" class="detail-location"></div>
+
+    <div id="detailProductCategory" class="detail-category"></div>
+
+    <div id="detailProductDescription" class="detail-description"></div>
+
+    <div id="sellerStatus" class="seller-status"></div>
+
+    <div class="detail-actions">
+
+      <button
+        id="detailCartButton"
+        class="btn-cart"
+        type="button"
+      >
+        Add to Cart
+      </button>
+
+      <button
+        id="detailBuyButton"
+        class="btn-buy"
+        type="button"
+      >
+        Buy Now
+      </button>
+
+      <button
+        id="detailMessageButton"
+        class="btn-message"
+        type="button"
+      >
+        Message Seller
+      </button>
+
+    </div>
+
+    <div id="productActionMessage" class="form-message"></div>
+
+  </div>
+</div>
+
+
+<!-- CART -->
+
+<div id="cartModal" class="modal">
+  <div class="modal-box">
+
+    <button class="close" id="closeCart" type="button">×</button>
+
+    <h2>Your Cart</h2>
+
+    <div id="cartContainer"></div>
+
+    <button
+      id="checkoutButton"
+      class="primary"
+      type="button"
+    >
+      Checkout
+    </button>
+
+  </div>
+</div>
+
+
+<!-- MESSAGE SELLER -->
+
+<div id="messageModal" class="modal">
+  <div class="modal-box">
+
+    <button class="close" id="closeMessage" type="button">×</button>
+
+    <h2>Message Seller</h2>
+
+    <p id="messageProductName"></p>
+
+    <form id="messageForm">
+
+      <div class="form-group">
+        <label>Your Message</label>
+        <textarea
+          id="sellerMessage"
+          required
+          placeholder="Write your message..."
+        ></textarea>
+      </div>
+
+      <button class="primary" type="submit">
+        Send Message
+      </button>
+
+      <div id="messageStatus" class="form-message"></div>
+
+    </form>
+
+  </div>
+</div>
+
+
+<!-- LIVE -->
+
+<div id="liveModal" class="modal">
+  <div class="modal-box">
+
+    <button class="close" id="closeLive" type="button">×</button>
+
+    <h2>NaijaMarkt Live</h2>
+
+    <p>
+      Live streaming is being prepared for NaijaMarkt.
+    </p>
+
+    <p>
+      Sellers will be able to showcase products and interact
+      with buyers through live video.
+    </p>
+
+  </div>
+</div>
+
 
 <script>
-
-const SUPABASE_URL =
-  "https://qtolaqjjqoczcausyvbr.supabase.co";
-
-const SUPABASE_KEY =
-  "sb_publishable_VdTs0tXujyKVqU4h8wOriw_Xle29ijU";
-
-const SITE_URL =
-  "https://xzobbyck-design.github.io/naijamarkt/";
-
-const supabaseClient =
-  window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-  );
-
-
-let currentUser = null;
-let currentProduct = null;
-
-
-/* =========================
-   ACCOUNT POPUP
-========================= */
-
-function openAccountPopup() {
-
-  document.getElementById("accountPopup").style.display =
-    "block";
-
-  showLogin();
-
-}
-
-
-function closeAccountPopup() {
-
-  document.getElementById("accountPopup").style.display =
-    "none";
-
-}
-
-
-function showLogin() {
-
-  document.getElementById("loginBox").style.display =
-    "block";
-
-  document.getElementById("signupBox").style.display =
-    "none";
-
-  document.getElementById("accountMessage").textContent =
-    "";
-
-}
-
-
-function showSignup() {
-
-  document.getElementById("loginBox").style.display =
-    "none";
-
-  document.getElementById("signupBox").style.display =
-    "block";
-
-  document.getElementById("accountMessage").textContent =
-    "";
-
-}
-
-
-/* =========================
-   SIGN UP
-========================= */
-
-async function signupUser() {
-
-  const email =
-    document.getElementById("signupEmail").value.trim();
-
-  const password =
-    document.getElementById("signupPassword").value;
-
-  const confirmPassword =
-    document.getElementById("signupConfirm").value;
-
-  const message =
-    document.getElementById("accountMessage");
-
-
-  if (!email || !password || !confirmPassword) {
-
-    message.textContent =
-      "Please fill in all fields.";
-
-    return;
-  }
-
-
-  if (password !== confirmPassword) {
-
-    message.textContent =
-      "Passwords do not match.";
-
-    return;
-  }
-
-
-  if (password.length < 6) {
-
-    message.textContent =
-      "Password must be at least 6 characters.";
-
-    return;
-  }
-
-
-  message.textContent =
-    "Creating account...";
-
-
-  const { data, error } =
-    await supabaseClient.auth.signUp({
-
-      email: email,
-
-      password: password,
-
-      options: {
-        emailRedirectTo: SITE_URL
-      }
-
-    });
-
-
-  if (error) {
-
-    message.textContent =
-      error.message;
-
-    return;
-  }
-
-
-  if (data.user) {
-
-    message.textContent =
-      "Account created. Check your email to confirm your account.";
-
-  }
-
-}
-
-
-/* =========================
-   LOGIN
-========================= */
-
-async function loginUser() {
-
-  const email =
-    document.getElementById("loginEmail").value.trim();
-
-  const password =
-    document.getElementById("loginPassword").value;
-
-  const message =
-    document.getElementById("accountMessage");
-
-
-  if (!email || !password) {
-
-    message.textContent =
-      "Please enter your email and password.";
-
-    return;
-  }
-
-
-  message.textContent =
-    "Logging in...";
-
-
-  const { data, error } =
-    await supabaseClient.auth.signInWithPassword({
-
-      email: email,
-
-      password: password
-
-    });
-
-
-  if (error) {
-
-    message.textContent =
-      error.message;
-
-    return;
-  }
-
-
-  currentUser = data.user;
-
-
-  message.textContent =
-    "Login successful.";
-
-
-  updateAccountButton();
-
-
-  setTimeout(() => {
-
-    closeAccountPopup();
-
-  }, 800);
-
-}
-
-
-/* =========================
-   LOGOUT
-========================= */
-
-async function logoutUser() {
-
-  await supabaseClient.auth.signOut();
-
-  currentUser = null;
-
-  updateAccountButton();
-
-  closeSellBox();
-
-}
-
-
-/* =========================
-   FORGOT PASSWORD
-========================= */
-
-async function forgotPassword() {
-
-  const email =
-    document.getElementById("loginEmail").value.trim();
-
-  const message =
-    document.getElementById("accountMessage");
-
-
-  if (!email) {
-
-    message.textContent =
-      "Enter your email address first.";
-
-    return;
-  }
-
-
-  message.textContent =
-    "Sending password reset email...";
-
-
-  const { error } =
-    await supabaseClient.auth.resetPasswordForEmail(
-      email,
-      {
-        redirectTo: SITE_URL
-      }
+  /* ================================
+     SUPABASE
+  ================================= */
+
+  const SUPABASE_URL =
+    "https://qtolaqjjqoczcausyvbr.supabase.co";
+
+  const SUPABASE_KEY =
+    "sb_publishable_VdTs0tXujyKVqU4h8wOriw_Xle29ijU";
+
+  const SITE_URL =
+    "https://xzobbyck-design.github.io/naijamarkt/";
+
+  const supabaseClient =
+    window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_KEY
     );
 
 
-  if (error) {
+  /* ================================
+     DATA
+  ================================= */
 
-    message.textContent =
-      error.message;
+  const categories = [
+    "Phones & Tablets",
+    "Computers",
+    "Fashion",
+    "Shoes",
+    "Vehicles",
+    "Property",
+    "Furniture",
+    "Electronics",
+    "Gaming",
+    "Beauty",
+    "Sports",
+    "Services",
+    "Other"
+  ];
 
-    return;
+  const states = [
+    "Abia",
+    "Adamawa",
+    "Akwa Ibom",
+    "Anambra",
+    "Bauchi",
+    "Bayelsa",
+    "Benue",
+    "Borno",
+    "Cross River",
+    "Delta",
+    "Ebonyi",
+    "Edo",
+    "Ekiti",
+    "Enugu",
+    "Gombe",
+    "Imo",
+    "Jigawa",
+    "Kaduna",
+    "Kano",
+    "Katsina",
+    "Kebbi",
+    "Kogi",
+    "Kwara",
+    "Lagos",
+    "Nasarawa",
+    "Niger",
+    "Ogun",
+    "Ondo",
+    "Osun",
+    "Oyo",
+    "Plateau",
+    "Rivers",
+    "Sokoto",
+    "Taraba",
+    "Yobe",
+    "Zamfara",
+    "Federal Capital Territory"
+  ];
+
+
+  let currentUser = null;
+  let currentProduct = null;
+
+
+  /* ================================
+     HELPERS
+  ================================= */
+
+  function $(id) {
+    return document.getElementById(id);
+  }
+
+  function showModal(id) {
+    $(id).style.display = "block";
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeModal(id) {
+    $(id).style.display = "none";
+    document.body.style.overflow = "";
+  }
+
+  function money(value) {
+    return "₦" + Number(value || 0).toLocaleString();
+  }
+
+  function escapeHtml(value) {
+    const div = document.createElement("div");
+    div.textContent = value == null ? "" : String(value);
+    return div.innerHTML;
   }
 
 
-  message.textContent =
-    "Password reset email sent. Check your inbox.";
+  /* ================================
+     INITIAL UI
+  ================================= */
 
-}
+  function setupCategories() {
+
+    $("categories").innerHTML = "";
+
+    categories.forEach(function(category) {
+
+      const item = document.createElement("div");
+
+      item.className = "category";
+
+      item.textContent = category;
+
+      item.addEventListener("click", function() {
+        loadProducts(category);
+      });
+
+      $("categories").appendChild(item);
+
+    });
+
+  }
 
 
-/* =========================
-   ACCOUNT BUTTON
-========================= */
+  function setupStates() {
 
-function updateAccountButton() {
+    const stateSelect = $("state");
 
-  const accountButton =
-    document.querySelector(".account-button");
-
-  const logoutButton =
-    document.getElementById("logoutButton");
-
-
-  if (!accountButton) return;
-
-
-  if (currentUser) {
-
-    accountButton.textContent =
-      "MY ACCOUNT";
-
-    if (logoutButton) {
-      logoutButton.style.display = "inline-block";
+    if (!stateSelect) {
+      return;
     }
 
-  } else {
+    stateSelect.innerHTML =
+      '<option value="">Select State</option>';
 
-    accountButton.textContent =
-      "LOGIN / SIGN UP";
+    states.forEach(function(state) {
 
-    if (logoutButton) {
-      logoutButton.style.display = "none";
+      const option =
+        document.createElement("option");
+
+      option.value = state;
+
+      option.textContent = state;
+
+      stateSelect.appendChild(option);
+
+    });
+
+  }
+
+
+  function setupCategorySelect() {
+
+    const select = $("category");
+
+    if (!select) {
+      return;
+    }
+
+    select.innerHTML =
+      '<option value="">Select Category</option>';
+
+    categories.forEach(function(category) {
+
+      const option =
+        document.createElement("option");
+
+      option.value = category;
+
+      option.textContent = category;
+
+      select.appendChild(option);
+
+    });
+
+  }
+
+
+  function setupProductImagesPreview() {
+
+    const input = $("productImages");
+
+    const preview = $("imagePreview");
+
+    if (!input || !preview) {
+      return;
+    }
+
+    input.addEventListener("change", function() {
+
+      preview.innerHTML = "";
+
+      const files =
+        Array.from(input.files || []);
+
+      files.slice(0, 10).forEach(function(file) {
+
+        if (!file.type.startsWith("image/")) {
+          return;
+        }
+
+        const reader =
+          new FileReader();
+
+        reader.onload = function(event) {
+
+          const image =
+            document.createElement("img");
+
+          image.src =
+            event.target.result;
+
+          image.alt =
+            "Product image preview";
+
+          preview.appendChild(image);
+
+        };
+
+        reader.readAsDataURL(file);
+
+      });
+
+    });
+
+  }
+
+
+  function setupSearch() {
+
+    const searchInput =
+      $("searchInput");
+
+    const searchButton =
+      $("searchButton");
+
+    if (searchButton) {
+
+      searchButton.addEventListener(
+        "click",
+        function() {
+
+          const value =
+            searchInput
+              ? searchInput.value.trim()
+              : "";
+
+          loadProducts(value);
+
+        }
+      );
+
+    }
+
+    if (searchInput) {
+
+      searchInput.addEventListener(
+        "keydown",
+        function(event) {
+
+          if (event.key === "Enter") {
+
+            event.preventDefault();
+
+            const value =
+              searchInput.value.trim();
+
+            loadProducts(value);
+
+          }
+
+        }
+      );
+
     }
 
   }
 
-}
 
+  function setupAuthForms() {
 
-/* =========================
-   SELL BOX
-========================= */
+    const loginForm =
+      $("loginForm");
 
-function openSellBox() {
+    if (loginForm) {
 
-  if (!currentUser) {
+      loginForm.addEventListener(
+        "submit",
+        async function(event) {
 
-    openAccountPopup();
+          event.preventDefault();
 
-    return;
-  }
+          const email =
+            $("loginEmail")
+              ? $("loginEmail").value.trim()
+              : "";
 
+          const password =
+            $("loginPassword")
+              ? $("loginPassword").value
+              : "";
 
-  document.getElementById("sellBox").style.display =
-    "block";
-
-
-  document.getElementById("sellBox").scrollIntoView({
-    behavior: "smooth"
-  });
-
-}
-
-
-function closeSellBox() {
-
-  const sellBox =
-    document.getElementById("sellBox");
-
-  if (sellBox) {
-
-    sellBox.style.display =
-      "none";
-
-  }
-
-}
-
-
-/* =========================
-   POST PRODUCT
-========================= */
-
-async function submitProduct() {
-
-  if (!currentUser) {
-
-    document.getElementById("sellMessage").textContent =
-      "Please login first.";
-
-    return;
-  }
-
-
-  const name =
-    document.getElementById("productName").value.trim();
-
-  const price =
-    document.getElementById("productPrice").value;
-
-  const category =
-    document.getElementById("productCategory").value;
-
-  const description =
-    document.getElementById("productDescription").value.trim();
-
-  const state =
-    document.getElementById("productState").value.trim();
-
-  const lga =
-    document.getElementById("productLga").value.trim();
-
-  const town =
-    document.getElementById("productTown").value.trim();
-
-  const photos =
-    document.getElementById("productPhotos").files;
-
-  const video =
-    document.getElementById("productVideo").files[0];
-
-  const message =
-    document.getElementById("sellMessage");
-
-
-  if (
-    !name ||
-    !price ||
-    !category ||
-    !description ||
-    !state ||
-    !lga ||
-    !town
-  ) {
-
-    message.textContent =
-      "Please fill in all required fields.";
-
-    return;
-  }
-
-
-  message.textContent =
-    "Uploading product...";
-
-
-  try {
-
-    const imageUrls = [];
-
-
-    /* UPLOAD PHOTOS */
-
-    for (let i = 0; i < photos.length; i++) {
-
-      const file =
-        photos[i];
-
-      const fileName =
-        Date.now() +
-        "_" +
-        i +
-        "_" +
-        file.name.replace(
-          /[^a-zA-Z0-9._-]/g,
-          "_"
-        );
-
-      const filePath =
-        currentUser.id +
-        "/" +
-        fileName;
-
-
-      const { error: uploadError } =
-        await supabaseClient.storage
-          .from("product-media")
-          .upload(
-            filePath,
-            file
+          await login(
+            email,
+            password
           );
 
-
-      if (uploadError) {
-
-        throw uploadError;
-
-      }
-
-
-      const { data: publicData } =
-        supabaseClient.storage
-          .from("product-media")
-          .getPublicUrl(filePath);
-
-
-      imageUrls.push(
-        publicData.publicUrl
+        }
       );
 
     }
 
 
-    /* UPLOAD VIDEO */
+    const signupForm =
+      $("signupForm");
 
-    let videoUrl = null;
+    if (signupForm) {
 
+      signupForm.addEventListener(
+        "submit",
+        async function(event) {
 
-    if (video) {
+          event.preventDefault();
 
-      const videoName =
-        Date.now() +
-        "_video_" +
-        video.name.replace(
-          /[^a-zA-Z0-9._-]/g,
-          "_"
-        );
+          const name =
+            $("signupName")
+              ? $("signupName").value.trim()
+              : "";
 
-      const videoPath =
-        currentUser.id +
-        "/" +
-        videoName;
+          const email =
+            $("signupEmail")
+              ? $("signupEmail").value.trim()
+              : "";
 
+          const password =
+            $("signupPassword")
+              ? $("signupPassword").value
+              : "";
 
-      const { error: videoError } =
-        await supabaseClient.storage
-          .from("product-media")
-          .upload(
-            videoPath,
-            video
+          await signup(
+            name,
+            email,
+            password
           );
 
-
-      if (videoError) {
-
-        throw videoError;
-
-      }
-
-
-      const { data: videoData } =
-        supabaseClient.storage
-          .from("product-media")
-          .getPublicUrl(videoPath);
-
-
-      videoUrl =
-        videoData.publicUrl;
+        }
+      );
 
     }
 
 
-    /* SAVE PRODUCT */
+    const forgotForm =
+      $("forgotForm");
 
-    const { error } =
-      await supabaseClient
-        .from("products")
-        .insert({
+    if (forgotForm) {
 
-          product: name,
+      forgotForm.addEventListener(
+        "submit",
+        async function(event) {
 
-          price: Number(price),
+          event.preventDefault();
 
-          category: category,
+          const email =
+            $("forgotEmail")
+              ? $("forgotEmail").value.trim()
+              : "";
 
-          description: description,
+          await forgotPassword(email);
 
-          state: state,
-
-          lga: lga,
-
-          town_area: town,
-
-          seller_id: currentUser.id,
-
-          image_urls: imageUrls,
-
-          video_url: videoUrl
-
-        });
-
-
-    if (error) {
-
-      throw error;
+        }
+      );
 
     }
-
-
-    message.textContent =
-      "Product posted successfully.";
-
-
-    /* CLEAR FORM */
-
-    document.getElementById("productName").value =
-      "";
-
-    document.getElementById("productPrice").value =
-      "";
-
-    document.getElementById("productCategory").value =
-      "";
-
-    document.getElementById("productDescription").value =
-      "";
-
-    document.getElementById("productState").value =
-      "";
-
-    document.getElementById("productLga").value =
-      "";
-
-    document.getElementById("productTown").value =
-      "";
-
-    document.getElementById("productPhotos").value =
-      "";
-
-    document.getElementById("productVideo").value =
-      "";
-
-
-    await loadProducts();
-
-
-  } catch (error) {
-
-    console.error(error);
-
-    message.textContent =
-      error.message ||
-      "Something went wrong while posting the product.";
 
   }
 
-}
+
+  function setupSellForm() {
+
+    const form =
+      $("sellForm");
+
+    if (!form) {
+      return;
+    }
+
+    form.addEventListener(
+      "submit",
+      function(event) {
+
+        event.preventDefault();
+
+        postProduct();
+
+      }
+    );
+
+  }
 
 
-/* =========================
-   LOAD PRODUCTS
-========================= */
+  function setupMessageForm() {
 
-async function loadProducts(
-  categoryFilter = null,
-  searchText = ""
-) {
+    const form =
+      $("messageForm");
 
-  const productGrid =
-    document.getElementById("productGrid");
+    if (!form) {
+      return;
+    }
 
-  const productMessage =
-    document.getElementById("productMessage");
+    form.addEventListener(
+      "submit",
+      function(event) {
+
+        event.preventDefault();
+
+        sendMessage();
+
+      }
+    );
+
+  }
 
 
-  productMessage.textContent =
-    "Loading products...";
+  function setupAccountTabs() {
+
+    const loginTab =
+      $("loginTab");
+
+    const signupTab =
+      $("signupTab");
+
+    const forgotTab =
+      $("forgotTab");
 
 
-  let query =
-    supabaseClient
-      .from("products")
-      .select("*")
-      .order("created_at", {
-        ascending: false
+    if (loginTab) {
+
+      loginTab.addEventListener(
+        "click",
+        function() {
+
+          switchAccountTab("login");
+
+        }
+      );
+
+    }
+
+
+    if (signupTab) {
+
+      signupTab.addEventListener(
+        "click",
+        function() {
+
+          switchAccountTab("signup");
+
+        }
+      );
+
+    }
+
+
+    if (forgotTab) {
+
+      forgotTab.addEventListener(
+        "click",
+        function() {
+
+          switchAccountTab("forgot");
+
+        }
+      );
+
+    }
+
+  }
+
+
+  function setupCloseButtons() {
+
+    document
+      .querySelectorAll("[data-close-modal]")
+      .forEach(function(button) {
+
+        button.addEventListener(
+          "click",
+          function() {
+
+            const modalId =
+              button.getAttribute(
+                "data-close-modal"
+              );
+
+            if (modalId) {
+              closeModal(modalId);
+            }
+
+          }
+        );
+
       });
 
 
-  if (categoryFilter) {
+    document
+      .querySelectorAll(".modal")
+      .forEach(function(modal) {
 
-    query =
-      query.eq(
-        "category",
-        categoryFilter
-      );
+        modal.addEventListener(
+          "click",
+          function(event) {
+
+            if (
+              event.target === modal
+            ) {
+
+              modal.classList.add(
+                "hidden"
+              );
+
+            }
+
+          }
+        );
+
+      });
 
   }
 
 
-  if (searchText) {
+  /* ================================
+     START APPLICATION
+  ================================= */
 
-    query =
-      query.or(
-        "product.ilike.%" +
-        searchText +
-        "%," +
-        "description.ilike.%" +
-        searchText +
-        "%"
-      );
+  async function initializeApp() {
+
+    setupCategories();
+
+    setupStates();
+
+    setupCategorySelect();
+
+    setupProductImagesPreview();
+
+    setupSearch();
+
+    setupAuthForms();
+
+    setupSellForm();
+
+    setupMessageForm();
+
+    setupAccountTabs();
+
+    setupCloseButtons();
+
+    updateCartCount();
+
+    updateAuthUI();
+
+    await refreshUser();
+
+    loadProducts();
 
   }
 
 
-  const { data, error } =
-    await query;
+  /* ================================
+     AUTH STATE
+  ================================= */
 
+  supabaseClient.auth.onAuthStateChange(
+    async function(event, session) {
 
-  if (error) {
+      currentUser =
+        session
+          ? session.user
+          : null;
 
-    console.error(error);
+      updateAuthUI();
 
-    productMessage.textContent =
-      "Could not load products.";
+      if (currentUser) {
 
-    return;
-  }
+        await ensureProfile(
+          currentUser
+        );
 
+        await loadProducts();
 
-  renderProducts(data || []);
-
-}
-
-
-/* =========================
-   RENDER PRODUCTS
-========================= */
-
-function renderProducts(products) {
-
-  const productGrid =
-    document.getElementById("productGrid");
-
-  const productMessage =
-    document.getElementById("productMessage");
-
-
-  productGrid.innerHTML = "";
-
-
-  if (!products || !products.length) {
-
-    productMessage.textContent =
-      "No products found.";
-
-    return;
-  }
-
-
-  productMessage.textContent = "";
-
-
-  products.forEach(product => {
-
-    const card =
-      document.createElement("div");
-
-    card.className =
-      "product-card";
-
-
-    const images =
-      Array.isArray(product.image_urls)
-        ? product.image_urls
-        : [];
-
-
-    const firstImage =
-      images.length
-        ? images[0]
-        : "";
-
-
-    const productName =
-      escapeHtml(product.product || "Product");
-
-
-    const price =
-      Number(product.price || 0)
-        .toLocaleString();
-
-
-    const location =
-      escapeHtml(
-        [
-          product.town_area,
-          product.lga,
-          product.state
-        ]
-        .filter(Boolean)
-        .join(", ")
-      );
-
-
-    card.innerHTML = `
-
-      ${
-        firstImage
-          ? `
-            <img
-              src="${escapeHtml(firstImage)}"
-              alt="${productName}"
-              style="
-                width:100%;
-                height:200px;
-                object-fit:cover;
-                border-radius:8px;
-                display:block;
-              "
-            >
-          `
-          : `
-            <div
-              style="
-                width:100%;
-                height:200px;
-                background:#eeeeee;
-                display:flex;
-                align-items:center;
-                justify-content:center;
-                border-radius:8px;
-                color:#777;
-              "
-            >
-              No Image
-            </div>
-          `
       }
 
-      <h3>
-        ${productName}
-      </h3>
-
-      <p class="price">
-        ₦${price}
-      </p>
-
-      <p class="location">
-        ${location}
-      </p>
-
-      <p
-        style="
-          font-size:14px;
-          color:#666;
-          margin:8px 0;
-        "
-      >
-        ${escapeHtml(product.category || "")}
-      </p>
-
-      <button
-        type="button"
-        class="buy-button"
-        onclick="openProductDetailsById('${product.id}')"
-      >
-        View Product
-      </button>
-
-    `;
-
-
-    productGrid.appendChild(card);
-
-  });
-
-}
-
-
-/* =========================
-   OPEN PRODUCT FROM CARD
-========================= */
-
-async function openProductDetailsById(productId) {
-
-  const { data, error } =
-    await supabaseClient
-      .from("products")
-      .select("*")
-      .eq("id", productId)
-      .single();
-
-
-  if (error) {
-
-    console.error(error);
-
-    alert(
-      "Could not open this product."
-    );
-
-    return;
-  }
-
-
-  openProductDetails(data);
-
-}
-
-
-/* =========================
-   SEARCH PRODUCTS
-========================= */
-
-async function searchProducts() {
-
-  const searchInput =
-    document.getElementById("searchInput");
-
-
-  if (!searchInput) return;
-
-
-  const searchText =
-    searchInput.value.trim();
-
-
-  await loadProducts(
-    null,
-    searchText
-  );
-
-}
-
-
-/* =========================
-   CATEGORY FILTER
-========================= */
-
-async function filterCategory(category) {
-
-  await loadProducts(
-    category,
-    ""
-  );
-
-}
-
-
-/* =========================
-   PRODUCT DETAILS
-========================= */
-
-function openProductDetails(product) {
-
-  currentProduct =
-    product;
-
-
-  const modal =
-    document.getElementById("productModal");
-
-  const mainImage =
-    document.getElementById("modalMainImage");
-
-  const thumbnails =
-    document.getElementById("modalThumbnails");
-
-  const video =
-    document.getElementById("modalVideo");
-
-  const name =
-    document.getElementById("modalProductName");
-
-  const price =
-    document.getElementById("modalProductPrice");
-
-  const location =
-    document.getElementById("modalProductLocation");
-
-  const category =
-    document.getElementById("modalProductCategory");
-
-  const description =
-    document.getElementById("modalProductDescription");
-
-
-  const images =
-    Array.isArray(product.image_urls)
-      ? product.image_urls
-      : [];
-
-
-  /* MAIN IMAGE */
-
-  if (images.length > 0) {
-
-    mainImage.src =
-      images[0];
-
-    mainImage.style.display =
-      "block";
-
-  } else {
-
-    mainImage.src =
-      "";
-
-    mainImage.style.display =
-      "none";
-
-  }
-
-
-  /* THUMBNAILS */
-
-  thumbnails.innerHTML =
-    "";
-
-
-  images.forEach(image => {
-
-    const thumbnail =
-      document.createElement("img");
-
-
-    thumbnail.src =
-      image;
-
-    thumbnail.alt =
-      product.product || "Product";
-
-    thumbnail.style.width =
-      "70px";
-
-    thumbnail.style.height =
-      "70px";
-
-    thumbnail.style.objectFit =
-      "cover";
-
-    thumbnail.style.borderRadius =
-      "6px";
-
-    thumbnail.style.cursor =
-      "pointer";
-
-
-    thumbnail.onclick =
-      function() {
-
-        mainImage.src =
-          image;
-
-      };
-
-
-    thumbnails.appendChild(
-      thumbnail
-    );
-
-  });
-
-
-  /* PRODUCT VIDEO */
-
-  if (product.video_url) {
-
-/* =========================
-   OPEN PRODUCT DETAILS
-========================= */
-
-function openProductDetails(product) {
-
-  currentProduct = product;
-
-  const modal =
-    document.getElementById("productModal");
-
-  const mainImage =
-    document.getElementById("detailMainImage");
-
-  const thumbnails =
-    document.getElementById("detailThumbnails");
-
-  const video =
-    document.getElementById("detailVideo");
-
-  const name =
-    document.getElementById("detailProductName");
-
-  const price =
-    document.getElementById("detailProductPrice");
-
-  const location =
-    document.getElementById("detailProductLocation");
-
-  const category =
-    document.getElementById("detailProductCategory");
-
-  const description =
-    document.getElementById("detailProductDescription");
-
-  const actionMessage =
-    document.getElementById("productActionMessage");
-
-
-  /* PRODUCT IMAGES */
-
-  const images =
-    Array.isArray(product.image_urls)
-      ? product.image_urls
-      : [];
-
-
-  if (images.length > 0) {
-
-    mainImage.src = images[0];
-
-    mainImage.style.display = "block";
-
-  } else {
-
-    mainImage.src = "";
-
-    mainImage.style.display = "none";
-
-  }
-
-
-  /* PRODUCT THUMBNAILS */
-
-  thumbnails.innerHTML = "";
-
-  images.forEach(function(image) {
-
-    const thumbnail =
-      document.createElement("img");
-
-    thumbnail.src = image;
-
-    thumbnail.alt =
-      product.product || "Product";
-
-    thumbnail.className =
-      "detail-thumb";
-
-    thumbnail.onclick =
-      function() {
-
-        mainImage.src = image;
-
-      };
-
-    thumbnails.appendChild(thumbnail);
-
-  });
-
-
-  /* PRODUCT VIDEO */
-
-  if (product.video_url) {
-
-    video.src =
-      product.video_url;
-
-    video.style.display =
-      "block";
-
-  } else {
-
-    video.src =
-      "";
-
-    video.style.display =
-      "none";
-
-  }
-
-
-  /* PRODUCT INFORMATION */
-
-  name.textContent =
-    product.product || "";
-
-  price.textContent =
-    "₦" +
-    Number(product.price || 0)
-      .toLocaleString();
-
-  location.textContent =
-    [
-      product.town_area,
-      product.lga,
-      product.state
-    ]
-    .filter(Boolean)
-    .join(", ");
-
-  category.textContent =
-    "Category: " +
-    (product.category || "");
-
-  description.textContent =
-    product.description || "";
-
-
-  /* CLEAR ACTION MESSAGE */
-
-  if (actionMessage) {
-
-    actionMessage.textContent = "";
-
-  }
-
-
-  /* SHOW MODAL */
-
-  modal.style.display =
-    "block";
-
-  document.body.style.overflow =
-    "hidden";
-
-}
-/* =========================
-   CLOSE PRODUCT MODAL
-========================= */
-
-function closeProductModal() {
-
-  const modal =
-    document.getElementById("productModal");
-
-
-  modal.style.display =
-    "none";
-
-
-  const video =
-    document.getElementById("modalVideo");
-
-
-  video.pause();
-
-  video.src =
-    "";
-
-
-  document.body.style.overflow =
-    "auto";
-
-
-  currentProduct =
-    null;
-
-}
-
-
-/* =========================
-   BUY NOW
-========================= */
-
-function buyNow() {
-
-  if (!currentProduct) {
-    return;
-  }
-
-
-  if (!currentUser) {
-
-    closeProductModal();
-
-    openAccountPopup();
-
-    return;
-  }
-
-
-  alert(
-    "Checkout for " +
-    currentProduct.product +
-    " will be connected next."
-  );
-
-}
-/* =========================
-   ADD TO CART
-========================= */
-
-function addToCart() {
-
-  if (!currentProduct) {
-    return;
-  }
-
-  if (!currentUser) {
-
-    closeProductModal();
-
-    openAccountPopup();
-
-    return;
-  }
-
-  let cart =
-    JSON.parse(
-      localStorage.getItem("naijamarkt_cart") || "[]"
-    );
-
-  const alreadyInCart =
-    cart.some(function(item) {
-      return String(item.id) === String(currentProduct.id);
-    });
-
-  if (alreadyInCart) {
-
-    const message =
-      document.getElementById("productActionMessage");
-
-    if (message) {
-      message.textContent =
-        "This product is already in your cart.";
     }
-
-    return;
-  }
-
-  cart.push(currentProduct);
-
-  localStorage.setItem(
-    "naijamarkt_cart",
-    JSON.stringify(cart)
   );
 
-  const message =
-    document.getElementById("productActionMessage");
 
-  if (message) {
-    message.textContent =
-      "Product added to cart.";
-  }
+  /* ================================
+     ONLINE STATUS
+  ================================= */
 
-  }
-/* =========================
-   MESSAGE SELLER
-========================= */
+  setInterval(
+    async function() {
 
-function messageSeller() {
+      if (currentUser) {
 
-  if (!currentProduct) {
-    return;
-  }
+        await heartbeat();
 
-  if (!currentUser) {
+      }
 
-    closeProductModal();
-
-    openAccountPopup();
-
-    return;
-  }
-
-  const message =
-    document.getElementById("productActionMessage");
-
-  if (message) {
-
-    message.textContent =
-      "Seller messaging will be connected next.";
-
-  }
-
-}
-/* =========================
-   ESCAPE HTML
-========================= */
-
-function escapeHtml(value) {
-
-  return String(value || "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-
-}
+    },
+    60000
+  );
 
 
-/* =========================
-   INITIALIZE APP
-========================= */
+  window.addEventListener(
+    "beforeunload",
+    function() {
 
-async function initializeApp() {
+      if (currentUser) {
 
-  const {
-    data: {
-      session
+        setOnlineStatus(false);
+
+      }
+
     }
-  } =
-    await supabaseClient.auth.getSession();
+  );
 
 
-  if (session) {
+  /* ================================
+     GLOBAL FUNCTIONS
+  ================================= */
 
-    currentUser =
-      session.user;
+  window.openModal =
+    openModal;
 
-  } else {
+  window.closeModal =
+    closeModal;
 
-    currentUser =
-      null;
+  window.openAccount =
+    openAccount;
 
-  }
+  window.openSell =
+    openSell;
+
+  window.openCart =
+    openCart;
+
+  window.openLive =
+    openLive;
+
+  window.logout =
+    logout;
+
+  window.switchAccountTab =
+    switchAccountTab;
+
+  window.openProductDetailsById =
+    openProductDetailsById;
+
+  window.changeDetailImage =
+    changeDetailImage;
+
+  window.addToCart =
+    addToCart;
+
+  window.removeFromCart =
+    removeFromCart;
+
+  window.messageSeller =
+    messageSeller;
+
+  window.sendMessage =
+    sendMessage;
+
+  window.buyNow =
+    buyNow;
+
+  window.searchProducts =
+    searchProducts;
+
+  window.filterCategory =
+    filterCategory;
+
+  window.previewProductImages =
+    previewProductImages;
 
 
-  updateAccountButton();
+  /* ================================
+     DOM READY
+  ================================= */
 
-  await loadProducts();
+  document.addEventListener(
+    "DOMContentLoaded",
+    function() {
 
-}
+      initializeApp();
 
-
-/* =========================
-   AUTH STATE
-========================= */
-
-supabaseClient.auth.onAuthStateChange(
-  function(event, session) {
-
-    currentUser =
-      session
-        ? session.user
-        : null;
-
-
-    updateAccountButton();
-
-  }
-);
-
-
-/* =========================
-   START APP
-========================= */
-
-document.addEventListener(
-  "DOMContentLoaded",
-  function() {
-
-    initializeApp();
-
-  }
-);
+    }
+  );
 
 </script>
 
