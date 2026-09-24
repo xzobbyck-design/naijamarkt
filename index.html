@@ -173,6 +173,1476 @@
       </div>
     </div>
   </header>
+<!-- MAIN SEARCH AREA -->
+  <main>
 
+    <section style="
+      background:white;
+      padding:35px 0;
+      border-bottom:1px solid #e5e5e5;
+    ">
+      <div class="container">
+
+        <h1 style="
+          margin:0 0 10px;
+          font-size:32px;
+        ">
+          Buy and Sell in Nigeria
+        </h1>
+
+        <p style="
+          margin:0 0 22px;
+          color:#666;
+        ">
+          Find products and services from sellers across Nigeria.
+        </p>
+
+        <!-- SEARCH -->
+        <div style="
+          display:flex;
+          gap:10px;
+          flex-wrap:wrap;
+          margin-bottom:18px;
+        ">
+
+          <input
+            type="search"
+            id="searchInput"
+            placeholder="Search for products..."
+            style="
+              flex:1;
+              min-width:220px;
+              padding:14px;
+              border:1px solid #ccc;
+              border-radius:8px;
+              outline:none;
+            "
+          >
+
+          <button
+            type="button"
+            class="primary"
+            id="searchButton"
+          >
+            Search
+          </button>
+
+        </div>
+
+        <!-- LOCATION -->
+        <div style="
+          display:flex;
+          align-items:center;
+          gap:10px;
+          flex-wrap:wrap;
+        ">
+
+          <label
+            for="locationState"
+            style="font-weight:700;"
+          >
+            Location:
+          </label>
+
+          <select
+            id="locationState"
+            style="
+              padding:12px;
+              border:1px solid #ccc;
+              border-radius:8px;
+              min-width:220px;
+              background:white;
+            "
+          >
+            <option value="">Nigeria — All States</option>
+          </select>
+
+        </div>
+
+      </div>
+    </section>
+<!-- CATEGORIES -->
+    <section style="
+      padding:30px 0;
+      background:#f5f7f5;
+    ">
+      <div class="container">
+
+        <h2 style="
+          margin:0 0 18px;
+          font-size:24px;
+        ">
+          Categories
+        </h2>
+
+        <div
+          id="categories"
+          style="
+            display:grid;
+            grid-template-columns:repeat(auto-fit, minmax(140px, 1fr));
+            gap:12px;
+          "
+        >
+
+          <button type="button" class="secondary">
+            Phones & Tablets
+          </button>
+
+          <button type="button" class="secondary">
+            Computers
+          </button>
+
+          <button type="button" class="secondary">
+            Fashion
+          </button>
+
+          <button type="button" class="secondary">
+            Shoes
+          </button>
+
+          <button type="button" class="secondary">
+            Vehicles
+          </button>
+
+          <button type="button" class="secondary">
+            Property
+          </button>
+
+          <button type="button" class="secondary">
+            Furniture
+          </button>
+
+          <button type="button" class="secondary">
+            Electronics
+          </button>
+
+          <button type="button" class="secondary">
+            Gaming
+          </button>
+
+          <button type="button" class="secondary">
+            Beauty
+          </button>
+
+          <button type="button" class="secondary">
+            Sports
+          </button>
+
+          <button type="button" class="secondary">
+            Services
+          </button>
+
+          <button type="button" class="secondary">
+            Other
+          </button>
+
+        </div>
+
+      </div>
+    </section>
+    <!-- PRODUCTS -->
+    <section style="
+      padding:30px 0;
+      background:white;
+    ">
+      <div class="container">
+
+        <div style="
+          display:flex;
+          justify-content:space-between;
+          align-items:center;
+          gap:15px;
+          flex-wrap:wrap;
+          margin-bottom:20px;
+        ">
+
+          <div>
+            <h2 style="
+              margin:0 0 5px;
+              font-size:24px;
+            ">
+              Latest Products
+            </h2>
+
+            <p style="
+              margin:0;
+              color:#777;
+            ">
+              Products from sellers across Nigeria.
+            </p>
+          </div>
+
+          <select
+            id="productStateFilter"
+            style="
+              padding:11px;
+              border:1px solid #ccc;
+              border-radius:8px;
+              background:white;
+              min-width:190px;
+            "
+          >
+            <option value="">All States</option>
+            <option value="Abia">Abia</option>
+            <option value="Adamawa">Adamawa</option>
+            <option value="Akwa Ibom">Akwa Ibom</option>
+            <option value="Anambra">Anambra</option>
+            <option value="Bauchi">Bauchi</option>
+            <option value="Bayelsa">Bayelsa</option>
+            <option value="Benue">Benue</option>
+            <option value="Borno">Borno</option>
+            <option value="Cross River">Cross River</option>
+            <option value="Delta">Delta</option>
+            <option value="Ebonyi">Ebonyi</option>
+            <option value="Edo">Edo</option>
+            <option value="Ekiti">Ekiti</option>
+            <option value="Enugu">Enugu</option>
+            <option value="Gombe">Gombe</option>
+            <option value="Imo">Imo</option>
+            <option value="Jigawa">Jigawa</option>
+            <option value="Kaduna">Kaduna</option>
+            <option value="Kano">Kano</option>
+            <option value="Katsina">Katsina</option>
+            <option value="Kebbi">Kebbi</option>
+            <option value="Kogi">Kogi</option>
+            <option value="Kwara">Kwara</option>
+            <option value="Lagos">Lagos</option>
+            <option value="Nasarawa">Nasarawa</option>
+            <option value="Niger">Niger</option>
+            <option value="Ogun">Ogun</option>
+            <option value="Ondo">Ondo</option>
+            <option value="Osun">Osun</option>
+            <option value="Oyo">Oyo</option>
+            <option value="Plateau">Plateau</option>
+            <option value="Rivers">Rivers</option>
+            <option value="Sokoto">Sokoto</option>
+            <option value="Taraba">Taraba</option>
+            <option value="Yobe">Yobe</option>
+            <option value="Zamfara">Zamfara</option>
+            <option value="Federal Capital Territory">
+              Federal Capital Territory
+            </option>
+          </select>
+
+        </div>
+
+        <!-- REAL PRODUCTS WILL LOAD HERE -->
+        <div
+          id="products"
+          style="
+            display:grid;
+            grid-template-columns:repeat(auto-fill, minmax(190px, 1fr));
+            gap:16px;
+          "
+        >
+
+          <div style="
+            grid-column:1/-1;
+            padding:30px;
+            text-align:center;
+            color:#777;
+            border:1px dashed #ccc;
+            border-radius:10px;
+          ">
+            Products will appear here.
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+  </main>
+  <!-- PRODUCT DETAILS MODAL -->
+  <div
+    id="productModal"
+    class="hidden"
+    style="
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.65);
+      z-index:2000;
+      overflow-y:auto;
+      padding:20px;
+    "
+  >
+
+    <div
+      style="
+        max-width:900px;
+        margin:30px auto;
+        background:white;
+        border-radius:12px;
+        padding:20px;
+        position:relative;
+      "
+    >
+
+      <button
+        type="button"
+        id="closeProductModal"
+        style="
+          position:absolute;
+          right:15px;
+          top:12px;
+          border:0;
+          background:none;
+          font-size:30px;
+          cursor:pointer;
+        "
+      >
+        ×
+      </button>
+
+      <div
+        style="
+          display:grid;
+          grid-template-columns:1fr 1fr;
+          gap:25px;
+        "
+      >
+
+        <!-- MEDIA -->
+        <div>
+
+          <img
+            id="detailMainImage"
+            src=""
+            alt="Product"
+            style="
+              width:100%;
+              max-height:420px;
+              object-fit:contain;
+              border-radius:10px;
+              background:#f3f3f3;
+            "
+          >
+
+          <div
+            id="detailThumbnails"
+            style="
+              display:flex;
+              gap:8px;
+              flex-wrap:wrap;
+              margin-top:10px;
+            "
+          ></div>
+
+          <video
+            id="detailVideo"
+            controls
+            style="
+              width:100%;
+              margin-top:15px;
+              border-radius:10px;
+              display:none;
+            "
+          ></video>
+
+        </div>
+
+        <!-- PRODUCT INFORMATION -->
+        <div>
+
+          <h2
+            id="detailProductName"
+            style="
+              margin:0 0 10px;
+              font-size:26px;
+            "
+          >
+            Product
+          </h2>
+
+          <div
+            id="detailProductPrice"
+            style="
+              color:#0b8f3c;
+              font-size:25px;
+              font-weight:800;
+              margin-bottom:12px;
+            "
+          >
+            ₦0
+          </div>
+
+          <div
+            id="detailProductLocation"
+            style="
+              color:#666;
+              margin-bottom:8px;
+            "
+          >
+            Location
+          </div>
+
+          <div
+            id="detailProductCategory"
+            style="
+              color:#666;
+              margin-bottom:18px;
+            "
+          >
+            Category
+          </div>
+
+          <h3>Description</h3>
+
+          <p
+            id="detailProductDescription"
+            style="
+              color:#555;
+              line-height:1.6;
+            "
+          >
+            No description available.
+          </p>
+
+          <!-- SELLER STATUS -->
+          <div
+            style="
+              padding:12px;
+              background:#f5f7f5;
+              border-radius:8px;
+              margin:18px 0;
+            "
+          >
+
+            <strong>Seller</strong>
+
+            <div
+              id="sellerStatus"
+              style="
+                margin-top:5px;
+                color:#666;
+              "
+            >
+              Seller status unavailable.
+            </div>
+
+          </div>
+
+          <!-- ACTIONS -->
+          <div
+            style="
+              display:flex;
+              gap:10px;
+              flex-wrap:wrap;
+            "
+          >
+
+            <button
+              type="button"
+              class="secondary"
+              id="detailCartButton"
+            >
+              Add to Cart
+            </button>
+
+            <button
+              type="button"
+              class="primary"
+              id="detailBuyButton"
+            >
+              Buy Now
+            </button>
+
+            <button
+              type="button"
+              class="secondary"
+              id="detailMessageButton"
+            >
+              Message Seller
+            </button>
+
+          </div>
+
+          <div
+            id="productActionMessage"
+            style="
+              margin-top:12px;
+              color:#666;
+            "
+          ></div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+  <!-- ACCOUNT MODAL -->
+  <div
+    id="accountModal"
+    class="hidden"
+    style="
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.65);
+      z-index:2000;
+      overflow-y:auto;
+      padding:20px;
+    "
+  >
+
+    <div
+      style="
+        max-width:450px;
+        margin:40px auto;
+        background:white;
+        border-radius:12px;
+        padding:25px;
+        position:relative;
+      "
+    >
+
+      <button
+        type="button"
+        id="closeAccountModal"
+        style="
+          position:absolute;
+          right:15px;
+          top:10px;
+          border:0;
+          background:none;
+          font-size:30px;
+          cursor:pointer;
+        "
+      >
+        ×
+      </button>
+
+      <h2 style="
+        margin:0 0 20px;
+        text-align:center;
+      ">
+        NaijaMarkt Account
+      </h2>
+
+      <!-- ACCOUNT TABS -->
+      <div style="
+        display:flex;
+        gap:8px;
+        margin-bottom:20px;
+      ">
+
+        <button
+          type="button"
+          id="loginTab"
+          class="primary"
+          style="flex:1;"
+        >
+          Login
+        </button>
+
+        <button
+          type="button"
+          id="signupTab"
+          class="secondary"
+          style="flex:1;"
+        >
+          Sign Up
+        </button>
+
+        <button
+          type="button"
+          id="forgotTab"
+          class="secondary"
+          style="flex:1;"
+        >
+          Forgot
+        </button>
+
+      </div>
+
+      <!-- LOGIN -->
+      <div id="loginPanel">
+
+        <form id="loginForm">
+
+          <div style="margin-bottom:15px;">
+            <label for="loginEmail">
+              Email
+            </label>
+
+            <input
+              id="loginEmail"
+              type="email"
+              required
+              placeholder="Enter your email"
+              style="
+                width:100%;
+                padding:13px;
+                margin-top:6px;
+                border:1px solid #ccc;
+                border-radius:8px;
+              "
+            >
+          </div>
+
+          <div style="margin-bottom:15px;">
+            <label for="loginPassword">
+              Password
+            </label>
+
+            <input
+              id="loginPassword"
+              type="password"
+              required
+              placeholder="Enter your password"
+              style="
+                width:100%;
+                padding:13px;
+                margin-top:6px;
+                border:1px solid #ccc;
+                border-radius:8px;
+              "
+            >
+          </div>
+
+          <button
+            type="submit"
+            class="primary"
+            style="width:100%;"
+          >
+            Login
+          </button>
+
+          <div
+            id="loginMessage"
+            style="
+              margin-top:12px;
+              color:#666;
+            "
+          ></div>
+
+        </form>
+
+      </div>
+
+      <!-- SIGN UP -->
+      <div
+        id="signupPanel"
+        class="hidden"
+      >
+
+        <form id="signupForm">
+
+          <div style="margin-bottom:15px;">
+            <label for="signupName">
+              Display Name
+            </label>
+
+            <input
+              id="signupName"
+              type="text"
+              required
+              placeholder="Your name"
+              style="
+                width:100%;
+                padding:13px;
+                margin-top:6px;
+                border:1px solid #ccc;
+                border-radius:8px;
+              "
+            >
+          </div>
+
+          <div style="margin-bottom:15px;">
+            <label for="signupEmail">
+              Email
+            </label>
+
+            <input
+              id="signupEmail"
+              type="email"
+              required
+              placeholder="Your email"
+              style="
+                width:100%;
+                padding:13px;
+                margin-top:6px;
+                border:1px solid #ccc;
+                border-radius:8px;
+              "
+            >
+          </div>
+
+          <div style="margin-bottom:15px;">
+            <label for="signupPassword">
+              Password
+            </label>
+
+            <input
+              id="signupPassword"
+              type="password"
+              required
+              minlength="6"
+              placeholder="Create a password"
+              style="
+                width:100%;
+                padding:13px;
+                margin-top:6px;
+                border:1px solid #ccc;
+                border-radius:8px;
+              "
+            >
+          </div>
+
+          <button
+            type="submit"
+            class="primary"
+            style="width:100%;"
+          >
+            Create Account
+          </button>
+
+          <div
+            id="signupMessage"
+            style="
+              margin-top:12px;
+              color:#666;
+            "
+          ></div>
+
+        </form>
+
+      </div>
+
+      <!-- FORGOT PASSWORD -->
+      <div
+        id="forgotPanel"
+        class="hidden"
+      >
+
+        <form id="forgotForm">
+
+          <div style="margin-bottom:15px;">
+            <label for="forgotEmail">
+              Email
+            </label>
+
+            <input
+              id="forgotEmail"
+              type="email"
+              required
+              placeholder="Enter your email"
+              style="
+                width:100%;
+                padding:13px;
+                margin-top:6px;
+                border:1px solid #ccc;
+                border-radius:8px;
+              "
+            >
+          </div>
+
+          <button
+            type="submit"
+            class="primary"
+            style="width:100%;"
+          >
+            Reset Password
+          </button>
+
+          <div
+            id="forgotMessage"
+            style="
+              margin-top:12px;
+              color:#666;
+            "
+          ></div>
+
+        </form>
+
+      </div>
+
+    </div>
+
+  </div>
+  <!-- SELL ITEM MODAL -->
+  <div
+    id="sellModal"
+    class="hidden"
+    style="
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.65);
+      z-index:2000;
+      overflow-y:auto;
+      padding:20px;
+    "
+  >
+
+    <div
+      style="
+        max-width:650px;
+        margin:30px auto;
+        background:white;
+        border-radius:12px;
+        padding:25px;
+        position:relative;
+      "
+    >
+
+      <button
+        type="button"
+        id="closeSellModal"
+        style="
+          position:absolute;
+          right:15px;
+          top:10px;
+          border:0;
+          background:none;
+          font-size:30px;
+          cursor:pointer;
+        "
+      >
+        ×
+      </button>
+
+      <h2 style="
+        margin:0 0 8px;
+      ">
+        Sell an Item
+      </h2>
+
+      <p style="
+        margin:0 0 20px;
+        color:#666;
+      ">
+        Create a listing and reach buyers across Nigeria.
+      </p>
+
+      <form id="sellForm">
+
+        <!-- PRODUCT NAME -->
+        <div style="margin-bottom:15px;">
+          <label for="productName">
+            Product Name
+          </label>
+
+          <input
+            id="productName"
+            type="text"
+            required
+            placeholder="What are you selling?"
+            style="
+              width:100%;
+              padding:13px;
+              margin-top:6px;
+              border:1px solid #ccc;
+              border-radius:8px;
+            "
+          >
+        </div>
+
+        <!-- PRICE -->
+        <div style="margin-bottom:15px;">
+          <label for="productPrice">
+            Price (₦)
+          </label>
+
+          <input
+            id="productPrice"
+            type="number"
+            min="0"
+            required
+            placeholder="Enter price"
+            style="
+              width:100%;
+              padding:13px;
+              margin-top:6px;
+              border:1px solid #ccc;
+              border-radius:8px;
+            "
+          >
+        </div>
+
+        <!-- CATEGORY -->
+        <div style="margin-bottom:15px;">
+          <label for="productCategory">
+            Category
+          </label>
+
+          <select
+            id="productCategory"
+            required
+            style="
+              width:100%;
+              padding:13px;
+              margin-top:6px;
+              border:1px solid #ccc;
+              border-radius:8px;
+              background:white;
+            "
+          >
+            <option value="">
+              Select Category
+            </option>
+
+            <option value="Phones & Tablets">
+              Phones & Tablets
+            </option>
+
+            <option value="Computers">
+              Computers
+            </option>
+
+            <option value="Fashion">
+              Fashion
+            </option>
+
+            <option value="Shoes">
+              Shoes
+            </option>
+
+            <option value="Vehicles">
+              Vehicles
+            </option>
+
+            <option value="Property">
+              Property
+            </option>
+
+            <option value="Furniture">
+              Furniture
+            </option>
+
+            <option value="Electronics">
+              Electronics
+            </option>
+
+            <option value="Gaming">
+              Gaming
+            </option>
+
+            <option value="Beauty">
+              Beauty
+            </option>
+
+            <option value="Sports">
+              Sports
+            </option>
+
+            <option value="Services">
+              Services
+            </option>
+
+            <option value="Other">
+              Other
+            </option>
+          </select>
+        </div>
+
+        <!-- PHOTOS -->
+        <div style="margin-bottom:15px;">
+          <label for="productImages">
+            Product Photos
+          </label>
+
+          <input
+            id="productImages"
+            type="file"
+            accept="image/*"
+            multiple
+            style="
+              width:100%;
+              margin-top:8px;
+            "
+          >
+
+          <small style="
+            display:block;
+            margin-top:6px;
+            color:#777;
+          ">
+            You can select multiple photos.
+          </small>
+
+          <div
+            id="imagePreview"
+            style="
+              display:flex;
+              gap:8px;
+              flex-wrap:wrap;
+              margin-top:12px;
+            "
+          ></div>
+        </div>
+
+        <!-- VIDEO -->
+        <div style="margin-bottom:15px;">
+          <label for="productVideo">
+            Product Video
+          </label>
+
+          <input
+            id="productVideo"
+            type="file"
+            accept="video/*"
+            style="
+              width:100%;
+              margin-top:8px;
+            "
+          >
+
+          <small style="
+            display:block;
+            margin-top:6px;
+            color:#777;
+          ">
+            Optional product video.
+          </small>
+        </div>
+
+        <!-- DESCRIPTION -->
+        <div style="margin-bottom:15px;">
+          <label for="productDescription">
+            Description
+          </label>
+
+          <textarea
+            id="productDescription"
+            rows="5"
+            required
+            placeholder="Describe your product..."
+            style="
+              width:100%;
+              padding:13px;
+              margin-top:6px;
+              border:1px solid #ccc;
+              border-radius:8px;
+              resize:vertical;
+            "
+          ></textarea>
+        </div>
+
+        <!-- STATE -->
+        <div style="margin-bottom:15px;">
+          <label for="productState">
+            State
+          </label>
+
+          <select
+            id="productState"
+            required
+            style="
+              width:100%;
+              padding:13px;
+              margin-top:6px;
+              border:1px solid #ccc;
+              border-radius:8px;
+              background:white;
+            "
+          >
+            <option value="">
+              Select State
+            </option>
+
+            <option value="Abia">Abia</option>
+            <option value="Adamawa">Adamawa</option>
+            <option value="Akwa Ibom">Akwa Ibom</option>
+            <option value="Anambra">Anambra</option>
+            <option value="Bauchi">Bauchi</option>
+            <option value="Bayelsa">Bayelsa</option>
+            <option value="Benue">Benue</option>
+            <option value="Borno">Borno</option>
+            <option value="Cross River">Cross River</option>
+            <option value="Delta">Delta</option>
+            <option value="Ebonyi">Ebonyi</option>
+            <option value="Edo">Edo</option>
+            <option value="Ekiti">Ekiti</option>
+            <option value="Enugu">Enugu</option>
+            <option value="Gombe">Gombe</option>
+            <option value="Imo">Imo</option>
+            <option value="Jigawa">Jigawa</option>
+            <option value="Kaduna">Kaduna</option>
+            <option value="Kano">Kano</option>
+            <option value="Katsina">Katsina</option>
+            <option value="Kebbi">Kebbi</option>
+            <option value="Kogi">Kogi</option>
+            <option value="Kwara">Kwara</option>
+            <option value="Lagos">Lagos</option>
+            <option value="Nasarawa">Nasarawa</option>
+            <option value="Niger">Niger</option>
+            <option value="Ogun">Ogun</option>
+            <option value="Ondo">Ondo</option>
+            <option value="Osun">Osun</option>
+            <option value="Oyo">Oyo</option>
+            <option value="Plateau">Plateau</option>
+            <option value="Rivers">Rivers</option>
+            <option value="Sokoto">Sokoto</option>
+            <option value="Taraba">Taraba</option>
+            <option value="Yobe">Yobe</option>
+            <option value="Zamfara">Zamfara</option>
+
+            <option value="Federal Capital Territory">
+              Federal Capital Territory
+            </option>
+          </select>
+        </div>
+
+        <!-- LGA -->
+        <div style="margin-bottom:15px;">
+          <label for="productLga">
+            LGA
+          </label>
+
+          <input
+            id="productLga"
+            type="text"
+            required
+            placeholder="Enter LGA"
+            style="
+              width:100%;
+              padding:13px;
+              margin-top:6px;
+              border:1px solid #ccc;
+              border-radius:8px;
+            "
+          >
+        </div>
+
+        <!-- TOWN / AREA -->
+        <div style="margin-bottom:20px;">
+          <label for="productTown">
+            Town / Area
+          </label>
+
+          <input
+            id="productTown"
+            type="text"
+            required
+            placeholder="Enter town or area"
+            style="
+              width:100%;
+              padding:13px;
+              margin-top:6px;
+              border:1px solid #ccc;
+              border-radius:8px;
+            "
+          >
+        </div>
+
+        <!-- SUBMIT -->
+        <button
+          type="submit"
+          class="primary"
+          style="
+            width:100%;
+            padding:14px;
+          "
+        >
+          Post Item
+        </button>
+
+        <div
+          id="sellMessage"
+          style="
+            margin-top:12px;
+            color:#666;
+          "
+        ></div>
+
+      </form>
+
+    </div>
+
+  </div>
+  <!-- CART MODAL -->
+  <div
+    id="cartModal"
+    class="hidden"
+    style="
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.65);
+      z-index:2000;
+      overflow-y:auto;
+      padding:20px;
+    "
+  >
+
+    <div
+      style="
+        max-width:600px;
+        margin:40px auto;
+        background:white;
+        border-radius:12px;
+        padding:25px;
+        position:relative;
+      "
+    >
+
+      <button
+        type="button"
+        id="closeCart"
+        style="
+          position:absolute;
+          right:15px;
+          top:10px;
+          border:0;
+          background:none;
+          font-size:30px;
+          cursor:pointer;
+        "
+      >
+        ×
+      </button>
+
+      <h2>Your Cart</h2>
+
+      <div id="cartContainer">
+        <p style="color:#777;">
+          Your cart is empty.
+        </p>
+      </div>
+
+      <button
+        type="button"
+        class="primary"
+        id="checkoutButton"
+        style="
+          width:100%;
+          margin-top:20px;
+        "
+      >
+        Checkout
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- MESSAGE SELLER MODAL -->
+  <div
+    id="messageModal"
+    class="hidden"
+    style="
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.65);
+      z-index:2000;
+      overflow-y:auto;
+      padding:20px;
+    "
+  >
+
+    <div
+      style="
+        max-width:500px;
+        margin:40px auto;
+        background:white;
+        border-radius:12px;
+        padding:25px;
+        position:relative;
+      "
+    >
+
+      <button
+        type="button"
+        id="closeMessage"
+        style="
+          position:absolute;
+          right:15px;
+          top:10px;
+          border:0;
+          background:none;
+          font-size:30px;
+          cursor:pointer;
+        "
+      >
+        ×
+      </button>
+
+      <h2>Message Seller</h2>
+
+      <p
+        id="messageProductName"
+        style="
+          color:#666;
+          margin-bottom:20px;
+        "
+      ></p>
+
+      <form id="messageForm">
+
+        <div style="margin-bottom:15px;">
+
+          <label for="sellerMessage">
+            Your Message
+          </label>
+
+          <textarea
+            id="sellerMessage"
+            required
+            rows="5"
+            placeholder="Write your message..."
+            style="
+              width:100%;
+              padding:13px;
+              margin-top:6px;
+              border:1px solid #ccc;
+              border-radius:8px;
+              resize:vertical;
+            "
+          ></textarea>
+
+        </div>
+
+        <button
+          type="submit"
+          class="primary"
+          style="width:100%;"
+        >
+          Send Message
+        </button>
+
+        <div
+          id="messageStatus"
+          style="
+            margin-top:12px;
+            color:#666;
+          "
+        ></div>
+
+      </form>
+
+    </div>
+
+  </div>
+  <!-- LIVE SECTION -->
+  <section
+    style="
+      padding:35px 0;
+      background:#eef8f1;
+    "
+  >
+    <div class="container">
+
+      <div style="
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        gap:15px;
+        flex-wrap:wrap;
+      ">
+
+        <div>
+          <h2 style="
+            margin:0 0 6px;
+            font-size:24px;
+          ">
+            NaijaMarkt Live
+          </h2>
+
+          <p style="
+            margin:0;
+            color:#666;
+          ">
+            Sellers can showcase products and interact with buyers.
+          </p>
+        </div>
+
+        <button
+          type="button"
+          class="primary"
+          id="goLiveButton"
+        >
+          Go Live
+        </button>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- LIVE MODAL -->
+  <div
+    id="liveModal"
+    class="hidden"
+    style="
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.65);
+      z-index:2000;
+      overflow-y:auto;
+      padding:20px;
+    "
+  >
+
+    <div
+      style="
+        max-width:600px;
+        margin:40px auto;
+        background:white;
+        border-radius:12px;
+        padding:25px;
+        position:relative;
+      "
+    >
+
+      <button
+        type="button"
+        id="closeLive"
+        style="
+          position:absolute;
+          right:15px;
+          top:10px;
+          border:0;
+          background:none;
+          font-size:30px;
+          cursor:pointer;
+        "
+      >
+        ×
+      </button>
+
+      <h2>NaijaMarkt Live</h2>
+
+      <p style="
+        color:#555;
+        line-height:1.6;
+      ">
+        Live streaming is being prepared for NaijaMarkt.
+      </p>
+
+      <p style="
+        color:#555;
+        line-height:1.6;
+      ">
+        Sellers will be able to showcase products and interact
+        with buyers through live video.
+      </p>
+
+    </div>
+
+  </div>
+  <!-- SUPABASE LIBRARY -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script>
+    /* ================================
+       SUPABASE CONNECTION
+    ================================= */
+
+    const SUPABASE_URL =
+      "https://qtolaqjjqoczcausyvbr.supabase.co";
+
+    const SUPABASE_KEY =
+      "sb_publishable_VdTs0tXujyKVqU4h8wOriw_Xle29ijU";
+
+    const SITE_URL =
+      "https://xzobbyck-design.github.io/naijamarkt/";
+
+    const supabaseClient =
+      window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+      );
+  </script>
 </body>
 </html>
