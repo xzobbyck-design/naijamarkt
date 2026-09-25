@@ -1818,7 +1818,46 @@
       openModal("cartModal");
     }
 
+/* ================================
+   OPEN MESSAGE SELLER
+================================ */
 
+function openMessageSeller(product) {
+
+  if (!product) {
+    return;
+  }
+
+  const modal = $("messageModal");
+
+  if (!modal) {
+    return;
+  }
+
+  openModal("messageModal");
+
+  const productName = $("messageProductName");
+
+  if (productName) {
+    productName.textContent =
+      (product.product || "Product") +
+      " — ₦" +
+      Number(product.price || 0).toLocaleString();
+  }
+
+  const messageInput = $("sellerMessage");
+
+  if (messageInput) {
+    messageInput.value = "";
+  }
+
+  const status = $("messageStatus");
+
+  if (status) {
+    status.textContent = "";
+  }
+
+      }
     /* ================================
        OPEN LIVE
     ================================= */
