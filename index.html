@@ -8010,5 +8010,123 @@ document.addEventListener("DOMContentLoaded", function() {
 
 });
     </script>
+    <script>
+document.addEventListener("DOMContentLoaded", function() {
+
+  const messagesButton = $("messagesButton");
+
+  if (!messagesButton) return;
+
+  messagesButton.addEventListener("click", async function() {
+
+    if (!currentUser) {
+      openAccount("login");
+      return;
+    }
+
+    const container = $("conversationsContainer");
+
+    if (!container) return;
+
+    container.innerHTML = `
+      <p style="color:#777;text-align:center;">
+        Loading conversations...
+      </p>
+    `;
+
+    const result = await supabaseClient
+      .from("messages")
+      .select("sender_id,receiver_id,message,created_at")
+      .or(
+        "sender_id.eq." + currentUser.id +
+        ",receiver_id.eq." + currentUser.id
+      )
+      .order("created_at", { ascending: false });
+
+    if (result.error) {
+
+      console.error(result.error);
+
+      container.innerHTML = `
+        <p style="color:#c00;text-align:center;">
+          Could not load conversations.
+        </p>
+      `;
+
+      return;
+    }
+
+    if (!result.data || result.data.length === 0) {
+
+      container.innerHTML = `
+        <div style="text-align:center;padding:30px 10px;">
+          <h3>No conversations yet</h3>
+          <p style="color:#777;">
+            Your chats with sellers will appear here.
+          </p>
+        </div>
+      `;
+
+      return;
+    }
+
+    const people = {};
+
+    result.data.forEach(function(item) {
+
+      const otherPerson =
+        String(item.sender_id) === String(currentUser.id)
+          ? item.receiver_id
+          : item.sender_id;
+
+      if (!people[otherPerson]) {
+        people[otherPerson] = item;
+      }
+
+    });
+
+    container.innerHTML = Object.keys(people).map(function(personId) {
+
+      const conversation = people[personId];
+
+      return `
+        <button
+          type="button"
+          class="secondary"
+          style="
+            width:100%;
+            text-align:left;
+            margin-bottom:10px;
+            padding:15px;
+          "
+        >
+          <strong>Seller</strong>
+
+          <div style="
+            margin-top:5px;
+            color:#777;
+            font-size:13px;
+          ">
+            ${conversation.message}
+          </div>
+
+          <div style="
+            margin-top:5px;
+            color:#999;
+            font-size:11px;
+          ">
+            ${conversation.created_at
+              ? new Date(conversation.created_at).toLocaleString()
+              : ""}
+          </div>
+        </button>
+      `;
+
+    }).join("");
+
+  });
+
+});
+    </script>
 </body>
 </html>
