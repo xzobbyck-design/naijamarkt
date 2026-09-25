@@ -159,6 +159,13 @@
     class="secondary"
     id="ordersButton"
   >
+    <button
+  type="button"
+  class="secondary"
+  id="chatButton"
+>
+  Chat
+    </button>
     My Orders
   </button>
 
@@ -8159,6 +8166,141 @@ document.addEventListener("DOMContentLoaded", function() {
               : ""}
           </div>
         </button>
+      `;
+
+    }).join("");
+
+  });
+
+});
+    </script>
+    <script>
+document.addEventListener("DOMContentLoaded", function() {
+
+  const chatButton = $("chatButton");
+
+  if (!chatButton) return;
+
+  chatButton.addEventListener("click", function() {
+
+    if (!currentUser) {
+      openAccount("login");
+      return;
+    }
+
+    const messagesModal = $("messagesModal");
+
+    if (messagesModal) {
+      messagesModal.classList.remove("hidden");
+    }
+
+  });
+
+});
+    </script>
+    <script>
+document.addEventListener("DOMContentLoaded", function() {
+
+  const chatButton = $("chatButton");
+
+  if (!chatButton) return;
+
+  chatButton.addEventListener("click", async function() {
+
+    if (!currentUser) return;
+
+    const container = $("conversationsContainer");
+
+    if (!container) return;
+
+    container.innerHTML = `
+      <p style="color:#777;text-align:center;">
+        Loading chats...
+      </p>
+    `;
+
+    const result = await supabaseClient
+      .from("messages")
+      .select("sender_id,receiver_id,message,created_at")
+      .or(
+        "sender_id.eq." + currentUser.id +
+        ",receiver_id.eq." + currentUser.id
+      )
+      .order("created_at", { ascending: false });
+
+    if (result.error) {
+      console.error(result.error);
+
+      container.innerHTML = `
+        <p style="color:#c00;text-align:center;">
+          Could not load chats.
+        </p>
+      `;
+
+      return;
+    }
+
+    if (!result.data || result.data.length === 0) {
+
+      container.innerHTML = `
+        <div style="text-align:center;padding:30px 10px;">
+          <h3>No chats yet</h3>
+          <p style="color:#777;">
+            Your conversations will appear here.
+          </p>
+        </div>
+      `;
+
+      return;
+    }
+
+    const chats = {};
+
+    result.data.forEach(function(item) {
+
+      const otherUser =
+        String(item.sender_id) === String(currentUser.id)
+          ? item.receiver_id
+          : item.sender_id;
+
+      if (!chats[otherUser]) {
+        chats[otherUser] = item;
+      }
+
+    });
+
+    container.innerHTML = Object.keys(chats).map(function(userId) {
+
+      const chat = chats[userId];
+
+      return `
+        <div
+          style="
+            border-bottom:1px solid #eee;
+            padding:15px 5px;
+            cursor:pointer;
+          "
+        >
+          <strong>Conversation</strong>
+
+          <div style="
+            margin-top:5px;
+            color:#777;
+            font-size:14px;
+          ">
+            ${chat.message}
+          </div>
+
+          <div style="
+            margin-top:5px;
+            color:#999;
+            font-size:11px;
+          ">
+            ${chat.created_at
+              ? new Date(chat.created_at).toLocaleString()
+              : ""}
+          </div>
+        </div>
       `;
 
     }).join("");
